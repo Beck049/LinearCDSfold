@@ -1114,7 +1114,7 @@ inline void PrintInfo(std::string output_txt,std::string output_csv,std::string 
     outputfile << "Codon usage table: " << cai_file_path << std::endl;
 
     /*initialize CVS file*/
-    outputcsv <<"lambda,MFE,CAI"<<std::endl;
+    outputcsv <<"UniPort ID, Protein length, Lambda, MFE, CAI, Run time"<<std::endl;
 
     /*OJ function*/
     if (objective == "DN") {

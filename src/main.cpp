@@ -30,7 +30,7 @@ int main(int argc, char** argv){
     std::ifstream cai_file;
 
     std::string rna_seq, ami_seq;
-    std::vector<std::string> rna_seq_list, inseq_list;
+    std::vector<std::string> rna_seq_list, inseq_list, pid_list;
     std::vector<std::vector<int>> con_seq_list;
     std::vector<double> cai_vector;
 
@@ -116,6 +116,15 @@ int main(int argc, char** argv){
                     continue;
                 }else if (seq[0] == '>' or seq[0] == ';'){
                     start_sign_ = true;
+                    // push PID
+                    std::stringstream ss(seq.substr(1));
+                    std::string id;
+                    if (ss >> id) {
+                        pid_list.push_back(id);
+                    } else {
+                        pid_list.push_back("unknown");
+                    }
+                    // push sequence
                     if (!ami_seq.empty())
                         inseq_list.push_back(ami_seq);
                     ami_seq.clear();
@@ -138,6 +147,7 @@ int main(int argc, char** argv){
             if (!isalpha(seq[0])){
                 std::cerr << "Unrecognized sequence: " << seq << std::endl;
                 continue;}
+            pid_list.push_back("unknown");
             inseq_list.push_back(seq);
         }
     }
@@ -242,6 +252,8 @@ int main(int argc, char** argv){
             for(int i = 0; i < inseq_list.size(); i++){
                 timeval start,end;
                 int sec,usec;
+                string PID = pid_list[i];
+                int protein_len = inseq_list[i].length();
                 ami_seq = inseq_list[i];
                 transform(ami_seq.begin(), ami_seq.end(), ami_seq.begin(), ::toupper);
                 ami_to_rna(rna_seq_list, ami_seq);
@@ -249,6 +261,8 @@ int main(int argc, char** argv){
                 rna_seq = rna_seq_list[i];
                 std::vector<int> con_seq = con_seq_list[i];
 
+                std::cout << "Protein ID: " << PID << std::endl;
+                std::cout << "Protein length: " << protein_len << std::endl;
                 std::cout <<"Lambda: " << std::fixed << std::setprecision(3) << lambda << std::endl;
                 AllTables<double> alltables(rna_seq, rna_seq.size());
                 
@@ -263,13 +277,15 @@ int main(int argc, char** argv){
                 gettimeofday(&end, 0);
                 double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
 
-                std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq,output_txt,output_csv,TimeSpend, show_score, false);
+                std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, false);
             }
         }
         else{//DERNA mode
             for(int i = 0; i < inseq_list.size(); i++){
                 timeval start,end;
                 int sec,usec;
+                string PID = pid_list[i];
+                int protein_len = inseq_list[i].length();
                 ami_seq = inseq_list[i];
                 transform(ami_seq.begin(), ami_seq.end(), ami_seq.begin(), ::toupper);
                 ami_to_rna(rna_seq_list, ami_seq);
@@ -279,9 +295,11 @@ int main(int argc, char** argv){
                 rna_seq = rna_seq_list[i];
                 std::vector<int> con_seq = con_seq_list[i];
                 if(pareto)
-                    Pareto_solution<double>(threshold1,threshold2,rna_seq, con_seq, ami_seq, cai_vector, output_txt, output_csv, show_score);
+                    Pareto_solution<double>(threshold1,threshold2,rna_seq, con_seq, ami_seq, cai_vector, output_txt, output_csv, show_score, PID, protein_len);
 
                 else{
+                    std::cout << "Protein ID: " << PID << std::endl;
+                    std::cout << "Protein length: " << protein_len << std::endl;
                     std::cout <<"Lambda: " << std::fixed << std::setprecision(3) << lambda << std::endl;
                     if(lambda == 0 )//prevent MFE not predictable
                         lambda += 0.00001;
@@ -296,7 +314,7 @@ int main(int argc, char** argv){
                     gettimeofday(&end, 0);
 
                     double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
-                    std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq,output_txt,output_csv,TimeSpend, show_score, true);
+                    std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq,output_txt,output_csv, PID, protein_len,TimeSpend, show_score, true);
                     
                 }
             }    
@@ -310,6 +328,8 @@ int main(int argc, char** argv){
         for(int i = 0; i < inseq_list.size(); i++){
             timeval start,end;
             int sec,usec;
+            string PID = pid_list[i];
+            int protein_len = inseq_list[i].length();
             rna_seq = inseq_list[i];
             std::vector<int> con_seq(rna_seq.size(), normal_ami);
             AllTables<double> alltables(rna_seq, rna_seq.size());
@@ -319,7 +339,7 @@ int main(int argc, char** argv){
             gettimeofday(&end, 0);
             
             double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
-            std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq,output_txt,output_csv,TimeSpend, show_score, true);
+            std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq,output_txt,output_csv, PID, protein_len,TimeSpend, show_score, true);
 
         }
 

@@ -24,11 +24,12 @@ inline int v_score_hairpin(int i, int j, int base_i, int base_ni, int base_pj, i
 
     int energy;
 
-    if(size <= 30)
+    if(size <= 30) {
         energy = hairpin37[size];
-    else
+    } else {
         energy = hairpin37[30] + (int)(lxc37*log((size)/30.));
-
+    }
+    
     if(size == 3) return energy + (type>2?TerminalAU37:0); /* should only be the case when folding alignments */
 
     energy += mismatchH37[type][base_ni][base_pj];
@@ -88,51 +89,50 @@ inline int v_score_single(int i, int j, int p, int q,
                         int nucp_1, int nucp, int nucq, int nucq1){
 
 
-    int type = NUC_TO_PAIR(nuci, nucj);
-    int type_2 = NUC_TO_PAIR(nucq, nucp);
-    int n1 = p-i-1;
-    int n2 = j-q-1;
-    int nl, ns, u, energy;
-    energy = 0;
+  int type = NUC_TO_PAIR(nuci, nucj);
+  int type_2 = NUC_TO_PAIR(nucq, nucp);
+  int n1 = p-i-1;
+  int n2 = j-q-1;
+  int nl, ns, u, energy;
+  energy = 0;
 
-    if (n1>n2) { nl=n1; ns=n2;}
-    else {nl=n2; ns=n1;}
+  if (n1>n2) { nl=n1; ns=n2;}
+  else {nl=n2; ns=n1;}
 
-    if (nl == 0)
-        return stack37[type][type_2];  /* stack */
+  if (nl == 0)
+    return stack37[type][type_2];  /* stack */
 
-    if (ns==0) {                      /* bulge */
-        energy = (nl<=MAXLOOP)?bulge37[nl]:
+  if (ns==0) {                      /* bulge */
+      energy = (nl<=MAXLOOP)?bulge37[nl]:
       (bulge37[30]+(int)(lxc37*log(nl/30.)));
-    if (nl==1) energy += stack37[type][type_2];
-    else {
+    if (nl==1) { 
+      energy += stack37[type][type_2];
+    } else {
       if (type>2) energy += TerminalAU37;
       if (type_2>2) energy += TerminalAU37;
     }
     return energy;
-  }
-  else {                            /* interior loop */
+  } else {                            /* interior loop */
     if (ns==1) {
       if (nl==1)                    /* 1x1 loop */
         return int11_37[type][type_2][nuci1][nucj_1];
       if (nl==2) {                  /* 2x1 loop */
-        if (n1==1)
+        if (n1==1) {
           energy = int21_37[type][type_2][nuci1][nucq1][nucj_1];
-        else
+        } else {
           energy = int21_37[type_2][type][nucq1][nuci1][nucp_1];
+        }
         return energy;
-      }
-      else {  /* 1xn loop */
+      } else {  /* 1xn loop */
         energy = (nl+1<=MAXLOOP)?(internal_loop37[nl+1]) : (internal_loop37[30]+(int)(lxc37*log((nl+1)/30.)));
         energy += MIN2(MAX_NINIO, (nl-ns)*ninio37);
         energy += mismatch1nI37[type][nuci1][nucj_1] + mismatch1nI37[type_2][nucq1][nucp_1];
         return energy;
       }
-    }
-    else if (ns==2) {
-      if(nl==2)      {              /* 2x2 loop */
-        return int22_37[type][type_2][nuci1][nucp_1][nucq1][nucj_1];}
-      else if (nl==3){              /* 2x3 loop */
+    } else if (ns==2) {
+      if(nl==2) {              /* 2x2 loop */
+        return int22_37[type][type_2][nuci1][nucp_1][nucq1][nucj_1];
+      } else if (nl==3){              /* 2x3 loop */
         energy = internal_loop37[5]+ninio37;
         energy += mismatch23I37[type][nuci1][nucj_1] + mismatch23I37[type_2][nucq1][nucp_1];
         return energy;

@@ -526,8 +526,8 @@ void initialize(){
     std::vector<int> base_A_vec = {BASE("A"), BASE("A1"), BASE("A2")};
     std::vector<int> base_U_vec = {BASE("U"), BASE("U_AG1"), BASE("U_AG2"), BASE("U1")};
 
-    for (int i = 0; i < base_A_vec.size(); i++){
-        for (int j = 0; j < base_U_vec.size(); j++){
+    for (int i = 0; i < base_A_vec.size(); i++) {
+        for (int j = 0; j < base_U_vec.size(); j++) {
             _allowed_pairs[base_A_vec[i]][base_U_vec[j]] = true;
             _allowed_pairs[base_U_vec[j]][base_A_vec[i]] = true;
         }
@@ -538,8 +538,8 @@ void initialize(){
     std::vector<int> base_C_vec = {BASE("C"), BASE("C1")};
     std::vector<int> base_G_vec = {BASE("G"), BASE("G_AG1"), BASE("G_AG2"), BASE("G1"), BASE("G2"), BASE("G_CU")};
     
-    for (int i = 0; i < base_C_vec.size(); i++){
-        for (int j = 0; j < base_G_vec.size(); j++){
+    for (int i = 0; i < base_C_vec.size(); i++) {
+        for (int j = 0; j < base_G_vec.size(); j++) {
             _allowed_pairs[base_C_vec[i]][base_G_vec[j]] = true;
             _allowed_pairs[base_G_vec[j]][base_C_vec[i]] = true;
         }
@@ -547,8 +547,8 @@ void initialize(){
 
     //UG
     //GU
-    for (int i = 0; i < base_U_vec.size(); i++){
-        for (int j = 0; j < base_G_vec.size(); j++){
+    for (int i = 0; i < base_U_vec.size(); i++) {
+        for (int j = 0; j < base_G_vec.size(); j++) {
             _allowed_pairs[base_U_vec[i]][base_G_vec[j]] = true;
             _allowed_pairs[base_G_vec[j]][base_U_vec[i]] = true;
         }
@@ -593,13 +593,20 @@ inline bool IsLegal(std::vector<int>& con_seq, int base_i, int base_i1, int pos_
     //j must be i+1
     int amino_ = con_seq[pos_i];
     int pos_i1 = pos_i+1;
-    if((pos_i/3) == (pos_i1/3)){
-        if(amino_ != normal_ami){
+    if((pos_i/3) == (pos_i1/3)) {
+        if(amino_ != normal_ami) {
             int amino_index = pos_i%3;
-            if(xcon_table[amino_][amino_index][base_i][base_i1]){
-                return true;}else{return false;}
-        }else{return true;}   
-    }else{return true;}
+            if(xcon_table[amino_][amino_index][base_i][base_i1]) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }   
+    } else {
+        return true;
+    }
     
 }
 
@@ -610,6 +617,24 @@ static inline void rtrim(std::string &s) {
     }).base(), s.end());
 }
 
+/**
+ * 將胺基酸序列（以單字母表示）轉換為對應的 RNA 序列，並將結果加入輸出列表。
+ *
+ * @param rna_seq_list  輸出參數：函式會在此向量末端新增一個由 ami_seq 翻譯得到的 RNA 字串。
+ * @param ami_seq       輸入參數：代表一串胺基酸的單字母代號（例如 "ACDE..."）。注意目前為非常數參考，但函式本身不會修改該字串。
+ *
+ * 行為說明：
+ * - 對 ami_seq 中的每個字元（視為單一胺基酸代號）取對應的字串鍵，從全域映射表 Amino_label 取得對應的 codon（例如三核苷酸或其他表示法）。
+ * - 將每個取得的 codon 逐字元附加到暫存的 rna_seq 中，處理完所有胺基酸後，將整個 rna_seq 推入 rna_seq_list。
+ *
+ * 範例假設：
+ * - Amino_label 使用的鍵為單字元字串（例如 "A"、"C"），對應值為欲附加的 RNA 字串（例如 "GCU"）。
+ *
+ * 例外與注意事項：
+ * - 若 Amino_label 中找不到對應鍵，Amino_label.at(...) 會拋出 std::out_of_range。
+ * - 目前函式簽名接受 std::string& ami_seq，但函式並未修改該參數；若希望表意更明確，建議改為 const std::string&。
+ * - 函式會在 rna_seq_list 中新增一個元素，不會清除或覆寫已有元素。
+ */
 void ami_to_rna(std::vector<std::string>& rna_seq_list, std::string& ami_seq){
     std::string rna_seq;
     std::string Amino1;
@@ -624,23 +649,51 @@ void ami_to_rna(std::vector<std::string>& rna_seq_list, std::string& ami_seq){
     rna_seq_list.push_back(rna_seq);
 }
 
+/**
+ * 將給定的胺基酸序列轉換為整數序列並加入結果列表。
+ *
+ * 功能說明：
+ *   - 對於輸入字串 ami_seq 的每一個字元 (胺基酸代號)，產生三個對應的整數值並依序加入到臨時向量 con_seq 中。
+ *   - 轉換規則：
+ *       'R' -> 推入三個 Arg  (Arg == 0)
+ *       'L' -> 推入三個 Leu  (Leu == 1)
+ *       'S' -> 推入三個 Ser  (Ser == 2)
+ *       其他 -> 推入三個 normal_ami (normal_ami == -1)
+ *   - 最後將該 con_seq 推入參數 con_seq_list（作為新的一個元素）。
+ *
+ * 注意事項：
+ *   - con_seq_list 為輸出參數（以引用傳入），函式會在其末端新增一個 std::vector<int>。
+ *   - 產生的 con_seq 長度為 3 * ami_seq.size()。
+ *   - ami_seq 以非 const 引用傳入，但本函式不會修改它（可考慮改為 const std::string&）。
+ *
+ * 參數：
+ *   - con_seq_list: 用來接收轉換後整數向量的列表 (std::vector<std::vector<int>>&)
+ *   - ami_seq: 輸入的胺基酸字元序列 (std::string&)
+ *
+ * 回傳值：
+ *   - void（結果透過 con_seq_list 傳出）
+ */
 void add_con_seq(std::vector<std::vector<int>>& con_seq_list, std::string& ami_seq){
     std::vector<int> con_seq;
     char Amino1; 
     for(int i=0; i<ami_seq.size(); i++){
         Amino1 = ami_seq[i];
-        if(Amino1=='R'){
-            for(int j=0; j<3; j++)
+        if(Amino1=='R') {
+            for(int j=0; j<3; j++) {
                 con_seq.push_back(Arg); //R==0
-        }else if(Amino1=='L'){
-            for(int j=0; j<3; j++)
+            }
+        } else if(Amino1=='L') {
+            for(int j=0; j<3; j++) {
                 con_seq.push_back(Leu); //L==1
-        }else if(Amino1=='S'){
-            for(int j=0; j<3; j++)
+            }
+        } else if(Amino1=='S') {
+            for(int j=0; j<3; j++) {
                 con_seq.push_back(Ser); //S==2
-        }else{
-            for(int j=0; j<3; j++)
+            }
+        } else {
+            for(int j=0; j<3; j++) {
                 con_seq.push_back(normal_ami); //-1
+            }
         }
     }
     con_seq_list.push_back(con_seq);
@@ -649,11 +702,11 @@ void add_con_seq(std::vector<std::vector<int>>& con_seq_list, std::string& ami_s
 void check_valid_ami(int seq_size, std::string result_seq, std::string& ami_seq){
     std::string sub_str;
     std::string index;
-    for(int i=0; i<seq_size; i++){
+    for(int i=0; i<seq_size; i++) {
         sub_str =  result_seq.substr(3*i,3);
-        if(re_Amino_label.count(sub_str)){
+        if(re_Amino_label.count(sub_str)) {
             index = re_Amino_label.at(sub_str);    
-        }else{
+        } else {
             std::cout << "error aminoacid: ";
             std::cout << sub_str << std::endl;
             std::cout << "error index: ";
@@ -668,10 +721,12 @@ void check_valid_ami(int seq_size, std::string result_seq, std::string& ami_seq)
 
 inline void log_CAI(std::vector<double>& cai_vector, std::vector<double>& log_cai_vector){
 
-    for(int i = 0; i < cai_vector.size(); i++){
-        if(cai_vector[i] == 0)
+    for(int i = 0; i < cai_vector.size(); i++) {
+        if(cai_vector[i] == 0) {
             log_cai_vector.push_back(-999999);
-        else log_cai_vector.push_back(log(cai_vector[i]));// Round the number to three decimal places.
+        } else {
+            log_cai_vector.push_back(log(cai_vector[i]));// Round the number to three decimal places.
+        }
         //else log_cai_vector.push_back(logf(cai_vector[i]));
     }
 }
@@ -887,7 +942,8 @@ inline void initialize_CAI_table(std::vector<double> cai_vector_, bool is_DN){
 
     log_CAI(cai_vector_, cai_vector);
 
-
+    // create data structure
+    // mapping of amino acid to [mapping of last nucleotide to CAI value]
     for (int k = 0; k < CodonSet.size(); ++k) {
         char amino_ = CodonSet[k][0][0];
         if (is_DN) {
@@ -896,17 +952,17 @@ inline void initialize_CAI_table(std::vector<double> cai_vector_, bool is_DN){
         } else {
             if (CodonSetCAIMap.find(amino_) == CodonSetCAIMap.end())
                 CodonSetCAIMap[amino_] = std::unordered_map<int, double>();
-                // CodonSetCAIMap[amino_] = std::unordered_map<int, int>();
         }
     }
 
 
-    for (int i = 0; i < CodonSet.size(); ++i){
+    for (int i = 0; i < CodonSet.size(); ++i) {
 
         char amino_ = CodonSet[i][0][0];
         std::string codon_ = CodonSet[i][1];
         int last_nuc = BASE(std::string(1, codon_[2]));
 
+        // 轉換成數字，方便後續處理
         if(amino_ == 'R'){
             if(codon_ == "AGA")
                 last_nuc = BASE("A1");
@@ -955,6 +1011,7 @@ inline void initialize_CAI_table(std::vector<double> cai_vector_, bool is_DN){
                 last_nuc = BASE("C1"); 
             // {"UCU","S"}, {"UCC","S"}, {"UCA","S"}, {"UCG","S"}, {"AGU","S"}, {"AGC","S"},
         }
+        // 計算 MFECAI 的 CAI 項之值
         if(is_DN){
             double weight_ = (1-lambda)*cai_vector[i]; //*100
             CodonSetCAIMap_DN[amino_][last_nuc] = weight_;
@@ -979,7 +1036,7 @@ void check_ami_solution(std::string ami_seq, std::string rna_solution){
 
 
     // //check correct
-    if(ami_seq != check_ami_seq){
+    if(ami_seq != check_ami_seq) {
         std::cout << "Current backtracked amino acids sequence:" << std::endl;
         std::cout << check_ami_seq << std::endl;
         std::cout << "ERROR: Codon sequences cannot transfer into amino acids." << std::endl;
@@ -989,13 +1046,12 @@ void check_ami_solution(std::string ami_seq, std::string rna_solution){
 template<typename T>
 T GetCAIScore(const std::string& rna_solution,bool is_DN){
     T score = 0;
-    if(is_DN){
+    if(is_DN) {
         for (int i = 0; i <= rna_solution.size() - 3; i += 3){
             std::string codon = rna_solution.substr(i, 3);
             score = score + CalCAIMap_DN[codon];
         }
-    }
-    else{
+    } else {
         for (int i = 0; i <= rna_solution.size() - 3; i += 3){
             std::string codon = rna_solution.substr(i, 3);
             score = score + CalCAIMap[codon];
@@ -1007,7 +1063,7 @@ T GetCAIScore(const std::string& rna_solution,bool is_DN){
 
 double GetUnweghtedCAIScore(const std::string& rna_solution){
     double score = 0;
-    for (int i = 0; i <= rna_solution.size() - 3; i += 3){
+    for (int i = 0; i <= rna_solution.size() - 3; i += 3) {
         std::string codon = rna_solution.substr(i, 3);
         score = score + unweighted_CAIMap[codon];
     }
@@ -1020,17 +1076,17 @@ double round_up(double x){
 int counter = 0;
 double percent = 0;
 std::string bar = "                                                 ";
-void Processing(int size_){
+void Processing(int size_) {
     counter ++;
     double real_precent = double(counter)/double(size_);
-    if(real_precent >= percent){
+    if(real_precent >= percent) {
         percent += 0.02;
         bar = "=" + bar;
         bar = bar.substr(0,50);
     }
     std::cout << std::fixed<<std::setw(70)<< std::left<<("\rProcessing: [" + bar + "]  " + std::to_string(int(real_precent*100))) + "%"<<std::flush;
     
-    if(size_-1 == counter){
+    if(size_-1 == counter) {
         std::cout <<std::fixed<<std::setw(70)<< std::left<<("\rProcessing: [" + bar + "]  100%")<<std::endl;
          counter = 0;
          percent = 0;
@@ -1045,11 +1101,10 @@ inline void PrintInfo(std::string output_txt,std::string output_csv,std::string 
     std::ofstream outputcsv(output_csv);
 
     /*AA file*/
-    if(!is_rna_file){
+    if(!is_rna_file) {
         if(output) std::cout << "Amino acid file: " << file << std::endl;
         outputfile << "Amino acid file: " << file << std::endl;
-    }
-    else{
+    } else {
         if(output) std::cout << "RNA file: " << file << std::endl;
         outputfile << "Amino acid file: " << file << std::endl;
     }
@@ -1069,12 +1124,11 @@ inline void PrintInfo(std::string output_txt,std::string output_csv,std::string 
         if(output)std::cout << "Objective function: LinearDesign" << std::endl;
         outputfile << "Objective function: LinearDesign" << std::endl;
     }
-    if(pareto){
+    if(pareto) {
         if(output)std::cout << "Search mode: Pareto-optimal search" << std::endl;
         outputfile << "Search mode: Pareto-optimal search" << std::endl;
-    }
-    else{
-        if(output){
+    }  else {
+        if(output) {
             if(beamsize != 0)
                 std::cout << "Search mode: Beam search" << std::endl;
             else std::cout << "Search mode: Exact search" << std::endl;
@@ -1083,7 +1137,7 @@ inline void PrintInfo(std::string output_txt,std::string output_csv,std::string 
             outputfile << "Search mode: Beam search" << std::endl;
         else outputfile << "Search mode: Exact search" << std::endl;
     }
-    if(output){
+    if(output) {
         if(beamsize != 0) 
             std::cout << "Beam size: " << beamsize << std::endl;
     } 

@@ -56,12 +56,13 @@ T BackTrack(string& rna_solution, string& structure_solution, string& rna_seq, A
 
     State<T> state;
     T maxscore = VALUE_MIN<T>();
+    // 找到最佳結構分數的 index & MANNE
     int maxindex;
     for(int ci = 0; ci < first_nuclist.size(); ci++){
         for(int cj = 0; cj < last_nuclist.size(); cj++){
             int nuci = first_nuclist[ci];
             int nucj = last_nuclist[cj];
-            int index = GetIndex(0, nuci, nucj);
+            int index = GetIndex(0, nuci, nucj); // 從 index i 開始，nuci 開頭，nucj 結尾
             if(bestF[seq_length-1].count(index)){
                 T newscore = bestF[seq_length-1][index].score;
                 if (maxscore < newscore){
@@ -81,20 +82,20 @@ T BackTrack(string& rna_solution, string& structure_solution, string& rna_seq, A
         int index1 = state.index_1;
         int index2 = state.index_2;
         int index3 = state.index_3;
-        int i, nuci, nuci_pair,nucj, nucx,len;
+        int i, nuci, nuci_pair, nucj, nucx, len;
         Manner MANNER = state.MANNER;
         State<T> next_state, next_state1, next_state2, next_state3;
         // cout<<mannerToString(MANNER)<<endl;
         if(MANNER == MANNER_C_StoCS)//make_tuple(i, nuci, nuci_pair,nucj, nucx, len);
-            std::tie(i, nuci, nuci_pair,nucj, nucx, len) = GetIndexTupleCS(cindex);
+            std::tie(i, nuci, nuci_pair, nucj, nucx, len) = GetIndexTupleCS(cindex);
         else{
             std::tie(i, nuci, nucj) = GetIndexTuple(cindex);
         }
 
         
         stk.pop();
-        int k, nuck, nuck_pair,nucl, posi, s, nucs, nucs_end;
-        int struct_score,p,q,q1,p_1,l1,l2;
+        int k, nuck, nuck_pair, nucl, posi, s, nucs, nucs_end;
+        int struct_score, p, q, q1, p_1, l1, l2;
         switch (MANNER){
             
             case NONE:
@@ -638,7 +639,7 @@ void LCDSfoldCAI_LD_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
     std::vector<std::unordered_map<int, State<T>>>& bestM2 = alltables.bestM2;
     std::vector<std::unordered_map<int, State<T>>>& bestMulti = alltables.bestMulti;
 
-    vector<int> nuc0_list = Base_table.at(rna_seq[0]); //j list
+    vector<int> nuc0_list = Base_table.at(rna_seq[0]); //0 list
     for(int c0 = 0; c0 < nuc0_list.size(); ++c0){
         int nuc0 = nuc0_list[c0];
         index = GetIndex(0, nuc0, nuc0);

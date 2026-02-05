@@ -150,13 +150,13 @@ Both `tau1` and `tau2` are termination thresholds for Pareto-optimal search (`-m
 ### 1. Exact search using LinearDesign objective function:
 
 ```
-> ./LinearCDSfold -m exact -O LD -l 3 -o P15421_exact_LD.txt example/P15421.fasta
+> ./LinearCDSfold -m exact -O LD -l 3 -o P15421_exact_LD.txt dataset/P15421.fasta
 ```
 
 Output: `cat P15421_exact_LD.txt`
 
 ```
-Amino acid file: example/P15421.fasta
+Amino acid file: dataset/P15421.fasta
 Codon usage table: codon_usage_freq_table_human.csv
 Objective function: LinearDesign
 Search mode: Exact search
@@ -173,13 +173,13 @@ Total runtime: 2.907 s
 ### 2. Exact search using DERNA objective function:
 
 ```
-> ./LinearCDSfold -m exact -O DN -l 0.002 -o P15421_exact_DN.txt example/P15421.fasta
+> ./LinearCDSfold -m exact -O DN -l 0.002 -o P15421_exact_DN.txt dataset/P15421.fasta
 ```
 
 Output: `cat P15421_exact_DN.txt`
 
 ```
-Amino acid file: example/P15421.fasta
+Amino acid file: dataset/P15421.fasta
 Codon usage table: codon_usage_freq_table_human.csv
 Objective function: DERNA
 Search mode: Exact search
@@ -197,13 +197,13 @@ Total runtime: 2.934 s
 ### 3. Beam search using LinearDesign objective function:
 
 ```
-> ./LinearCDSfold -m beam -O LD -l 3 -b 500 -o P15421_beam_LD.txt example/P15421.fasta
+> ./LinearCDSfold -m beam -O LD -l 3 -b 500 -o P15421_beam_LD.txt dataset/P15421.fasta
 ```
 
 Output: `cat P15421_beam_LD.txt`
 
 ```
-Amino acid file: example/P15421.fasta
+Amino acid file: dataset/P15421.fasta
 Codon usage table: codon_usage_freq_table_human.csv
 Objective function: LinearDesign
 Search mode: Beam search
@@ -221,13 +221,13 @@ Total runtime: 0.702 s
 ### 4. Beam search using DERNA objective function:
 
 ```
-> ./LinearCDSfold -m beam -O DN -l 0.002 -b 500 -o P15421_beam_DN.txt example/P15421.fasta
+> ./LinearCDSfold -m beam -O DN -l 0.002 -b 500 -o P15421_beam_DN.txt dataset/P15421.fasta
 ```
 
 Output: `cat P15421_beam_DN.txt`
 
 ```
-Amino acid file: example/P15421.fasta
+Amino acid file: dataset/P15421.fasta
 Codon usage table: codon_usage_freq_table_human.csv
 Objective function: DERNA
 Search mode: Beam search
@@ -245,13 +245,13 @@ Total runtime: 0.705 s
 ### 5. Pareto-optimal search using default termination thresholds:
 
 ```
-./LinearCDSfold -m pareto -o P15421_pareto.txt -f P15421_pareto.csv example/P15421.fasta
+./LinearCDSfold -m pareto -o P15421_pareto.txt -f P15421_pareto.csv dataset/P15421.fasta
 ```
 
 Output: `cat P15421_pareto.csv`
 
 ```
-Amino acid file: example/P15421.fasta
+Amino acid file: dataset/P15421.fasta
 Codon usage table: codon_usage_freq_table_human.csv
 Objective function: DERNA
 Search mode: Pareto-optimal search

@@ -73,8 +73,15 @@ def check_structure(structure: str) -> bool:
 
 # main function
 if __name__ == "__main__":
-    df = read_protein_pandas('result.csv')
-    txt = yield_protein_blocks('multiple_seqs.txt')
+    if len(sys.argv) >= 3:
+        txt_file = sys.argv[1]
+        csv_file = sys.argv[2]
+    else:
+        txt_file = 'multiple_seqs.txt'
+        csv_file = 'result.csv'
+
+    df = read_protein_pandas(csv_file)
+    txt = yield_protein_blocks(txt_file)
 
     counter = 0
     for block in txt:
@@ -90,8 +97,8 @@ if __name__ == "__main__":
             is_match &= (round(df_row.iloc[0]['CAI'], 3) == block['CAI'])
             if not is_match:
                 print("DataFrame 中的資料與預期不符：")
-                print(f"received: {df_row.iloc[0]['Lambda']}\t{df_row.iloc[0]['MFE']}\t{df_row.iloc[0]['CAI']}")
-                print(f"expected: {block['Lambda']}\t{block['MFE']}\t{block['CAI']}")
+                print(f"received: {block['Lambda']}\t{block['MFE']}\t{block['CAI']}")
+                print(f"expected: {df_row.iloc[0]['Lambda']}\t{df_row.iloc[0]['MFE']}\t{df_row.iloc[0]['CAI']}")
             # 比對 2nd Structure
             structure = block['Structure']
             is_valid_structure = check_structure(structure)

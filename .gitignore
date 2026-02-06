@@ -1,0 +1,14 @@
+# Object files
+*.o
+*.obj
+
+# Data and Output files
+*.csv
+*.txt
+
+# Configuration exceptions (保留設定檔)
+!requirements.txt
+
+# Executables
+LinearCDSfold
+*.out

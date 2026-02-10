@@ -368,12 +368,12 @@ inline bool isLastNuc(int pos){
     return false;
 }
 
-inline double getCAI(char Amino_label, int nuc){
-    return CodonSetCAIMap[Amino_label][nuc];
-}
-
-inline double getCAI_DN(char Amino_label, int nuc){
-    return CodonSetCAIMap_DN[Amino_label][nuc];
+inline double getCAI(char Amino_label, int nuc, bool is_DN){
+    if(is_DN) {
+        return CodonSetCAIMap_DN[Amino_label][nuc];
+    } else {
+        return CodonSetCAIMap[Amino_label][nuc];
+    }
 }
 
 inline bool compare(double x, double y, double epsilon = 1.0E-5) {
@@ -382,7 +382,7 @@ inline bool compare(double x, double y, double epsilon = 1.0E-5) {
 }
 
 template <typename T>
-void initialize_Special_HP_DN(AllTables<T>& alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq){
+void initialize_Special_HP(AllTables<T>& alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq, bool is_DN){
     std::vector<std::unordered_map<int, State<T>>>& bestC = alltables.bestC;
     ACMatcher<char,256> matcher;
             
@@ -413,8 +413,9 @@ void initialize_Special_HP_DN(AllTables<T>& alltables, string& rna_seq, vector<i
                         matcher.SearchPositions(sub_seq.c_str(),i*3,0,sub_seq.length()-1,sp);
                         for(auto ss:sp){
                             string special_hp = sub_seq.substr(ss.first - i*3 - ss.second +1,ss.second);
-                            if(global_sp[ss.first].count(special_hp) == 0)
+                            if(global_sp[ss.first].count(special_hp) == 0) {
                                 global_sp[ss.first].insert(special_hp);
+                            }
                             //cout<<"position "<<ss.first<<" have sp loop :"<<sub_seq.substr(ss.first - i*3 - ss.second +1,ss.second)<<endl;
                         }
                     }
@@ -440,8 +441,9 @@ void initialize_Special_HP_DN(AllTables<T>& alltables, string& rna_seq, vector<i
                 for(auto &nuc : nuc_list){
                     if(reBASE(nuc) == h[h.length()-1]){
                         for(auto &nuc2 : nuc_list2){
-                            if(reBASE(nuc2) == h[h.length()-2] && IsLegal(con_seq,nuc2,nuc,last_idx -1))
+                            if(reBASE(nuc2) == h[h.length()-2] && IsLegal(con_seq,nuc2,nuc,last_idx -1)) {
                                 last_nuc.push_back(nuc);
+                            }
                         }
                     }
                     
@@ -456,7 +458,7 @@ void initialize_Special_HP_DN(AllTables<T>& alltables, string& rna_seq, vector<i
                         for(auto &nuc2 : nuc_list2){
                             if(reBASE(nuc2) == h[1] && IsLegal(con_seq,nuc,nuc2,first_idx)){
                                 first_nuc.push_back(nuc);
-                                first_CAI[nuc] = getCAI_DN(ami_seq[(first_idx+1)/3], nuc2);
+                                first_CAI[nuc] = getCAI(ami_seq[(first_idx+1)/3], nuc2, is_DN);
                             }
                                 
                         }
@@ -475,27 +477,27 @@ void initialize_Special_HP_DN(AllTables<T>& alltables, string& rna_seq, vector<i
             std::unordered_map<int, State<T>>& bestC_j = bestC[last_idx];
             for(auto &nuci : first_nuc){
                 for(auto &nucj : last_nuc){
-                    T newscore = -lambda * sp_loops[h];
+                    T newscore = is_DN ? (-lambda * sp_loops[h]) : -1 * sp_loops[h];
                     for(int x = first_idx ; x <= last_idx ; x++){
-                        if(isLastNuc(x) && (1-lambda)){
-                            if(x - first_idx == 0){//special case1
-                                newscore += getCAI_DN(ami_seq[x/3], nuci);
-                            }
-                            else if(x - first_idx == 1){//special case2
+                        double param = is_DN ? (1-lambda) : lambda;
+                        if(isLastNuc(x) && param) {
+                            if(x - first_idx == 0) {//special case1
+                                newscore += getCAI(ami_seq[x/3], nuci, is_DN);
+                            } else if(x - first_idx == 1) {//special case2
                                 newscore += first_CAI[nuci];
-                            }
-                            else{
+                            } else {
                                 string codon_ = h.substr(x-first_idx-2,3);
                                 int nucx = getLastExtendedNuc(re_Amino_label[codon_][0],codon_);
-                                newscore += getCAI_DN(ami_seq[x/3], nucx);
+                                newscore += getCAI(ami_seq[x/3], nucx, is_DN);
                             } 
                         }
                             
                     }
                     int index = GetIndex(first_idx, nuci, nucj);
                     update(bestC_j, index, newscore, -1, MANNER_S_HP);
-                    if(bestC_j[index].score == newscore)
+                    if(bestC_j[index].score == newscore) {
                         sp_backtrack[index] = h;
+                    }
                 }
             }
         }        
@@ -503,127 +505,7 @@ void initialize_Special_HP_DN(AllTables<T>& alltables, string& rna_seq, vector<i
 }
 
 template<typename T>
-void initialize_Special_HP_LD(AllTables<T>& alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq){
-    std::vector<std::unordered_map<int, State<T>>>& bestC = alltables.bestC;
-    ACMatcher<char,256> matcher;
-            
-    for(auto sp_loop : sp_loops_vec){
-        string s = sp_loop;
-        matcher.AddString(s.c_str(),s.length());
-    }
-            
-    if (!matcher.MakeTree()) {
-        std::cout << "Failed to build the Aho-Corasick tree" << std::endl;
-        return ;
-    }
-
-    
-    unordered_map<int,unordered_set<string>> global_sp;//<index, all special hairpins could appear>
-    for(int i = 0;i < ami_seq.length()-3;i++){
-        vector<string> &Amino_1 = Amino_to_nucs[ami_seq[i]];
-        vector<string> &Amino_2 = Amino_to_nucs[ami_seq[i+1]];
-        vector<string> &Amino_3 = Amino_to_nucs[ami_seq[i+2]];
-        vector<string> &Amino_4 = Amino_to_nucs[ami_seq[i+3]];
-        for(auto &A1 : Amino_1)
-            for(auto &A2 : Amino_2)
-                for(auto &A3 : Amino_3){
-                    for(auto &A4 : Amino_4){
-                        std::string sub_seq = A1 + A2 + A3 + A4;
-                        //cout<<sub_seq<<endl;
-                        unordered_map<int,int> sp;
-                        matcher.SearchPositions(sub_seq.c_str(),i*3,0,sub_seq.length()-1,sp);
-                        for(auto ss:sp){
-                            string special_hp = sub_seq.substr(ss.first - i*3 - ss.second +1,ss.second);
-                            if(global_sp[ss.first].count(special_hp) == 0)
-                                global_sp[ss.first].insert(special_hp);
-                            //cout<<"position "<<ss.first<<" have sp loop :"<<sub_seq.substr(ss.first - i*3 - ss.second +1,ss.second)<<endl;
-                        }
-                    }
-                }
-        
-    }
-    
-    for(auto g:global_sp){
-        // cout<<"position "<<g.first<<" have sp loop(s) : ";
-        for(auto h : g.second){
-            vector<int> last_nuc ,first_nuc;
-            int last_idx = g.first,first_idx = last_idx - h.length() +1;
-            unordered_map<int,T> first_CAI;
-            // cout<<"{"<<h <<", "<<sp_loops[h]<< ", ";
-            if(isLastNuc(last_idx)){//third place in a codon
-                string codon_ = h.substr(h.length()-3,3);
-                last_nuc.push_back(getLastExtendedNuc(re_Amino_label[codon_][0],codon_));
-                //cout<<CheckReBASE(getLastExtendedNuc(re_Amino_label[codon_][0],codon_))<<endl;//Not finish
-            }
-            else{
-                vector<int> &nuc_list = Base_table.at(rna_seq[last_idx]);
-                vector<int> &nuc_list2 = Base_table.at(rna_seq[last_idx-1]);
-                for(auto &nuc : nuc_list){
-                    if(reBASE(nuc) == h[h.length()-1]){
-                        for(auto &nuc2 : nuc_list2){
-                            if(reBASE(nuc2) == h[h.length()-2] && IsLegal(con_seq,nuc2,nuc,last_idx -1))
-                                last_nuc.push_back(nuc);
-                        }
-                    }
-                    
-                }
-            }
-
-            if(first_idx % 3 == 1){//second place in a codon
-                vector<int> &nuc_list = Base_table.at(rna_seq[first_idx]);
-                vector<int> &nuc_list2 = Base_table.at(rna_seq[first_idx+1]);
-                for(auto &nuc : nuc_list){
-                    if(reBASE(nuc) == h[0]){
-                        for(auto &nuc2 : nuc_list2){
-                            if(reBASE(nuc2) == h[1] && IsLegal(con_seq,nuc,nuc2,first_idx)){
-                                first_nuc.push_back(nuc);
-                                first_CAI[nuc] = getCAI(ami_seq[(first_idx+1)/3], nuc2);
-                            }
-                                
-                        }
-                    }
-                }
-            }
-            else{
-                vector<int> &nuc_list = Base_table.at(rna_seq[first_idx]);
-                for(auto &nuc : nuc_list){
-                    if(reBASE(nuc) == h[0]){
-                        first_nuc.push_back(nuc);
-                    }
-                }
-            }
-            std::unordered_map<int, State<T>>& bestC_j = bestC[last_idx];
-            for(auto &nuci : first_nuc){
-                for(auto &nucj : last_nuc){
-                    T newscore = -1 * sp_loops[h];
-                    for(int x = first_idx ; x <= last_idx ; x++){
-                        if(isLastNuc(x) && (lambda)){
-                            if(x - first_idx == 0){//special case1
-                                newscore += getCAI(ami_seq[x/3], nuci);
-                            }
-                            else if(x - first_idx == 1){//special case2
-                                newscore += first_CAI[nuci];
-                            }
-                            else{
-                                string codon_ = h.substr(x-first_idx-2,3);
-                                int nucx = getLastExtendedNuc(re_Amino_label[codon_][0],codon_);
-                                newscore += getCAI(ami_seq[x/3], nucx);
-                            } 
-                        }
-                            
-                    }
-                    int index = GetIndex(first_idx, nuci, nucj);
-                    update(bestC_j, index, newscore, -1, MANNER_S_HP);
-                    if(bestC_j[index].score == newscore)
-                        sp_backtrack[index] = h;
-                }
-            }
-        }        
-    }
-}
-
-template<typename T>
-void LCDSfoldCAI_LD_exact(AllTables<T>& alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq){
+void LCDSfoldCAI_LD_exact(AllTables<T>& alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq, bool is_DN){
     //LinearDesign
     int seq_length = rna_seq.size();
     T newscore;
@@ -669,7 +551,7 @@ void LCDSfoldCAI_LD_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
             newscore = 0;
 
             if(isLastNuc(j) && (lambda))
-                newscore += getCAI(ami_seq[j/3], nucj);
+                newscore += getCAI(ami_seq[j/3], nucj, is_DN);
             
             update(bestS_j[1], index, newscore, -1, MANNER_NONEtoS);// initialize bestS[j]
             update(bestN_j, index, newscore, -1, MANNER_NONEtoN);// initialize bestN[j] 
@@ -685,7 +567,7 @@ void LCDSfoldCAI_LD_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
                     newscore = stateN_j_1.score;
                     
                     if(isLastNuc(j) && (lambda))
-                        newscore += getCAI(ami_seq[j/3], nucj);
+                        newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                     // N -> N
                     index = GetIndex(i, nuci, nucj);
                     update(bestN_j, index, newscore, index_j_1, MANNER_N_EtoN);
@@ -699,9 +581,9 @@ void LCDSfoldCAI_LD_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
                                     //because N -> C means Non-paired to Closed, need to consider hairpin structure
                                     newscore = -v_score_hairpin(i_1, j, EnrBASE(nuci_1), EnrBASE(nuci), EnrBASE(nucj_1), EnrBASE(nucj)) + stateN_j_1.score;
                                     if(isLastNuc(j) && (lambda))
-                                        newscore += getCAI(ami_seq[j/3], nucj);
+                                        newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                                     if(isLastNuc(i_1) && (lambda))
-                                        newscore += getCAI(ami_seq[i_1/3], nuci_1);
+                                        newscore += getCAI(ami_seq[i_1/3], nuci_1, is_DN);
                                     //N->C
                                     index = GetIndex(i_1, nuci_1, nucj);
                                     update(bestC_j, index, newscore, index_j_1, MANNER_NtoC);
@@ -724,7 +606,7 @@ void LCDSfoldCAI_LD_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
                         //S means single length extend
                         newscore = stateS_j_1.score;
                         if(isLastNuc(j) && (lambda))
-                            newscore += getCAI(ami_seq[j/3], nucj);
+                            newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                         // S -> S
                         index = GetIndex(i, nuci, nucj);
                         update(bestS_j[l+1], index, newscore, index_j_1, MANNER_S_EtoS);
@@ -763,9 +645,9 @@ void LCDSfoldCAI_LD_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
                                         + stateS_j_1.score + stateC_q.score;  
 
                                         if(isLastNuc(j) && (lambda))
-                                            newscore += getCAI(ami_seq[j/3], nucj);
+                                            newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                                         if(isLastNuc(i) && (lambda))
-                                            newscore += getCAI(ami_seq[i/3], nuci);
+                                            newscore += getCAI(ami_seq[i/3], nuci, is_DN);
 
                                         index = GetIndex(i, nuci, nucj);
                                         update(bestC_j, index, newscore, index_q, index_j_1, MANNER_C_StoC);
@@ -791,9 +673,9 @@ void LCDSfoldCAI_LD_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
                                                     + stateS_j_1.score + stateC_q.score + stateS_p_1.score;  
 
                                                     if(isLastNuc(j) && (lambda))
-                                                        newscore += getCAI(ami_seq[j/3], nucj);
+                                                        newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                                                     if(isLastNuc(i) && (lambda))
-                                                        newscore += getCAI(ami_seq[i/3], nuci);
+                                                        newscore += getCAI(ami_seq[i/3], nuci, is_DN);
 
                                                     index = GetIndex(i, nuci, nucj);
                                                     update(bestC_j, index, newscore, index_p_1, index_q, index_j_1, MANNER_S_C_StoC);
@@ -833,9 +715,9 @@ void LCDSfoldCAI_LD_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
                             EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucj_1), EnrBASE(nucj)) + stateC_j_1.score;
 
                             if(isLastNuc(j) && (lambda))
-                                newscore += getCAI(ami_seq[j/3], nucj);
+                                newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                             if(isLastNuc(i) && (lambda))
-                                newscore += getCAI(ami_seq[i/3], nuci);
+                                newscore += getCAI(ami_seq[i/3], nuci, is_DN);
                             
                             //C->C
                             index = GetIndex(i, nuci, nucj);
@@ -865,9 +747,9 @@ void LCDSfoldCAI_LD_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
                                             EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucj_1), EnrBASE(nucj)) + stateC_j_1.score + stateS_i.score;
 
                                             if(isLastNuc(j) && (lambda))
-                                                newscore += getCAI(ami_seq[j/3], nucj);
+                                                newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                                             if(isLastNuc(k) && (lambda))
-                                                newscore += getCAI(ami_seq[k/3], nuck);
+                                                newscore += getCAI(ami_seq[k/3], nuck, is_DN);
                                             
                                             //S+C->C
                                             index = GetIndex(k, nuck, nucj);
@@ -899,7 +781,7 @@ void LCDSfoldCAI_LD_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
                         newscore = stateMulti_j_1.score;
 
                         if(isLastNuc(j) && lambda)
-                            newscore += getCAI(ami_seq[j/3], nucj);
+                            newscore += getCAI(ami_seq[j/3], nucj, is_DN);
 
                         //Multi->Multi
                         index = GetIndex(i, nuci, nucj);
@@ -914,9 +796,9 @@ void LCDSfoldCAI_LD_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
                             newscore = - v_score_multi(EnrBASE(nuci_1), EnrBASE(nucj)) + stateMulti_j_1.score;
                             
                             if(isLastNuc(j) && (lambda))
-                                newscore += getCAI(ami_seq[j/3], nucj);
+                                newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                             if(isLastNuc(i_1) && (lambda))
-                                newscore += getCAI(ami_seq[i_1/3], nuci_1);
+                                newscore += getCAI(ami_seq[i_1/3], nuci_1, is_DN);
 
                             //Multi->C
                             index = GetIndex(i_1, nuci_1, nucj);
@@ -974,7 +856,7 @@ void LCDSfoldCAI_LD_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
                     newscore = stateM1_j_1.score;
 
                     if(isLastNuc(j) && (lambda))
-                        newscore += getCAI(ami_seq[j/3], nucj);
+                        newscore += getCAI(ami_seq[j/3], nucj, is_DN);
 
                     //M1->M1
                     index = GetIndex(i, nuci, nucj);
@@ -1031,7 +913,7 @@ void LCDSfoldCAI_LD_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
                 if(IsLegal(con_seq, nucj_1, nucj, j_1)){
                     newscore = stateF_j_1.score;
                     if(isLastNuc(j) && (lambda))
-                        newscore += getCAI(ami_seq[j/3], nucj);
+                        newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                     //F->F
                     index = GetIndex(i, nuci, nucj);
                     update(bestF_j, index, newscore, index_j_1, MANNER_F_EtoF);
@@ -1075,7 +957,7 @@ void LCDSfoldCAI_LD_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
 }
 
 template<typename T>
-void LCDSfoldCAI_LD_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq){
+void LCDSfoldCAI_LD_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq, bool is_DN){
     //LinearDesign
     int seq_length = rna_seq.size();
     T newscore;
@@ -1121,7 +1003,7 @@ void LCDSfoldCAI_LD_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
             newscore = 0;
 
             if(isLastNuc(j) && (lambda))
-                newscore += getCAI(ami_seq[j/3], nucj);
+                newscore += getCAI(ami_seq[j/3], nucj, is_DN);
             
             update(bestS_j[1], index, newscore, -1, MANNER_NONEtoS);// initialize bestS[j]
             update(bestN_j, index, newscore, -1, MANNER_NONEtoN);// initialize bestN[j] 
@@ -1138,7 +1020,7 @@ void LCDSfoldCAI_LD_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
                     newscore = stateN_j_1.score;
                     
                     if(isLastNuc(j) && (lambda))
-                        newscore += getCAI(ami_seq[j/3], nucj);
+                        newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                     // N -> N
                     index = GetIndex(i, nuci, nucj);
                     update(bestN_j, index, newscore, index_j_1, MANNER_N_EtoN);
@@ -1152,9 +1034,9 @@ void LCDSfoldCAI_LD_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
                                     //because N -> C means Non-pairing to Closing, need to consider hairpin structure
                                     newscore = -v_score_hairpin(i_1, j, EnrBASE(nuci_1), EnrBASE(nuci), EnrBASE(nucj_1), EnrBASE(nucj)) + stateN_j_1.score;
                                     if(isLastNuc(j) && (lambda))
-                                        newscore += getCAI(ami_seq[j/3], nucj);
+                                        newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                                     if(isLastNuc(i_1) && (lambda))
-                                        newscore += getCAI(ami_seq[i_1/3], nuci_1);
+                                        newscore += getCAI(ami_seq[i_1/3], nuci_1, is_DN);
                                     //N->C
                                     index = GetIndex(i_1, nuci_1, nucj);
                                     update(bestC_j, index, newscore, index_j_1, MANNER_NtoC);
@@ -1178,7 +1060,7 @@ void LCDSfoldCAI_LD_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
                         //S means single length extend
                         newscore = stateS_j_1.score;
                         if(isLastNuc(j) && (lambda))
-                            newscore += getCAI(ami_seq[j/3], nucj);
+                            newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                         // S -> S
                         index = GetIndex(i, nuci, nucj);
                         update(bestS_j[l+1], index, newscore, index_j_1, MANNER_S_EtoS);
@@ -1214,9 +1096,9 @@ void LCDSfoldCAI_LD_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
                                 EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucs_1), EnrBASE(nucs)) + stateCS_j_1.score;
                             
                             if(isLastNuc(j) && (lambda))
-                                newscore += getCAI(ami_seq[j/3], nucj);
+                                newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                             if(isLastNuc(i) && (lambda))
-                                newscore += getCAI(ami_seq[i/3], nuci);
+                                newscore += getCAI(ami_seq[i/3], nuci, is_DN);
                             
                             //CS->C
                             index = GetIndex(i, nuci, nucj);
@@ -1250,9 +1132,9 @@ void LCDSfoldCAI_LD_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
                                             EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucs_1), EnrBASE(nucs)) + stateCS_j_1.score + stateS_i.score;
                                         
                                         if(isLastNuc(j) && (lambda))
-                                            newscore += getCAI(ami_seq[j/3], nucj);
+                                            newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                                         if(isLastNuc(k) && (lambda))
-                                            newscore += getCAI(ami_seq[k/3], nuck);
+                                            newscore += getCAI(ami_seq[k/3], nuck, is_DN);
                                         
                                         //S+CS->C
                                         index = GetIndex(k, nuck, nucj);
@@ -1325,9 +1207,9 @@ void LCDSfoldCAI_LD_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
                             EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucj_1), EnrBASE(nucj)) + stateC_j_1.score;
 
                             if(isLastNuc(j) && (lambda))
-                                newscore += getCAI(ami_seq[j/3], nucj);
+                                newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                             if(isLastNuc(i) && (lambda))
-                                newscore += getCAI(ami_seq[i/3], nuci);
+                                newscore += getCAI(ami_seq[i/3], nuci, is_DN);
                             
                             //C->C
                             index = GetIndex(i, nuci, nucj);
@@ -1357,9 +1239,9 @@ void LCDSfoldCAI_LD_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
                                             EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucj_1), EnrBASE(nucj)) + stateC_j_1.score + stateS_i.score;
 
                                             if(isLastNuc(j) && (lambda))
-                                                newscore += getCAI(ami_seq[j/3], nucj);
+                                                newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                                             if(isLastNuc(k) && (lambda))
-                                                newscore += getCAI(ami_seq[k/3], nuck);
+                                                newscore += getCAI(ami_seq[k/3], nuck, is_DN);
                                             
                                             //S+C->C
                                             index = GetIndex(k, nuck, nucj);
@@ -1391,7 +1273,7 @@ void LCDSfoldCAI_LD_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
                         newscore = stateMulti_j_1.score;
 
                         if(isLastNuc(j) && lambda)
-                            newscore += getCAI(ami_seq[j/3], nucj);
+                            newscore += getCAI(ami_seq[j/3], nucj, is_DN);
 
                         //Multi->Multi
                         index = GetIndex(i, nuci, nucj);
@@ -1406,9 +1288,9 @@ void LCDSfoldCAI_LD_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
                             newscore = - v_score_multi(EnrBASE(nuci_1), EnrBASE(nucj)) + stateMulti_j_1.score;
                             
                             if(isLastNuc(j) && (lambda))
-                                newscore += getCAI(ami_seq[j/3], nucj);
+                                newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                             if(isLastNuc(i_1) && (lambda))
-                                newscore += getCAI(ami_seq[i_1/3], nuci_1);
+                                newscore += getCAI(ami_seq[i_1/3], nuci_1, is_DN);
 
                             //Multi->C
                             index = GetIndex(i_1, nuci_1, nucj);
@@ -1465,7 +1347,7 @@ void LCDSfoldCAI_LD_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
                     newscore = stateM1_j_1.score;
 
                     if(isLastNuc(j) && (lambda))
-                        newscore += getCAI(ami_seq[j/3], nucj);
+                        newscore += getCAI(ami_seq[j/3], nucj, is_DN);
 
                     //M1->M1
                     index = GetIndex(i, nuci, nucj);
@@ -1522,7 +1404,7 @@ void LCDSfoldCAI_LD_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
                 if(IsLegal(con_seq, nucj_1, nucj, j_1)){
                     newscore = stateF_j_1.score;
                     if(isLastNuc(j) && (lambda))
-                        newscore += getCAI(ami_seq[j/3], nucj);
+                        newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                     //F->F
                     index = GetIndex(i, nuci, nucj);
                     update(bestF_j, index, newscore, index_j_1, MANNER_F_EtoF);
@@ -1566,7 +1448,7 @@ void LCDSfoldCAI_LD_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
 }
 
 template<typename T>
-void LCDSfoldCAI_DN_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq){
+void LCDSfoldCAI_DN_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq, bool is_DN){
     //DERNA
     int seq_length = rna_seq.size();
     T newscore;
@@ -1612,7 +1494,7 @@ void LCDSfoldCAI_DN_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
             newscore = 0;
 
             if(isLastNuc(j) && (1-lambda))
-                newscore += getCAI_DN(ami_seq[j/3], nucj);
+                newscore += getCAI(ami_seq[j/3], nucj, is_DN);
             
             update(bestS_j[1], index, newscore, -1, MANNER_NONEtoS);// initialize bestS[j]
             update(bestN_j, index, newscore, -1, MANNER_NONEtoN);// initialize bestN[j] 
@@ -1629,7 +1511,7 @@ void LCDSfoldCAI_DN_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
                     newscore = stateN_j_1.score;
                     
                     if(isLastNuc(j) && (1-lambda))
-                        newscore += getCAI_DN(ami_seq[j/3], nucj);
+                        newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                     // N -> N
                     index = GetIndex(i, nuci, nucj);
                     update(bestN_j, index, newscore, index_j_1, MANNER_N_EtoN);
@@ -1643,9 +1525,9 @@ void LCDSfoldCAI_DN_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
                                     //because N -> C means Non-pairing to Closing, need to consider hairpin structure
                                     newscore = - lambda*v_score_hairpin(i_1, j, EnrBASE(nuci_1), EnrBASE(nuci), EnrBASE(nucj_1), EnrBASE(nucj)) + stateN_j_1.score;
                                     if(isLastNuc(j) && (1-lambda))
-                                        newscore += getCAI_DN(ami_seq[j/3], nucj);
+                                        newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                                     if(isLastNuc(i_1) && (1-lambda))
-                                        newscore += getCAI_DN(ami_seq[i_1/3], nuci_1);
+                                        newscore += getCAI(ami_seq[i_1/3], nuci_1, is_DN);
                                     //N->C
                                     index = GetIndex(i_1, nuci_1, nucj);
                                     update(bestC_j, index, newscore, index_j_1, MANNER_NtoC);
@@ -1668,7 +1550,7 @@ void LCDSfoldCAI_DN_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
                         //S means single length extend
                         newscore = stateS_j_1.score;
                         if(isLastNuc(j) && (1-lambda))
-                            newscore += getCAI_DN(ami_seq[j/3], nucj);
+                            newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                         // S -> S
                         index = GetIndex(i, nuci, nucj);
                         update(bestS_j[l+1], index, newscore, index_j_1, MANNER_S_EtoS);
@@ -1706,9 +1588,9 @@ void LCDSfoldCAI_DN_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
                                 EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucs_1), EnrBASE(nucs)) + stateCS_j_1.score;
                             
                             if(isLastNuc(j) && (1-lambda))
-                                newscore += getCAI_DN(ami_seq[j/3], nucj);
+                                newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                             if(isLastNuc(i) && (1-lambda))
-                                newscore += getCAI_DN(ami_seq[i/3], nuci);
+                                newscore += getCAI(ami_seq[i/3], nuci, is_DN);
                             
                             //CS->C
                             index = GetIndex(i, nuci, nucj);
@@ -1742,9 +1624,9 @@ void LCDSfoldCAI_DN_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
                                             EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucs_1), EnrBASE(nucs)) + stateCS_j_1.score + stateS_i.score;
                                         
                                         if(isLastNuc(j) && (1-lambda))
-                                            newscore += getCAI_DN(ami_seq[j/3], nucj);
+                                            newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                                         if(isLastNuc(k) && (1-lambda))
-                                            newscore += getCAI_DN(ami_seq[k/3], nuck);
+                                            newscore += getCAI(ami_seq[k/3], nuck, is_DN);
                                         
                                         //S+CS->C
                                         index = GetIndex(k, nuck, nucj);
@@ -1816,9 +1698,9 @@ void LCDSfoldCAI_DN_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
                             EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucj_1), EnrBASE(nucj)) + stateC_j_1.score;
 
                             if(isLastNuc(j) && (1-lambda))
-                                newscore += getCAI_DN(ami_seq[j/3], nucj);
+                                newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                             if(isLastNuc(i) && (1-lambda))
-                                newscore += getCAI_DN(ami_seq[i/3], nuci);
+                                newscore += getCAI(ami_seq[i/3], nuci, is_DN);
                             
                             //C->C
                             index = GetIndex(i, nuci, nucj);
@@ -1848,9 +1730,9 @@ void LCDSfoldCAI_DN_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
                                             EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucj_1), EnrBASE(nucj)) + stateC_j_1.score + stateS_i.score;
 
                                             if(isLastNuc(j) && (1-lambda))
-                                                newscore += getCAI_DN(ami_seq[j/3], nucj);
+                                                newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                                             if(isLastNuc(k) && (1-lambda))
-                                                newscore += getCAI_DN(ami_seq[k/3], nuck);
+                                                newscore += getCAI(ami_seq[k/3], nuck, is_DN);
                                             
                                             //S+C->C
                                             index = GetIndex(k, nuck, nucj);
@@ -1881,7 +1763,7 @@ void LCDSfoldCAI_DN_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
                         newscore = stateMulti_j_1.score;
 
                         if(isLastNuc(j) && (1-lambda))
-                            newscore += getCAI_DN(ami_seq[j/3], nucj);
+                            newscore += getCAI(ami_seq[j/3], nucj, is_DN);
 
                         //Multi->Multi
                         index = GetIndex(i, nuci, nucj);
@@ -1897,9 +1779,9 @@ void LCDSfoldCAI_DN_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
                             newscore = - lambda*v_score_multi(EnrBASE(nuci_1), EnrBASE(nucj)) + stateMulti_j_1.score;
                             
                             if(isLastNuc(j) && (1-lambda))
-                                newscore += getCAI_DN(ami_seq[j/3], nucj);
+                                newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                             if(isLastNuc(i_1) && (1-lambda))
-                                newscore += getCAI_DN(ami_seq[i_1/3], nuci_1);
+                                newscore += getCAI(ami_seq[i_1/3], nuci_1, is_DN);
 
                             //Multi->C
                             index = GetIndex(i_1, nuci_1, nucj);
@@ -1957,7 +1839,7 @@ void LCDSfoldCAI_DN_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
                     newscore = stateM1_j_1.score;
 
                     if(isLastNuc(j) && (1-lambda))
-                        newscore += getCAI_DN(ami_seq[j/3], nucj);
+                        newscore += getCAI(ami_seq[j/3], nucj, is_DN);
 
                     //M1->M1
                     index = GetIndex(i, nuci, nucj);
@@ -2015,7 +1897,7 @@ void LCDSfoldCAI_DN_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
                 if(IsLegal(con_seq, nucj_1, nucj, j_1)){
                     newscore = stateF_j_1.score;
                     if(isLastNuc(j) && (1-lambda))
-                        newscore += getCAI_DN(ami_seq[j/3], nucj);
+                        newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                     //F->F
                     index = GetIndex(i, nuci, nucj);
                     update(bestF_j, index, newscore, index_j_1, MANNER_F_EtoF);
@@ -2059,7 +1941,7 @@ void LCDSfoldCAI_DN_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& 
 }
 
 template<typename T>
-void LCDSfoldCAI_DN_exact(AllTables<T>& alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq){
+void LCDSfoldCAI_DN_exact(AllTables<T>& alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq, bool is_DN){
     //DERNA
     int seq_length = rna_seq.size();
     T newscore;
@@ -2103,7 +1985,7 @@ void LCDSfoldCAI_DN_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
             newscore = 0;
 
             if(isLastNuc(j) && (1-lambda))
-                newscore += getCAI_DN(ami_seq[j/3], nucj);
+                newscore += getCAI(ami_seq[j/3], nucj, is_DN);
             
             update(bestS_j[1], index, newscore, -1, MANNER_NONEtoS);// initialize bestS[j]
             update(bestN_j, index, newscore, -1, MANNER_NONEtoN);// initialize bestN[j] 
@@ -2120,7 +2002,7 @@ void LCDSfoldCAI_DN_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
                     newscore = stateN_j_1.score;
                     
                     if(isLastNuc(j) && (1-lambda))
-                        newscore += getCAI_DN(ami_seq[j/3], nucj);
+                        newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                     // N -> N
                     index = GetIndex(i, nuci, nucj);
                     update(bestN_j, index, newscore, index_j_1, MANNER_N_EtoN);
@@ -2134,9 +2016,9 @@ void LCDSfoldCAI_DN_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
                                     //because N -> C means Non-pairing to Closing, need to consider hairpin structure
                                     newscore = - lambda*v_score_hairpin(i_1, j, EnrBASE(nuci_1), EnrBASE(nuci), EnrBASE(nucj_1), EnrBASE(nucj)) + stateN_j_1.score;
                                     if(isLastNuc(j) && (1-lambda))
-                                        newscore += getCAI_DN(ami_seq[j/3], nucj);
+                                        newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                                     if(isLastNuc(i_1) && (1-lambda))
-                                        newscore += getCAI_DN(ami_seq[i_1/3], nuci_1);
+                                        newscore += getCAI(ami_seq[i_1/3], nuci_1, is_DN);
                                     //N->C
                                     index = GetIndex(i_1, nuci_1, nucj);
                                     update(bestC_j, index, newscore, index_j_1, MANNER_NtoC);
@@ -2159,7 +2041,7 @@ void LCDSfoldCAI_DN_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
                         //S means single length extend
                         newscore = stateS_j_1.score;
                         if(isLastNuc(j) && (1-lambda))
-                            newscore += getCAI_DN(ami_seq[j/3], nucj);
+                            newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                         // S -> S
                         index = GetIndex(i, nuci, nucj);
                         update(bestS_j[l+1], index, newscore, index_j_1, MANNER_S_EtoS);
@@ -2198,9 +2080,9 @@ void LCDSfoldCAI_DN_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
                                         + stateS_j_1.score + stateC_q.score;  
 
                                         if(isLastNuc(j) && (1-lambda))
-                                            newscore += getCAI_DN(ami_seq[j/3], nucj);
+                                            newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                                         if(isLastNuc(i) && (1-lambda))
-                                            newscore += getCAI_DN(ami_seq[i/3], nuci);
+                                            newscore += getCAI(ami_seq[i/3], nuci, is_DN);
 
                                         index = GetIndex(i, nuci, nucj);
                                         update(bestC_j, index, newscore, index_q, index_j_1, MANNER_C_StoC);
@@ -2226,9 +2108,9 @@ void LCDSfoldCAI_DN_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
                                                     + stateS_j_1.score + stateC_q.score + stateS_p_1.score;  
 
                                                     if(isLastNuc(j) && (1-lambda))
-                                                        newscore += getCAI_DN(ami_seq[j/3], nucj);
+                                                        newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                                                     if(isLastNuc(i) && (1-lambda))
-                                                        newscore += getCAI_DN(ami_seq[i/3], nuci);
+                                                        newscore += getCAI(ami_seq[i/3], nuci, is_DN);
 
                                                     index = GetIndex(i, nuci, nucj);
                                                     update(bestC_j, index, newscore, index_p_1, index_q, index_j_1, MANNER_S_C_StoC);
@@ -2271,9 +2153,9 @@ void LCDSfoldCAI_DN_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
                             EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucj_1), EnrBASE(nucj)) + stateC_j_1.score;
 
                             if(isLastNuc(j) && (1-lambda))
-                                newscore += getCAI_DN(ami_seq[j/3], nucj);
+                                newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                             if(isLastNuc(i) && (1-lambda))
-                                newscore += getCAI_DN(ami_seq[i/3], nuci);
+                                newscore += getCAI(ami_seq[i/3], nuci, is_DN);
                             
                             //C->C
                             index = GetIndex(i, nuci, nucj);
@@ -2303,9 +2185,9 @@ void LCDSfoldCAI_DN_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
                                             EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucj_1), EnrBASE(nucj)) + stateC_j_1.score + stateS_i.score;
 
                                             if(isLastNuc(j) && (1-lambda))
-                                                newscore += getCAI_DN(ami_seq[j/3], nucj);
+                                                newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                                             if(isLastNuc(k) && (1-lambda))
-                                                newscore += getCAI_DN(ami_seq[k/3], nuck);
+                                                newscore += getCAI(ami_seq[k/3], nuck, is_DN);
                                             
                                             //S+C->C
                                             index = GetIndex(k, nuck, nucj);
@@ -2334,7 +2216,7 @@ void LCDSfoldCAI_DN_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
                         newscore = stateMulti_j_1.score;
 
                         if(isLastNuc(j) && (1-lambda))
-                            newscore += getCAI_DN(ami_seq[j/3], nucj);
+                            newscore += getCAI(ami_seq[j/3], nucj, is_DN);
 
                         //Multi->Multi
                         index = GetIndex(i, nuci, nucj);
@@ -2350,9 +2232,9 @@ void LCDSfoldCAI_DN_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
                             newscore = - lambda*v_score_multi(EnrBASE(nuci_1), EnrBASE(nucj)) + stateMulti_j_1.score;
                             
                             if(isLastNuc(j) && (1-lambda))
-                                newscore += getCAI_DN(ami_seq[j/3], nucj);
+                                newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                             if(isLastNuc(i_1) && (1-lambda))
-                                newscore += getCAI_DN(ami_seq[i_1/3], nuci_1);
+                                newscore += getCAI(ami_seq[i_1/3], nuci_1, is_DN);
 
                             //Multi->C
                             index = GetIndex(i_1, nuci_1, nucj);
@@ -2408,7 +2290,7 @@ void LCDSfoldCAI_DN_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
                     newscore = stateM1_j_1.score;
 
                     if(isLastNuc(j) && (1-lambda))
-                        newscore += getCAI_DN(ami_seq[j/3], nucj);
+                        newscore += getCAI(ami_seq[j/3], nucj, is_DN);
 
                     //M1->M1
                     index = GetIndex(i, nuci, nucj);
@@ -2462,7 +2344,7 @@ void LCDSfoldCAI_DN_exact(AllTables<T>& alltables, string& rna_seq, vector<int>&
                 if(IsLegal(con_seq, nucj_1, nucj, j_1)){
                     newscore = stateF_j_1.score;
                     if(isLastNuc(j) && (1-lambda))
-                        newscore += getCAI_DN(ami_seq[j/3], nucj);
+                        newscore += getCAI(ami_seq[j/3], nucj, is_DN);
                     //F->F
                     index = GetIndex(i, nuci, nucj);
                     update(bestF_j, index, newscore, index_j_1, MANNER_F_EtoF);
@@ -2603,8 +2485,8 @@ void Pareto_solution(double threshold1, double threshold2, string& rna_seq, vect
             initialize_CAI_table(cai_vector,true);
 
             gettimeofday(&start,0);
-            initialize_Special_HP_DN<double>(alltables,rna_seq, con_seq, ami_seq);
-            LCDSfoldCAI_DN_exact<double>(alltables, rna_seq, con_seq, ami_seq);
+            initialize_Special_HP<double>(alltables,rna_seq, con_seq, ami_seq, true);
+            LCDSfoldCAI_DN_exact<double>(alltables, rna_seq, con_seq, ami_seq, true);
             gettimeofday(&end,0);
             double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
 
@@ -2631,8 +2513,8 @@ void Pareto_solution(double threshold1, double threshold2, string& rna_seq, vect
             initialize_CAI_table(cai_vector,true);
 
             gettimeofday(&start,0);
-            initialize_Special_HP_DN<double>(alltables,rna_seq, con_seq, ami_seq);
-            LCDSfoldCAI_DN_exact<double>(alltables, rna_seq, con_seq, ami_seq);
+            initialize_Special_HP<double>(alltables,rna_seq, con_seq, ami_seq, true);
+            LCDSfoldCAI_DN_exact<double>(alltables, rna_seq, con_seq, ami_seq, true);
             gettimeofday(&end,0);
             double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
 

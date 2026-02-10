@@ -273,19 +273,18 @@ int main(int argc, char** argv){
                 AllTables<double> alltables(rna_seq, rna_seq.size());
                 initialize_CAI_table(cai_vector,is_DN);
                 gettimeofday(&start, 0);
+                initialize_Special_HP<double>(alltables, rna_seq, con_seq, ami_seq, is_DN);
                 if(is_DN) {
-                    initialize_Special_HP_DN<double>(alltables, rna_seq, con_seq, ami_seq);
                     if(beamsize) {
-                        LCDSfoldCAI_DN_beam<double>(alltables, rna_seq, con_seq, ami_seq);
+                        LCDSfoldCAI_DN_beam<double>(alltables, rna_seq, con_seq, ami_seq, true);
                     } else {
-                        LCDSfoldCAI_DN_exact<double>(alltables, rna_seq, con_seq, ami_seq);
+                        LCDSfoldCAI_DN_exact<double>(alltables, rna_seq, con_seq, ami_seq, true);
                     }
                 } else {
-                    initialize_Special_HP_LD<double>(alltables, rna_seq, con_seq, ami_seq);
                     if(beamsize) {
-                        LCDSfoldCAI_LD_beam<double>(alltables, rna_seq, con_seq, ami_seq);
+                        LCDSfoldCAI_LD_beam<double>(alltables, rna_seq, con_seq, ami_seq, false);
                     } else {
-                        LCDSfoldCAI_LD_exact<double>(alltables, rna_seq, con_seq, ami_seq);
+                        LCDSfoldCAI_LD_exact<double>(alltables, rna_seq, con_seq, ami_seq, false);
                     }
                 }
                 gettimeofday(&end, 0);
@@ -309,8 +308,8 @@ int main(int argc, char** argv){
             std::vector<int> con_seq(rna_seq.size(), normal_ami);
             AllTables<double> alltables(rna_seq, rna_seq.size());
             gettimeofday(&start, 0);
-            initialize_Special_HP_LD<double>(alltables, rna_seq, con_seq, ami_seq);
-            LCDSfoldCAI_LD_exact<double>(alltables, rna_seq, con_seq, ami_seq);
+            initialize_Special_HP<double>(alltables, rna_seq, con_seq, ami_seq, false);
+            LCDSfoldCAI_LD_exact<double>(alltables, rna_seq, con_seq, ami_seq, false);
             gettimeofday(&end, 0);
             
             double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);

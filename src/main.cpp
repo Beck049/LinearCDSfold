@@ -245,107 +245,79 @@ int main(int argc, char** argv){
         beamsize = 0;
     }
         
-    PrintInfo(output_txt,output_csv,file,beamsize, cai_file_path, lambda, objective, pareto, is_rna_file,true);
+    PrintInfo(output_txt, output_csv, file, beamsize, cai_file_path, lambda, objective, pareto, is_rna_file, true);
     if(!is_rna_file){ // NORMAL MODE
-                
-        if((objective == "LD")){//LinearDesign mode
-            for(int i = 0; i < inseq_list.size(); i++){
-                timeval start,end;
-                int sec,usec;
-                string PID = pid_list[i];
-                int protein_len = inseq_list[i].length();
-                ami_seq = inseq_list[i];
-                transform(ami_seq.begin(), ami_seq.end(), ami_seq.begin(), ::toupper);
-                ami_to_rna(rna_seq_list, ami_seq);
-                add_con_seq(con_seq_list, ami_seq);
-                rna_seq = rna_seq_list[i];
-                std::vector<int> con_seq = con_seq_list[i];
+        bool is_DN = (objective == "DN");
+        std::cout << (is_DN? "====== DERNA =======" : "=== LinearDesign ===") << std::endl;
+        for(int i = 0; i < inseq_list.size(); i++){
+            timeval start, end;
+            int sec, usec;
+            string PID = pid_list[i];
+            int protein_len = inseq_list[i].length();
+            ami_seq = inseq_list[i];
+            transform(ami_seq.begin(), ami_seq.end(), ami_seq.begin(), ::toupper);
+            ami_to_rna(rna_seq_list, ami_seq);
+            add_con_seq(con_seq_list, ami_seq);
 
+            rna_seq = rna_seq_list[i];
+            std::vector<int> con_seq = con_seq_list[i];
+
+            if(pareto && is_DN) {
+                Pareto_solution<double>(threshold1, threshold2, rna_seq, con_seq, ami_seq, cai_vector, output_txt, output_csv, show_score, PID, protein_len);
+            } else {
                 std::cout << "Protein ID: " << PID << std::endl;
                 std::cout << "Protein length: " << protein_len << std::endl;
                 std::cout <<"Lambda: " << std::fixed << std::setprecision(3) << lambda << std::endl;
+                if(lambda == 0 && is_DN)//prevent MFE not predictable
+                    lambda += 0.00001;
                 AllTables<double> alltables(rna_seq, rna_seq.size());
-                
-                initialize_CAI_table(cai_vector,false);
+                initialize_CAI_table(cai_vector,is_DN);
                 gettimeofday(&start, 0);
-                initialize_Special_HP_LD<double>(alltables,rna_seq, con_seq, ami_seq);
-                if(beamsize)//beam search
-                    LCDSfoldCAI_LD_beam<double>(alltables, rna_seq, con_seq, ami_seq);
-                else
-                    LCDSfoldCAI_LD_exact<double>(alltables, rna_seq, con_seq, ami_seq);
-
-                gettimeofday(&end, 0);
-                double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
-
-                std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, false);
-            }
-        }
-        else{//DERNA mode
-            for(int i = 0; i < inseq_list.size(); i++){
-                timeval start,end;
-                int sec,usec;
-                string PID = pid_list[i];
-                int protein_len = inseq_list[i].length();
-                ami_seq = inseq_list[i];
-                transform(ami_seq.begin(), ami_seq.end(), ami_seq.begin(), ::toupper);
-                ami_to_rna(rna_seq_list, ami_seq);
-                add_con_seq(con_seq_list, ami_seq);
-
-                
-                rna_seq = rna_seq_list[i];
-                std::vector<int> con_seq = con_seq_list[i];
-                if(pareto)
-                    Pareto_solution<double>(threshold1,threshold2,rna_seq, con_seq, ami_seq, cai_vector, output_txt, output_csv, show_score, PID, protein_len);
-
-                else{
-                    std::cout << "Protein ID: " << PID << std::endl;
-                    std::cout << "Protein length: " << protein_len << std::endl;
-                    std::cout <<"Lambda: " << std::fixed << std::setprecision(3) << lambda << std::endl;
-                    if(lambda == 0 )//prevent MFE not predictable
-                        lambda += 0.00001;
-                    AllTables<double> alltables(rna_seq, rna_seq.size());
-                    initialize_CAI_table(cai_vector,true);
-                    gettimeofday(&start, 0);
-                    initialize_Special_HP_DN<double>(alltables,rna_seq, con_seq, ami_seq);
-                    if(beamsize)
+                if(is_DN) {
+                    initialize_Special_HP_DN<double>(alltables, rna_seq, con_seq, ami_seq);
+                    if(beamsize) {
                         LCDSfoldCAI_DN_beam<double>(alltables, rna_seq, con_seq, ami_seq);
-                    else
+                    } else {
                         LCDSfoldCAI_DN_exact<double>(alltables, rna_seq, con_seq, ami_seq);
-                    gettimeofday(&end, 0);
-
-                    double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
-                    std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq,output_txt,output_csv, PID, protein_len,TimeSpend, show_score, true);
-                    
+                    }
+                } else {
+                    initialize_Special_HP_LD<double>(alltables, rna_seq, con_seq, ami_seq);
+                    if(beamsize) {
+                        LCDSfoldCAI_LD_beam<double>(alltables, rna_seq, con_seq, ami_seq);
+                    } else {
+                        LCDSfoldCAI_LD_exact<double>(alltables, rna_seq, con_seq, ami_seq);
+                    }
                 }
-            }    
-        }
-    
+                gettimeofday(&end, 0);
+
+                double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
+                std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, is_DN);
+                
+            }
+        }    
     }else{ //RNA MODE
         lambda = 0;
         std::cout << "RNA file: " << file << std::endl;
         std::cout << "Beam size: " << beamsize << std::endl;
         
         for(int i = 0; i < inseq_list.size(); i++){
-            timeval start,end;
-            int sec,usec;
+            timeval start, end;
+            int sec, usec;
             string PID = pid_list[i];
             int protein_len = inseq_list[i].length();
             rna_seq = inseq_list[i];
             std::vector<int> con_seq(rna_seq.size(), normal_ami);
             AllTables<double> alltables(rna_seq, rna_seq.size());
             gettimeofday(&start, 0);
-            initialize_Special_HP_LD<double>(alltables,rna_seq, con_seq, ami_seq);
+            initialize_Special_HP_LD<double>(alltables, rna_seq, con_seq, ami_seq);
             LCDSfoldCAI_LD_exact<double>(alltables, rna_seq, con_seq, ami_seq);
             gettimeofday(&end, 0);
             
             double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
-            std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq,output_txt,output_csv, PID, protein_len,TimeSpend, show_score, true);
+            std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, true);
 
         }
 
     }
-
-    // cout<<"FINISH!"<<endl;
-    
     return 0;
 }

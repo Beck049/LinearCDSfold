@@ -274,18 +274,10 @@ int main(int argc, char** argv){
                 initialize_CAI_table(cai_vector,is_DN);
                 gettimeofday(&start, 0);
                 initialize_Special_HP<double>(alltables, rna_seq, con_seq, ami_seq, is_DN);
-                if(is_DN) {
-                    if(beamsize) {
-                        LCDSfoldCAI_DN_beam<double>(alltables, rna_seq, con_seq, ami_seq, true);
-                    } else {
-                        LCDSfoldCAI_DN_exact<double>(alltables, rna_seq, con_seq, ami_seq, true);
-                    }
+                if(beamsize) {
+                    LCDSfoldCAI_beam<double>(alltables, rna_seq, con_seq, ami_seq, is_DN);
                 } else {
-                    if(beamsize) {
-                        LCDSfoldCAI_LD_beam<double>(alltables, rna_seq, con_seq, ami_seq, false);
-                    } else {
-                        LCDSfoldCAI_LD_exact<double>(alltables, rna_seq, con_seq, ami_seq, false);
-                    }
+                    LCDSfoldCAI_exact<double>(alltables, rna_seq, con_seq, ami_seq, is_DN);
                 }
                 gettimeofday(&end, 0);
 
@@ -294,7 +286,7 @@ int main(int argc, char** argv){
                 
             }
         }    
-    }else{ //RNA MODE
+    } else { //RNA MODE
         lambda = 0;
         std::cout << "RNA file: " << file << std::endl;
         std::cout << "Beam size: " << beamsize << std::endl;
@@ -309,7 +301,7 @@ int main(int argc, char** argv){
             AllTables<double> alltables(rna_seq, rna_seq.size());
             gettimeofday(&start, 0);
             initialize_Special_HP<double>(alltables, rna_seq, con_seq, ami_seq, false);
-            LCDSfoldCAI_LD_exact<double>(alltables, rna_seq, con_seq, ami_seq, false);
+            LCDSfoldCAI_exact<double>(alltables, rna_seq, con_seq, ami_seq, false);
             gettimeofday(&end, 0);
             
             double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);

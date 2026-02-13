@@ -1324,10 +1324,6 @@ void LCDSfoldCAI_exact(AllTables<T>& alltables, string& rna_seq, vector<int>& co
             }} //Cj_1
             
         } //nucj
-
-        if(!is_DN) {
-            BeamPrune(con_seq, rna_seq, bestC_j, bestF, false);
-        }
         
         for (auto &nucj : nucj_list){
             std::unordered_map<int, State<T>>& bestMulti_j_1 = bestMulti[j_1];
@@ -1378,10 +1374,6 @@ void LCDSfoldCAI_exact(AllTables<T>& alltables, string& rna_seq, vector<int>& co
             }
         } //nucj
 
-        if(!is_DN) {
-            BeamPrune(con_seq, rna_seq, bestC_j, bestF, false);
-        }
-
         for (auto &itemC_j : bestC_j) {
             int index_j = itemC_j.first;
             State<T> stateC_j = itemC_j.second;
@@ -1416,8 +1408,6 @@ void LCDSfoldCAI_exact(AllTables<T>& alltables, string& rna_seq, vector<int>& co
                 }
             }
         }
-        
-        BeamPrune(con_seq, rna_seq, bestM2_j, bestF, false);
 
         for (auto &nucj : nucj_list){
             std::unordered_map<int, State<T>>& bestM1_j_1 = bestM1[j_1];

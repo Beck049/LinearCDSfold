@@ -1592,8 +1592,53 @@ std::vector<pair<T,T>> result_output(AllTables<T> &alltables,string& rna_seq, ve
     // result_container.push_back({round_up(cai_value),round_up(mfe_value)});
     result_container.push_back({round_up(cai_value),round_up(mfe_value)});
     outputcsv<<PID<<","<<std::to_string(protein_length)<<","<<std::to_string(lambda)<<","<<std::to_string(mfe_value)<<","<<std::to_string(cai_value)<<","<<TimeSpend<<std::endl;
+
     return result_container;
 
+}
+
+/**
+ * Examine the elements in bestTables by logging out the indexs and their corresponding nucleotides. 
+ * This is for debugging and analysis purposes, to understand what kind of pairs or structures are being stored in the best tables.
+ * 
+ * Usage:
+ *    examine_bestTable(alltables.bestC, "bestC");
+ *    examine_bestTable(alltables.bestM1, "bestM1");
+ *    examine_bestTable(alltables.bestM2, "bestM2");
+ *    examine_bestTable(alltables.bestMulti, "bestMulti");
+ *    examine_bestSTable(alltables.bestS, "bestS");
+ */
+
+template<typename T>
+void examine_bestTable(std::vector<std::unordered_map<int, State<T>>>& bestTable, const string& tableName){
+    std::string fileName = "result_" + tableName + ".csv";
+    std::ofstream outputcsv_bestC(fileName,std::ios::app);
+    outputcsv_bestC<<"index_i,nuci,index_j,nucj"<<std::endl;
+    for (size_t i = 0; i < bestTable.size(); ++i) {
+        for (auto& [id, state] : bestTable[i]) {
+            int pos, nuci, nucj;
+            std::tie(pos, nuci, nucj) = GetIndexTuple(id);
+            outputcsv_bestC<<pos<<","<<reBASE(nuci)<<","<<i<<","<<reBASE(nucj)<<std::endl;
+        }
+    }
+    return;
+}
+
+template<typename T>
+void examine_bestSTable(std::vector<std::vector<std::unordered_map<int, State<T>>>>& bestTable, const string& tableName){
+    std::string fileName = "result_" + tableName + ".csv";
+    std::ofstream outputcsv_bestC(fileName,std::ios::app);
+    outputcsv_bestC<<"index_i,nuci,index_j,nucj"<<std::endl;
+    for (size_t i = 0; i < bestTable.size(); ++i) {
+        for (size_t l = 1; l <= SINGLE_MAX_LEN; ++l) {
+            for (auto& [id, state] : bestTable[i][l]) {
+                int pos, nuci, nucj;
+                std::tie(pos, nuci, nucj) = GetIndexTuple(id);
+                outputcsv_bestC<<pos<<","<<reBASE(nuci)<<","<<i<<","<<reBASE(nucj)<<std::endl;
+            }
+        }
+    }
+    return;
 }
 
 template<typename T>

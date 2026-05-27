@@ -1,5 +1,6 @@
 #pragma once
 
+/* 主要功能：BeamPrune */
 
 template<typename T>
 unsigned long QuickselectPartition(std::vector<std::pair<T, int>>& scores, unsigned long lower, unsigned long upper) {
@@ -30,8 +31,22 @@ T QuickSelect(std::vector<std::pair<T, int>>& scores, unsigned long lower, unsig
     }
 }
 
+/**
+ * @brief 使用 Beam Search (束搜尋) 策略修剪不具競爭力的 RNA 結構狀態。
+ * 
+ * 1. 記錄所有 bestMap 中的 狀態分數
+ * 2. 使用 QuickSelect 找出分數的門檻值（Threshold），以保留前 k 個最佳狀態
+ * 
+ * @param con_seq 限制序列（Constraint sequence），用於檢查結構合法性
+ * @param rna_seq RNA 鹼基序列（如 "AUGCA..."）
+ * @param bestMap 目前步驟中，位置與對應狀態（State）的映射表（會被直接修改以進行修剪）
+ * @param bestF 外部動態規劃（DP）的前綴最佳分數表，用於計算前瞻/回溯的分數
+ * @param isN 一個布林旗標，用來切換特殊的分數計算模式（通常與序列長度或特定初始化有關）
+ * @return T 回傳保留下來的狀態中，最低的合格分數（即修剪的門檻值 Threshold）
+ */
 template<typename T>
 T BeamPrune(std::vector<int>& con_seq, std::string& rna_seq, std::unordered_map<int, State<T>> &bestMap, std::vector<std::unordered_map<int, State<T>>>& bestF, bool isN) {
+    // 儲存每個狀態計算後的 (總分數, 狀態索引值 tail_index) (not Sorted)
     std::vector<std::pair<T, int>> scores;
     scores.clear();
     bool have_previous;
@@ -40,6 +55,7 @@ T BeamPrune(std::vector<int>& con_seq, std::string& rna_seq, std::unordered_map<
 
     if (bestMap.size() <= beamsize || beamsize == 0) return VALUE_MIN<T>();
 
+    // traversal all status in bestMap
     for (auto &item : bestMap) {
 
         int tail_index = item.first;
@@ -92,6 +108,7 @@ T BeamPrune(std::vector<int>& con_seq, std::string& rna_seq, std::unordered_map<
         
     }
     
+    // Sort 前 k 個 element，並 prune
     T threshold = QuickSelect(scores, 0, scores.size() - 1, scores.size() - beamsize);
     for (auto &p : scores) {
         if (p.first < threshold) bestMap.erase(p.second);

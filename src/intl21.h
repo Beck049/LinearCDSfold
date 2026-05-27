@@ -5,6 +5,18 @@
 #define NBPAIRS 7
 #endif
 
+/* Internal Loop 2x1 / 2x1 的 Free Energy
+ * 1st NBPAIRS : ij 的 pair
+ * 2nd NBPAIRS : pq 的 pair
+ * 3nd, 4th, 5th : 對應 nuc
+ * 
+ * Usage:
+ *  If 左側為 1
+ *    int21_37[type][type_2][nuci1][nucq1][nucj_1];
+ *  If 右側為 1
+ *    int21_37[type_2][type][nucq1][nuci1][nucp_1];
+ */ 
+
 int int21_37[NBPAIRS+1][NBPAIRS+1][5][5][5] =
 {{{{{   VIE_INF,   VIE_INF,   VIE_INF,   VIE_INF,   VIE_INF}
    ,{   VIE_INF,   VIE_INF,   VIE_INF,   VIE_INF,   VIE_INF}

@@ -5,6 +5,15 @@
 #define NBPAIRS 7
 #endif
 
+/* Internal Loop 1x1 的 Free Energy
+ * 1st NBPAIRS : ij 的 pair
+ * 2nd NBPAIRS : pq 的 pair
+ * 3nd : nuc i+1
+ * 4th : nuc p-1
+ * 5th : nuc q+1
+ * 6th : nuc j-1
+ */ 
+
  int int22_37[NBPAIRS+1][NBPAIRS+1][5][5][5][5] =
 {{{{{{   VIE_INF,   VIE_INF,   VIE_INF,   VIE_INF,   VIE_INF}
     ,{   VIE_INF,   VIE_INF,   VIE_INF,   VIE_INF,   VIE_INF}

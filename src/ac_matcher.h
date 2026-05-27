@@ -8,6 +8,12 @@
 
 namespace oligodesign {
 
+/**
+ * @brief Aho-Corasick 字串匹配演算法的實作，支援多模式字串搜尋。
+ * 
+ * @tparam T 字元型態（例如 char）
+ * @tparam S 字元集大小（例如 256）
+ */
 template<class T, int S> 
 class ACMatcher {
 public:
@@ -39,12 +45,18 @@ private:
     void ACFree(ACState_t *);
 };
 
+/**
+ * @brief 建構子：初始化自動機
+ */
 template<class T, int S>
 ACMatcher<T,S>::ACMatcher() {
     zerostate = 0;
     newstate = 0;
 }
 
+/**
+ * @brief 解構子：釋放樹狀結構與所有快取字串的記憶體
+ */
 template<class T, int S>
 ACMatcher<T,S>::~ACMatcher() {
     if (zerostate != 0) {
@@ -64,6 +76,9 @@ ACMatcher<T,S>::~ACMatcher() {
     }
 }
 
+/**
+ * @brief 輔助函式：遞迴釋放特定節點及其子樹的記憶體
+ */
 template<class T, int S>
 void ACMatcher<T,S>::ACFree(ACState_t *state) {
     for (int i = 0; i < S ;i++) {
@@ -73,7 +88,11 @@ void ACMatcher<T,S>::ACFree(ACState_t *state) {
     }
     delete(state);
 }
-
+/**
+ * @brief 新增一個關鍵字（模式串）到字典樹（Trie Tree）中
+ * @param text 關鍵字陣列指標
+ * @param n 關鍵字長度
+ */
 template<class T, int S>
 void ACMatcher<T,S>::AddString(const T *text, int n) {
     if (text == 0) return;
@@ -128,6 +147,11 @@ void ACMatcher<T,S>::AddString(const T *text, int n) {
     return;
 }
 
+/**
+ * @brief 建立失敗指標（Fail Pointers）。必須在 AddString 全部完成後呼叫。
+ * @note 透過 BFS (廣度優先搜尋) 來串接每個節點的 fail 指標
+ * @return bool 建立成功傳回 true，若無字串則傳回 false
+ */
 template<class T, int S>
 bool ACMatcher<T,S>::MakeTree() {
     if (cached_strings.empty()) return false;
@@ -167,12 +191,25 @@ bool ACMatcher<T,S>::MakeTree() {
     return true;
 }
 
+/**
+ * @brief 在整個文本中搜尋關鍵字
+ * @param text 待搜尋的文本
+ * @param n 文本長度
+ * @return int 總匹配成功的次數
+ */
 template<class T, int S>
 int ACMatcher<T,S>::Search(const T *text, int n) {
     if (text == 0) return 0;
     return Search(text, 0, n - 1);
 }
 
+/**
+ * @brief 在文本的指定範圍內搜尋關鍵字 [start, end]
+ * @param text 待搜尋的文本
+ * @param start 起始索引
+ * @param end 結束索引
+ * @return int 總匹配成功的次數
+ */
 template<class T, int S>
 int ACMatcher<T,S>::Search(const T *text, int start, int end) {
     if (cached_strings.empty()) return 0;
@@ -195,6 +232,14 @@ int ACMatcher<T,S>::Search(const T *text, int start, int end) {
     //return -1;
 }
 
+/**
+ * @brief 搜尋並記錄匹配到關鍵字的「結束位置」與「長度」
+ * @param text 待搜尋的文本
+ * @param idx 偏移量（用於計算全域位置）
+ * @param start 搜尋起點
+ * @param end 搜尋終點
+ * @param mp 用於儲存結果的 map，Key 為文字結束位置 (j + idx)，Value 為匹配字串的長度 (depth)
+ */
 template<class T, int S>
 void ACMatcher<T,S>::SearchPositions(const T *text,int idx,int start,int end, std::unordered_map<int,int> &mp) {
     if (cached_strings.empty() || text == 0)
@@ -216,13 +261,23 @@ void ACMatcher<T,S>::SearchPositions(const T *text,int idx,int start,int end, st
     return;
 }
 
-
+/**
+ * @brief 統計在文本「最後 3 個字元內」結尾的關鍵字數量
+ */
 template<class T, int S>
 int ACMatcher<T,S>::NumEndingInLast3(const T *text, int n) {
     if (text == 0) return 0;
     return NumEndingInLastK(text, 0, n - 1, 3);
 }
 
+/**
+ * @brief 統計在文本「最後 K 個字元內」結尾的關鍵字數量
+ * @param text 待搜尋的文本
+ * @param start 搜尋起點
+ * @param end 搜尋終點
+ * @param k 範圍限制（只統計結束索引大於 end - k 的匹配）
+ * @return int 符合條件的匹配數量
+ */
 template<class T, int S>
 int ACMatcher<T,S>::NumEndingInLastK(const T *text, int start, int end, int k) {
     if (cached_strings.empty()) return 0;

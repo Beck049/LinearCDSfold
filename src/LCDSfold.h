@@ -505,7 +505,7 @@ void initialize_Special_HP(AllTables<T>& alltables, string& rna_seq, vector<int>
 }
 
 template<typename T>
-void LCDSfoldCAI_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq, bool is_DN){
+void LCDSfoldCAI_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq, bool is_DN, bool is_beam_speedup){
     //DERNA
     int seq_length = rna_seq.size();
     T newscore;
@@ -517,10 +517,11 @@ void LCDSfoldCAI_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& con
     std::vector<std::vector<std::unordered_map<int, State<T>>>>& bestS = alltables.bestS;
     std::vector<std::unordered_map<int, State<T>>>& bestF = alltables.bestF;
     std::vector<std::unordered_map<int, State<T>>>& bestC = alltables.bestC;
-    std::vector<std::unordered_map<int, State<T>>>& bestCS = alltables.bestCS;
     std::vector<std::unordered_map<int, State<T>>>& bestM1 = alltables.bestM1;
     std::vector<std::unordered_map<int, State<T>>>& bestM2 = alltables.bestM2;
     std::vector<std::unordered_map<int, State<T>>>& bestMulti = alltables.bestMulti;
+    // is_beam_speedup
+    std::vector<std::unordered_map<int, State<T>>>& bestCS = alltables.bestCS;
 
     vector<int> nuc0_list = Base_table.at(rna_seq[0]); //j list
     for(int c0 = 0; c0 < nuc0_list.size(); ++c0){
@@ -537,10 +538,11 @@ void LCDSfoldCAI_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& con
         std::vector<std::unordered_map<int, State<T>>>& bestS_j = bestS[j];
         std::unordered_map<int, State<T>>& bestF_j = bestF[j];
         std::unordered_map<int, State<T>>& bestC_j = bestC[j];
-        std::unordered_map<int, State<T>>& bestCS_j = bestCS[j];
         std::unordered_map<int, State<T>>& bestM1_j = bestM1[j];
         std::unordered_map<int, State<T>>& bestM2_j = bestM2[j];
         std::unordered_map<int, State<T>>& bestMulti_j = bestMulti[j];
+        // is_beam_speedup
+        std::unordered_map<int, State<T>>& bestCS_j = bestCS[j];
         
         vector<int> nucj_list = Base_table.at(rna_seq[j]); //j list
         int j_1 = j - 1;
@@ -593,8 +595,11 @@ void LCDSfoldCAI_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& con
                                     //N->C
                                     index = GetIndex(i_1, nuci_1, nucj);
                                     update(bestC_j, index, newscore, index_j_1, MANNER_NtoC);
-                            }}
-                }}}
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
         BeamPrune(con_seq, rna_seq, bestN_j, bestF, !param);
@@ -624,134 +629,220 @@ void LCDSfoldCAI_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& con
         // for(int l = 1; l <= (SINGLE_MAX_LEN,j) ; l++)
         //     BeamPrune(con_seq, rna_seq, bestS_j[l], bestF, !param);
 
-
         for (auto &nucj : nucj_list){
-            std::unordered_map<int, State<T>>& bestCS_j_1 = bestCS[j_1];
-            for (auto &itemCS_j_1 : bestCS_j_1) {
-                int index_j_1 = itemCS_j_1.first;
-                State<T> stateCS_j_1 = itemCS_j_1.second;
-                int i1, nucj_1, nuci1, nuci1_pair, nucx,len;
-                std::tie(i1, nuci1, nuci1_pair, nucj_1, nucx, len) = GetIndexTupleCS(index_j_1);//make_tuple(i, nuci, nucj, nucx, len)
-                int i = i1 - 1;
-                if(i >= 0 && IsLegal(con_seq, nucj_1, nucj, j_1)){
-                    vector<int> nuci_list = Base_table.at(rna_seq[i]); //i list
-                    for(auto &nuci : nuci_list){
-                        if(IsLegal(con_seq, nuci, nuci1, i) && _allowed_pairs[nuci][nucj]){
-                            //CS means the closing pair (nucleotide p,nucleotide q) plus all POSSIBLE single extend.
-                            int pre_index_2 = stateCS_j_1.index_2;
-                            int pre_index_1 = stateCS_j_1.index_1;
-                            int s, nucs, nucl;
-                            std::tie(s, nucs, nucl) = GetIndexTuple(pre_index_2);
-                            int s_1 = s - 1;
-                            int a, nuca, nucs_1;
-                            std::tie(a, nuca, nucs_1) = GetIndexTuple(pre_index_1);
-                            //v_score_single(i,j,p,q, nuci, nuci1, nucj_1, nucj, nucp_1, nucp, nucq, nucq1);
-                            if(is_DN) {
-                                newscore = - lambda*v_score_single(i, j, i1, s_1, EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucj_1), EnrBASE(nucj),
-                                    EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucs_1), EnrBASE(nucs)) + stateCS_j_1.score;
-                            } else {
-                                newscore = -v_score_single(i, j, i1, s_1, EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucj_1), EnrBASE(nucj),
-                                    EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucs_1), EnrBASE(nucs)) + stateCS_j_1.score;
+            if(is_beam_speedup){
+                std::unordered_map<int, State<T>>& bestCS_j_1 = bestCS[j_1];
+                for (auto &itemCS_j_1 : bestCS_j_1) {
+                    int index_j_1 = itemCS_j_1.first;
+                    State<T> stateCS_j_1 = itemCS_j_1.second;
+                    int i1, nucj_1, nuci1, nuci1_pair, nucx,len;
+                    std::tie(i1, nuci1, nuci1_pair, nucj_1, nucx, len) = GetIndexTupleCS(index_j_1);//make_tuple(i, nuci, nucj, nucx, len)
+                    int i = i1 - 1;
+                    if(i >= 0 && IsLegal(con_seq, nucj_1, nucj, j_1)){
+                        vector<int> nuci_list = Base_table.at(rna_seq[i]); //i list
+                        for(auto &nuci : nuci_list){
+                            if(IsLegal(con_seq, nuci, nuci1, i) && _allowed_pairs[nuci][nucj]){
+                                //CS means the closing pair (nucleotide p,nucleotide q) plus all POSSIBLE single extend.
+                                int pre_index_2 = stateCS_j_1.index_2;
+                                int pre_index_1 = stateCS_j_1.index_1;
+                                int s, nucs, nucl;
+                                std::tie(s, nucs, nucl) = GetIndexTuple(pre_index_2);
+                                int s_1 = s - 1;
+                                int a, nuca, nucs_1;
+                                std::tie(a, nuca, nucs_1) = GetIndexTuple(pre_index_1);
+                                //v_score_single(i,j,p,q, nuci, nuci1, nucj_1, nucj, nucp_1, nucp, nucq, nucq1);
+                                if(is_DN) {
+                                    newscore = - lambda*v_score_single(i, j, i1, s_1, EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucj_1), EnrBASE(nucj),
+                                        EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucs_1), EnrBASE(nucs)) + stateCS_j_1.score;
+                                } else {
+                                    newscore = -v_score_single(i, j, i1, s_1, EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucj_1), EnrBASE(nucj),
+                                        EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucs_1), EnrBASE(nucs)) + stateCS_j_1.score;
+                                }
+                                
+                                if(isLastNuc(j) && param)
+                                    newscore += getCAI(ami_seq[j/3], nucj, is_DN);
+                                if(isLastNuc(i) && param)
+                                    newscore += getCAI(ami_seq[i/3], nuci, is_DN);
+                                
+                                //CS->C
+                                index = GetIndex(i, nuci, nucj);
+                                update(bestC_j, index, newscore, index_j_1, MANNER_CStoC);//left bulge
                             }
-                            
-                            if(isLastNuc(j) && param)
-                                newscore += getCAI(ami_seq[j/3], nucj, is_DN);
-                            if(isLastNuc(i) && param)
-                                newscore += getCAI(ami_seq[i/3], nuci, is_DN);
-                            
-                            //CS->C
-                            index = GetIndex(i, nuci, nucj);
-                            update(bestC_j, index, newscore, index_j_1, MANNER_CStoC);//left bulge
                         }
-                    }
-                    //cout<<"solve state S + CS to C"<<endl;
-                    
-                    for(int l = 1; l <= min(SINGLE_MAX_LEN-len,i) ; l++){
-                        std::unordered_map<int, State<T>>& bestS_i = bestS[i][l];
-                        for (auto &itemS_i : bestS_i) {
-                            int index_i = itemS_i.first;
-                            State<T> stateS_i = itemS_i.second;
-                            int k1, nuck1, nuci;
-                            std::tie(k1, nuck1, nuci) = GetIndexTuple(index_i);
-                            int k = k1 - 1;
-                            
-                            if(k >= 0 && IsLegal(con_seq, nuci, nuci1, i) && i - k + len <= SINGLE_MAX_LEN ){
-                                vector<int> nuck_list = Base_table.at(rna_seq[k]); //i list
-                                for(auto &nuck : nuck_list){
-                                    if(IsLegal(con_seq, nuck, nuck1, k) && _allowed_pairs[nuck][nucj]){
-                                        int pre_index_2 = stateCS_j_1.index_2;
-                                        int pre_index_1 = stateCS_j_1.index_1;
-                                        int s, nucs, nucl;
-                                        std::tie(s, nucs, nucl) = GetIndexTuple(pre_index_2);
-                                        int s_1 = s - 1;
-                                        int a, nuca, nucs_1;
-                                        std::tie(a, nuca, nucs_1) = GetIndexTuple(pre_index_1);
-                                        //v_score_single(i,j,p,q, nuci, nuci1, nucj_1, nucj, nucp_1, nucp, nucq, nucq1);
-                                        if(is_DN) {
-                                            newscore = - lambda*v_score_single(k, j, i1, s_1, EnrBASE(nuck), EnrBASE(nuck1), EnrBASE(nucj_1), EnrBASE(nucj),
-                                                EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucs_1), EnrBASE(nucs)) + stateCS_j_1.score + stateS_i.score;
-                                        } else {
-                                            newscore = - v_score_single(k, j, i1, s_1, EnrBASE(nuck), EnrBASE(nuck1), EnrBASE(nucj_1), EnrBASE(nucj),
-                                                EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucs_1), EnrBASE(nucs)) + stateCS_j_1.score + stateS_i.score;
+                        //cout<<"solve state S + CS to C"<<endl;
+                        
+                        for(int l = 1; l <= min(SINGLE_MAX_LEN-len,i) ; l++){
+                            std::unordered_map<int, State<T>>& bestS_i = bestS[i][l];
+                            for (auto &itemS_i : bestS_i) {
+                                int index_i = itemS_i.first;
+                                State<T> stateS_i = itemS_i.second;
+                                int k1, nuck1, nuci;
+                                std::tie(k1, nuck1, nuci) = GetIndexTuple(index_i);
+                                int k = k1 - 1;
+                                
+                                if(k >= 0 && IsLegal(con_seq, nuci, nuci1, i) && i - k + len <= SINGLE_MAX_LEN ){
+                                    vector<int> nuck_list = Base_table.at(rna_seq[k]); //i list
+                                    for(auto &nuck : nuck_list){
+                                        if(IsLegal(con_seq, nuck, nuck1, k) && _allowed_pairs[nuck][nucj]){
+                                            int pre_index_2 = stateCS_j_1.index_2;
+                                            int pre_index_1 = stateCS_j_1.index_1;
+                                            int s, nucs, nucl;
+                                            std::tie(s, nucs, nucl) = GetIndexTuple(pre_index_2);
+                                            int s_1 = s - 1;
+                                            int a, nuca, nucs_1;
+                                            std::tie(a, nuca, nucs_1) = GetIndexTuple(pre_index_1);
+                                            //v_score_single(i,j,p,q, nuci, nuci1, nucj_1, nucj, nucp_1, nucp, nucq, nucq1);
+                                            if(is_DN) {
+                                                newscore = - lambda*v_score_single(k, j, i1, s_1, EnrBASE(nuck), EnrBASE(nuck1), EnrBASE(nucj_1), EnrBASE(nucj),
+                                                    EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucs_1), EnrBASE(nucs)) + stateCS_j_1.score + stateS_i.score;
+                                            } else {
+                                                newscore = - v_score_single(k, j, i1, s_1, EnrBASE(nuck), EnrBASE(nuck1), EnrBASE(nucj_1), EnrBASE(nucj),
+                                                    EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucs_1), EnrBASE(nucs)) + stateCS_j_1.score + stateS_i.score;
+                                            }
+                                            
+                                            if(isLastNuc(j) && param)
+                                                newscore += getCAI(ami_seq[j/3], nucj, is_DN);
+                                            if(isLastNuc(k) && param)
+                                                newscore += getCAI(ami_seq[k/3], nuck, is_DN);
+                                            
+                                            //S+CS->C
+                                            index = GetIndex(k, nuck, nucj);
+                                            update(bestC_j, index, newscore, index_i ,index_j_1, MANNER_S_CStoC);
                                         }
-                                        
-                                        if(isLastNuc(j) && param)
-                                            newscore += getCAI(ami_seq[j/3], nucj, is_DN);
-                                        if(isLastNuc(k) && param)
-                                            newscore += getCAI(ami_seq[k/3], nuck, is_DN);
-                                        
-                                        //S+CS->C
-                                        index = GetIndex(k, nuck, nucj);
-                                        update(bestC_j, index, newscore, index_i ,index_j_1, MANNER_S_CStoC);
                                     }
                                 }
                             }
-                            
-                            
-                        }
-                    }
-                    
-                }
-            }
-        }
-        
-        // TODO: check if this is really needed 
-        if(is_DN) {
-            BeamPrune(con_seq, rna_seq, bestC_j, bestF, false);
-        }
-
-        for(int l = min(SINGLE_MAX_LEN,j-4);l >= 1; --l){
-            for (auto &itemS_j : bestS_j[l]) {
-                int index_j = itemS_j.first;
-                State<T> stateS_j = itemS_j.second;
-                int i, nucj, nuci;
-                std::tie(i, nuci, nucj) = GetIndexTuple(index_j);
-                int i_1 = i - 1;
-
-                if(i_1 >= 0){
-                    std::unordered_map<int, State<T>>& bestC_i_1 = bestC[i_1];
-                    
-                    for (auto &itemC_i_1 : bestC_i_1) {
-                        int index_i_1 = itemC_i_1.first;
-                        State<T> stateC_i_1 = itemC_i_1.second;
-                        int k, nuck, nuci_1;    
-                        std::tie(k, nuck, nuci_1) = GetIndexTuple(index_i_1);
-
-                        if(k >= 0 && IsLegal(con_seq, nuci_1, nuci, i_1)){
-                            newscore = stateS_j.score + stateC_i_1.score;
-                            // C+S->CS
-                            //GetIndexCS(int i, int nuci, int nuci_pair,int nucj, int nucx ,int len)
-                            index = GetIndexCS(k, nuck, nuci_1,nucj, nuci,l);
-                            update(bestCS_j, index, newscore, index_i_1, index_j, MANNER_C_StoCS);
                         }
                     }
                 }
-        
-            }
+
+                // TODO: check if this is really needed 
+                if(is_DN) {
+                    BeamPrune(con_seq, rna_seq, bestC_j, bestF, false);
+                }
+
+                for(int l = min(SINGLE_MAX_LEN,j-4);l >= 1; --l){
+                    for (auto &itemS_j : bestS_j[l]) {
+                        int index_j = itemS_j.first;
+                        State<T> stateS_j = itemS_j.second;
+                        int i, nucj, nuci;
+                        std::tie(i, nuci, nucj) = GetIndexTuple(index_j);
+                        int i_1 = i - 1;
+
+                        if(i_1 >= 0){
+                            std::unordered_map<int, State<T>>& bestC_i_1 = bestC[i_1];
+                            
+                            for (auto &itemC_i_1 : bestC_i_1) {
+                                int index_i_1 = itemC_i_1.first;
+                                State<T> stateC_i_1 = itemC_i_1.second;
+                                int k, nuck, nuci_1;    
+                                std::tie(k, nuck, nuci_1) = GetIndexTuple(index_i_1);
+
+                                if(k >= 0 && IsLegal(con_seq, nuci_1, nuci, i_1)){
+                                    newscore = stateS_j.score + stateC_i_1.score;
+                                    // C+S->CS
+                                    //GetIndexCS(int i, int nuci, int nuci_pair,int nucj, int nucx ,int len)
+                                    index = GetIndexCS(k, nuck, nuci_1,nucj, nuci,l);
+                                    update(bestCS_j, index, newscore, index_i_1, index_j, MANNER_C_StoCS);
+                                }
+                            }
+                        }
+                
+                    }
+                }
+                BeamPrune(con_seq, rna_seq, bestCS_j, bestF, false);
+            } else {
+                for(int l1 = min(SINGLE_MAX_LEN,j-4) ; l1 >= 1; --l1){
+                    std::unordered_map<int, State<T>>& bestS_j_1 = bestS[j_1][l1];
+                    for (auto &itemS_j_1 : bestS_j_1) {
+                        int index_j_1 = itemS_j_1.first;
+                        State<T> stateS_j_1 = itemS_j_1.second;
+                        int q1, nucq1, nucj_1;
+                        std::tie(q1, nucq1, nucj_1) = GetIndexTuple(index_j_1);
+                        int q = q1 - 1;
+                        
+                        if(q >= 0 &&  IsLegal(con_seq, nucj_1, nucj, j_1)){
+                            std::unordered_map<int, State<T>>& bestC_q = bestC[q];    
+                            for (auto &itemC_q : bestC_q) {
+                                int index_q = itemC_q.first;
+                                State<T> stateC_q = itemC_q.second;
+                                int p, nucp, nucq;    
+                                std::tie(p, nucp, nucq) = GetIndexTuple(index_q);
+                                int p_1 = p - 1;
+
+                                if(p_1 >= 0 && IsLegal(con_seq, nucq, nucq1, q)){
+                                    //C_StoS (right bulge)
+                                    int i = p_1;
+                                    vector<int> nuci_list = Base_table.at(rna_seq[i]); //i list
+                                    for(auto &nuci : nuci_list){
+                                        if(IsLegal(con_seq, nuci, nucp, i) && _allowed_pairs[nuci][nucj]){
+                                            //v_score_single(i,j,p,q, nuci, nuci1, nucj_1, nucj, nucp_1, nucp, nucq, nucq1);
+                                            if(is_DN) {
+                                                newscore = -lambda*v_score_single(i,j,p,q,EnrBASE(nuci),EnrBASE(nucp),EnrBASE(nucj_1),EnrBASE(nucj),EnrBASE(nuci),EnrBASE(nucp),EnrBASE(nucq),EnrBASE(nucq1))
+                                                    + stateS_j_1.score + stateC_q.score;  
+                                            } else {
+                                                newscore = -v_score_single(i,j,p,q,EnrBASE(nuci),EnrBASE(nucp),EnrBASE(nucj_1),EnrBASE(nucj),EnrBASE(nuci),EnrBASE(nucp),EnrBASE(nucq),EnrBASE(nucq1))
+                                                    + stateS_j_1.score + stateC_q.score;
+                                            }
+
+                                            if(isLastNuc(j) && param)
+                                                newscore += getCAI(ami_seq[j/3], nucj, is_DN);
+                                            if(isLastNuc(i) && param)
+                                                newscore += getCAI(ami_seq[i/3], nuci, is_DN);
+
+                                            index = GetIndex(i, nuci, nucj);
+                                            update(bestC_j, index, newscore, index_q, index_j_1, MANNER_C_StoC);
+                                        }
+                                    }//end nuci list
+
+                                    // TODO: check if this is really needed 
+                                    if(is_DN) {
+                                        BeamPrune(con_seq, rna_seq, bestC_j, bestF, false);
+                                    }
+
+                                    //S_C_StoC (internal loop)
+                                    for(int l2 = 1; l2 <= min(SINGLE_MAX_LEN-l1 , p_1) ; ++l2){
+                                        std::unordered_map<int, State<T>>& bestS_p_1 = bestS[p_1][l2];
+                                        for (auto &itemS_p_1 : bestS_p_1) {
+                                            int index_p_1 = itemS_p_1.first;
+                                            State<T> stateS_p_1 = itemS_p_1.second;
+                                            int i1, nuci1, nucp_1;
+                                            std::tie(i1, nuci1, nucp_1) = GetIndexTuple(index_p_1);
+                                            int i = i1 - 1;
+                                            if(i >= 0 && IsLegal(con_seq, nucp_1, nucp, p_1)){
+                                                vector<int> nuci_list = Base_table.at(rna_seq[i]); //i list
+                                                for(auto &nuci : nuci_list){
+                                                    if(IsLegal(con_seq, nuci, nuci1, i) && _allowed_pairs[nuci][nucj]){
+                                                        //v_score_single(i,j,p,q, nuci, nuci1, nucj_1, nucj, nucp_1, nucp, nucq, nucq1);
+                                                        if(is_DN) {
+                                                            newscore = -lambda*v_score_single(i,j,p,q,EnrBASE(nuci),EnrBASE(nuci1),EnrBASE(nucj_1),EnrBASE(nucj),EnrBASE(nucp_1),EnrBASE(nucp),EnrBASE(nucq),EnrBASE(nucq1))
+                                                                + stateS_j_1.score + stateC_q.score + stateS_p_1.score;  
+                                                        } else {
+                                                            newscore = -v_score_single(i,j,p,q,EnrBASE(nuci),EnrBASE(nuci1),EnrBASE(nucj_1),EnrBASE(nucj),EnrBASE(nucp_1),EnrBASE(nucp),EnrBASE(nucq),EnrBASE(nucq1))
+                                                                + stateS_j_1.score + stateC_q.score + stateS_p_1.score;  
+                                                        }
+
+                                                        if(isLastNuc(j) && param)
+                                                            newscore += getCAI(ami_seq[j/3], nucj, is_DN);
+                                                        if(isLastNuc(i) && param)
+                                                            newscore += getCAI(ami_seq[i/3], nuci, is_DN);
+
+                                                        index = GetIndex(i, nuci, nucj);
+                                                        update(bestC_j, index, newscore, index_p_1, index_q, index_j_1, MANNER_S_C_StoC);
+                                                    }
+                                                }//end nuci list
+                                            }
+                                        }//end bestS[p_1][l2]
+                                    }
+                                }
+                            }//end bestC_q
+                        }
+                
+                    }//end bestS[j_1]
+                }
+            }//end of nucj
         }
 
-        BeamPrune(con_seq, rna_seq, bestCS_j, bestF, false);
-        
         for (auto &nucj : nucj_list){
 
             std::unordered_map<int, State<T>>& bestC_j_1 = bestC[j_1];
@@ -1031,7 +1122,9 @@ void LCDSfoldCAI_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& con
                         //F+C->F
                         index = GetIndex(k, nuck, nucj);
                         update(bestF_j, index, newscore, index_i_1, index_j, MANNER_F_CtoF);
-            }}}
+                    }
+                }
+            }
         }
         
         //BeamPrune(con_seq, rna_seq, bestF_j, bestF, false);

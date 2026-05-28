@@ -27,6 +27,7 @@ double LDCONST = 100;
 double lambda;
 int beamsize;
 bool pareto;
+bool is_beam_speedup;
 
 
 bool _allowed_pairs[NOTON][NOTON];

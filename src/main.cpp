@@ -21,6 +21,7 @@
 #include <queue>
 
 #include "LCDSfold.h"
+// #include "circLCDSfold.h"
 using namespace std;
 
 int main(int argc, char** argv){
@@ -40,6 +41,7 @@ int main(int argc, char** argv){
     beamsize = 0;
     lambda = 0;
     pareto = false;
+    is_beam_speedup = false;
     objective = "LD";
     double threshold1 = 0.0025;
     double threshold2 = 0.00075;
@@ -164,6 +166,10 @@ int main(int argc, char** argv){
         use_beam_pruning = true;
         beamsize = 500; // default beam size
         // beamsize will be set later based on -b option
+    } else if (mode_ == "beam2" || mode_ == "Beam2") {
+        use_beam_pruning = true;
+        beamsize = 500;
+        is_beam_speedup = true;
     } else if (mode_ == "pareto" || mode_ == "Pareto") {
         pareto = true;
     } else {
@@ -275,7 +281,7 @@ int main(int argc, char** argv){
                 gettimeofday(&start, 0);
                 initialize_Special_HP<double>(alltables, rna_seq, con_seq, ami_seq, is_DN);
                 if(beamsize) {
-                    LCDSfoldCAI_beam<double>(alltables, rna_seq, con_seq, ami_seq, is_DN);
+                    LCDSfoldCAI_beam<double>(alltables, rna_seq, con_seq, ami_seq, is_DN, is_beam_speedup);
                 } else {
                     LCDSfoldCAI_exact<double>(alltables, rna_seq, con_seq, ami_seq, is_DN);
                 }
@@ -284,6 +290,7 @@ int main(int argc, char** argv){
                 double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
                 std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, is_DN);
                 
+                // Circular RNA Reconstruction
             }
         }    
     } else { //RNA MODE

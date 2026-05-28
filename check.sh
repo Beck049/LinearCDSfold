@@ -26,9 +26,12 @@ fi
 
 case1="LD_exact"
 case2="DN_beam"
+case3="DN_beam2"
 
 ./LinearCDSfold -l 2 -O LD -m exact -o ${case1}_target.txt -f ${case1}_target.csv dataset/test_target_${1}.fasta
 ./LinearCDSfold -l 2 -O DN -m beam -b 100 -o ${case2}_target.txt -f ${case2}_target.csv dataset/test_target_${1}.fasta
+./LinearCDSfold -l 2 -O DN -m beam2 -b 100 -o ${case3}_target.txt -f ${case3}_target.csv dataset/test_target_${1}.fasta
 
 python3 testing/Check.py ${case1}_target.txt testing/${case1}_${1}_answer.csv
 python3 testing/Check.py ${case2}_target.txt testing/${case2}_${1}_answer.csv
+python3 testing/Check.py ${case3}_target.txt testing/${case3}_${1}_answer.csv

@@ -508,6 +508,12 @@ void initialize_Special_HP(AllTables<T>& alltables, string& rna_seq, vector<int>
 
 /** *************************************************************************************************************** */
 
+/* 
+ *  @brief 
+ *      None -> S/N state
+ *       N   ->  N  state
+ *       N   ->  C  state
+ */
 template<typename T>
 void init_and_N_state(std::vector<std::unordered_map<int, State<T>>>& bestN,
                       std::vector<std::unordered_map<int, State<T>>>& bestS_j,
@@ -581,6 +587,10 @@ void init_and_N_state(std::vector<std::unordered_map<int, State<T>>>& bestN,
     }
 }
 
+/*
+ * @brief 
+ *   S -> S state
+ */
 template<typename T>
 void S_to_S_state(std::vector<std::vector<std::unordered_map<int, State<T>>>>& bestS,
                   std::vector<std::unordered_map<int, State<T>>>& bestS_j,
@@ -616,6 +626,12 @@ void S_to_S_state(std::vector<std::vector<std::unordered_map<int, State<T>>>>& b
     }
 }
 
+/*
+ * @brief 
+ *   F -> F state
+ *   C -> F state
+ *   F + C -> F state
+ */
 template<typename T>
 void C_and_F_state(std::vector<std::unordered_map<int, State<T>>>& bestF,
                    std::unordered_map<int, State<T>>& bestF_j,
@@ -688,6 +704,10 @@ void C_and_F_state(std::vector<std::unordered_map<int, State<T>>>& bestF,
     }
 }
 
+/*
+ * @brief 
+ *   C + S -> CS state
+ */
 template<typename T>
 void C_to_CS_state(std::vector<std::unordered_map<int, State<T>>>& bestS_j,
                    std::vector<std::unordered_map<int, State<T>>>& bestC,
@@ -725,6 +745,11 @@ void C_to_CS_state(std::vector<std::unordered_map<int, State<T>>>& bestS_j,
     }
 }
 
+/*
+ * @brief 
+ *   CS  -> C state
+ *  S+CS -> C state 
+ */
 template<typename T>
 void CS_to_C_state(std::unordered_map<int, State<T>>& bestCS_j_1,
                    std::unordered_map<int, State<T>>& bestC_j,
@@ -821,6 +846,11 @@ void CS_to_C_state(std::unordered_map<int, State<T>>& bestCS_j_1,
     }
 }
 
+/*
+ * @brief 
+ *   S + C -> CS state
+ *   S + C + S -> CS state
+ */
 template<typename T>
 void S_C_S_state(std::vector<std::unordered_map<int, State<T>>>& bestC,
                  std::unordered_map<int, State<T>>& bestC_j,
@@ -926,6 +956,11 @@ void S_C_S_state(std::vector<std::unordered_map<int, State<T>>>& bestC,
     }
 }
 
+/*
+ * @brief 
+ *   C -> C state
+ *   S + C -> C state
+ */
 template<typename T>
 void C_state(std::vector<std::unordered_map<int, State<T>>>& bestC,
              std::unordered_map<int, State<T>>& bestC_j,
@@ -1014,6 +1049,11 @@ void C_state(std::vector<std::unordered_map<int, State<T>>>& bestC,
     }
 }
 
+/*
+ * @brief 
+ *   Multi -> Multi state
+ *   Multi -> C state
+ */
 template<typename T>
 void Multi_state(std::vector<std::unordered_map<int, State<T>>>& bestMulti,
                  std::unordered_map<int, State<T>>& bestMulti_j,
@@ -1076,6 +1116,11 @@ void Multi_state(std::vector<std::unordered_map<int, State<T>>>& bestMulti,
     }
 }
 
+/*
+ * @brief 
+ *   C -> M1 state
+ *   M1 + C -> M2 state
+ */
 template<typename T>
 void M1_C_to_M2_state(std::vector<std::unordered_map<int, State<T>>>& bestM1,
                       std::unordered_map<int, State<T>>& bestM1_j,
@@ -1124,6 +1169,10 @@ void M1_C_to_M2_state(std::vector<std::unordered_map<int, State<T>>>& bestM1,
     }
 }
 
+/*
+ * @brief 
+ *   M1 -> M1 state
+ */
 template<typename T>
 void M1_to_M1_state(std::vector<std::unordered_map<int, State<T>>>& bestM1,
                     std::unordered_map<int, State<T>>& bestM1_j,
@@ -1161,6 +1210,12 @@ void M1_to_M1_state(std::vector<std::unordered_map<int, State<T>>>& bestM1,
     }
 }
 
+/*
+ * @brief 
+ *   M2 -> M1 state
+ *   M2 -> Multi state
+ *   S + M2 -> Multi state
+ */
 template<typename T>
 void M2_state(std::vector<std::vector<std::unordered_map<int, State<T>>>>& bestS,
               std::unordered_map<int, State<T>>& bestM1_j,
@@ -1247,49 +1302,71 @@ void LCDSfoldCAI_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& con
         
         vector<int> nucj_list = Base_table.at(rna_seq[j]); //j list
         int j_1 = j - 1;
+
+        // None -> S/N state
+        //  N   ->  N  state
+        //  N   ->  C  state
         init_and_N_state<T>(bestN, bestS_j, bestC_j, rna_seq, con_seq, ami_seq, nucj_list, j, is_DN, param);
         
         BeamPrune(con_seq, rna_seq, bestN_j, bestF, !param);
         
-        /*all S -> another state*/
+        // S -> S state
         S_to_S_state<T>(bestS, bestS_j, con_seq, ami_seq, nucj_list, j, is_DN, param);
 
         if(is_beam_speedup){
             for (auto &nucj : nucj_list){
                 std::unordered_map<int, State<T>>& bestCS_j_1 = bestCS[j_1];
+                // CS -> C
+                // S+CS -> C
                 CS_to_C_state<T>(bestCS_j_1, bestC_j, bestS, rna_seq, con_seq, ami_seq, nucj, j, is_DN, param);
                 if(is_DN) { // TODO: check if this is really needed 
                     BeamPrune(con_seq, rna_seq, bestC_j, bestF, false);
                 }
 
+                // C+S -> CS
                 C_to_CS_state<T>(bestS_j, bestC, bestCS_j, con_seq, j);
                 BeamPrune(con_seq, rna_seq, bestCS_j, bestF, false);
             }
         } else {
+            //  C+S  -> C state
+            // S+C+S -> C state
             S_C_S_state<T>(bestC, bestC_j, bestS, bestF, rna_seq, con_seq, ami_seq, nucj_list, j, is_DN, param, true);
             BeamPrune(con_seq, rna_seq, bestC_j, bestF, false);
         }
 
+        // C -> C state
+        // S+C -> C state
         C_state<T>(bestC, bestC_j, bestS, rna_seq, con_seq, ami_seq, nucj_list, j, is_DN, param);
         
         BeamPrune(con_seq, rna_seq, bestC_j, bestF, false);
         
+        // Multi -> Multi state
+        // Multi -> C state
         Multi_state<T>(bestMulti, bestMulti_j, bestC_j, rna_seq, con_seq, ami_seq, nucj_list, j, is_DN, param);
         
         BeamPrune(con_seq, rna_seq, bestC_j, bestF, false);
 
+        // C -> M1 state
+        // M1 + C -> M2 state
         M1_C_to_M2_state<T>(bestM1, bestM1_j, bestM2_j, bestC_j, con_seq, j, is_DN);
         
         BeamPrune(con_seq, rna_seq, bestM2_j, bestF, false);
 
+        // M1 -> M1 state
         M1_to_M1_state<T>(bestM1, bestM1_j, con_seq, ami_seq, nucj_list, j, is_DN, param);
 
+        // M2 -> M1 state
+        // M2 -> Multi state
+        // S + M2 -> Multi state
         M2_state<T>(bestS, bestM1_j, bestMulti_j, bestM2_j, con_seq);
 
         BeamPrune(con_seq, rna_seq, bestM1_j, bestF, false);
         BeamPrune(con_seq, rna_seq, bestMulti_j, bestF, false);
 
         /*conclusion*/
+        //  F  -> F State
+        //  C  -> F State
+        // F+C -> F State
         C_and_F_state<T>(bestF, bestF_j, bestC_j, con_seq, ami_seq, nucj_list, j, seq_length, is_DN, param);
         //BeamPrune(con_seq, rna_seq, bestF_j, bestF, false);
 
@@ -1334,24 +1411,43 @@ void LCDSfoldCAI_exact(AllTables<T>& alltables, string& rna_seq, vector<int>& co
         
         vector<int> nucj_list = Base_table.at(rna_seq[j]); //j list
         int j_1 = j - 1;
+
+        // None -> S/N state
+        //  N   ->  N  state
+        //  N   ->  C  state
         init_and_N_state<T>(bestN, bestS_j, bestC_j, rna_seq, con_seq, ami_seq, nucj_list, j, is_DN, param);
 
-        /*all S -> another state*/
+        // S -> S state
         S_to_S_state<T>(bestS, bestS_j, con_seq, ami_seq, nucj_list, j, is_DN, param);
 
+        //  C+S  -> C state
+        // S+C+S -> C state
         S_C_S_state<T>(bestC, bestC_j, bestS, bestF, rna_seq, con_seq, ami_seq, nucj_list, j, is_DN, param);
         
+        // C -> C state
+        // S+C -> C state
         C_state<T>(bestC, bestC_j, bestS, rna_seq, con_seq, ami_seq, nucj_list, j, is_DN, param);
         
+        // Multi -> Multi state
+        // Multi -> C state
         Multi_state<T>(bestMulti, bestMulti_j, bestC_j, rna_seq, con_seq, ami_seq, nucj_list, j, is_DN, param);
 
+        // C -> M1 state
+        // M1 + C -> M2 state
         M1_C_to_M2_state<T>(bestM1, bestM1_j, bestM2_j, bestC_j, con_seq, j, is_DN);
         
+        // M1 -> M1 state
         M1_to_M1_state<T>(bestM1, bestM1_j, con_seq, ami_seq, nucj_list, j, is_DN, param);
 
+        // M2 -> M1 state
+        // M2 -> Multi state
+        // S + M2 -> Multi state
         M2_state<T>(bestS, bestM1_j, bestMulti_j, bestM2_j, con_seq);
 
-        /*conclusion*/
+        /* conclusion */
+        //  F  -> F State
+        //  C  -> F State
+        // F+C -> F State
         C_and_F_state<T>(bestF, bestF_j, bestC_j, con_seq, ami_seq, nucj_list, j, seq_length, is_DN, param);
 
     } //j end

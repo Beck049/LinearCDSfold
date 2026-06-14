@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef _AC_MATCHER_H_
 #define _AC_MATCHER_H_
 

@@ -1,3 +1,4 @@
+#pragma once
 
 #include "energy_parameter.h" // energy_parameter stuff
 

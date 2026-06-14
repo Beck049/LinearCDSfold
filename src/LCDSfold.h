@@ -54,9 +54,10 @@ T BackTrack(string& rna_solution, string& structure_solution, string& rna_seq, A
     vector<int> first_nuclist = Base_table.at(rna_seq[0]);//i list
     vector<int> last_nuclist = Base_table.at(rna_seq[seq_length-1]);//j list
 
+    // 找到最佳結構分數的 index & MANNER
+    // go through 所有 nuc[0] 和 nuc[n-1] 的組合，找到 bestF 中分數最高的組合
     State<T> state;
     T maxscore = VALUE_MIN<T>();
-    // 找到最佳結構分數的 index & MANNE
     int maxindex;
     for(int ci = 0; ci < first_nuclist.size(); ci++){
         for(int cj = 0; cj < last_nuclist.size(); cj++){
@@ -269,10 +270,8 @@ T BackTrack(string& rna_solution, string& structure_solution, string& rna_seq, A
                 stk.push(make_tuple(j-1 ,index1, next_state));
 
                 // if(debug){
-
                 //     struct_score += - v_score_multi(GET_ACGU_NUM_V(rna_solution[i]),GET_ACGU_NUM_V(rna_solution[j]));
                 //     printf("Multi loop ( %d, %d) %c%c : %.2f\n", i+1, j+1, rna_solution[i], rna_solution[j], struct_score / -100.0);
-
                 // }
                 break;
             case MANNER_F_EtoF:
@@ -299,7 +298,6 @@ T BackTrack(string& rna_solution, string& structure_solution, string& rna_seq, A
         //cout<<mannerToString(MANNER)<<", "<<state.score/lambda<<", "<<i+1<<", "<<j+1<<endl;
         
     }
-
 
     return maxscore;
 }
@@ -1541,12 +1539,12 @@ template<typename T>
 void examine_bestTable(std::vector<std::unordered_map<int, State<T>>>& bestTable, const string& tableName){
     std::string fileName = "result_" + tableName + ".csv";
     std::ofstream outputcsv_bestC(fileName,std::ios::app);
-    outputcsv_bestC<<"index_i,nuci,index_j,nucj"<<std::endl;
+    outputcsv_bestC<<"score,index_i,nuci,index_j,nucj"<<std::endl;
     for (size_t i = 0; i < bestTable.size(); ++i) {
         for (auto& [id, state] : bestTable[i]) {
             int pos, nuci, nucj;
             std::tie(pos, nuci, nucj) = GetIndexTuple(id);
-            outputcsv_bestC<<pos<<","<<reBASE(nuci)<<","<<i<<","<<reBASE(nucj)<<std::endl;
+            outputcsv_bestC<<state.score<<","<<pos<<","<<reBASE(nuci)<<","<<i<<","<<reBASE(nucj)<<std::endl;
         }
     }
     return;
@@ -1556,13 +1554,13 @@ template<typename T>
 void examine_bestSTable(std::vector<std::vector<std::unordered_map<int, State<T>>>>& bestTable, const string& tableName){
     std::string fileName = "result_" + tableName + ".csv";
     std::ofstream outputcsv_bestC(fileName,std::ios::app);
-    outputcsv_bestC<<"index_i,nuci,index_j,nucj"<<std::endl;
+    outputcsv_bestC<<"score,index_i,nuci,index_j,nucj"<<std::endl;
     for (size_t i = 0; i < bestTable.size(); ++i) {
         for (size_t l = 1; l <= SINGLE_MAX_LEN; ++l) {
             for (auto& [id, state] : bestTable[i][l]) {
                 int pos, nuci, nucj;
                 std::tie(pos, nuci, nucj) = GetIndexTuple(id);
-                outputcsv_bestC<<pos<<","<<reBASE(nuci)<<","<<i<<","<<reBASE(nucj)<<std::endl;
+                outputcsv_bestC<<state.score<<","<<pos<<","<<reBASE(nuci)<<","<<i<<","<<reBASE(nucj)<<std::endl;
             }
         }
     }

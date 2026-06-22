@@ -35,3 +35,5 @@ case3="DN_beam2"
 python3 testing/Check.py ${case1}_target.txt testing/${case1}_${1}_answer.csv
 python3 testing/Check.py ${case2}_target.txt testing/${case2}_${1}_answer.csv
 python3 testing/Check.py ${case3}_target.txt testing/${case3}_${1}_answer.csv
+
+# ./LinearCDSfold -l 2 -O LD -m exact dataset/A9JR22.fasta

@@ -46,6 +46,8 @@ std::unordered_map<int, std::string> sp_backtrack;
 std::unordered_map<std::string, float> cai_table_csv;
 // declaration of functions
 int BASE(const std::string& x);
+std::string reCodon(std::string acid_label, int last_codon);
+double getScoreByCodon(std::string acid_label, std::string codon, bool is_DN);
 
 std::unordered_map<std::string, std::string>  Amino_label = {
         {"A","GCN"},{"C","UGY"},{"D","GAY"},{"E","GAR"},{"F","UUY"},
@@ -101,6 +103,95 @@ std::vector<std::vector<std::string>> CodonSet=
     {"Y","UAU"},{"Y","UAC"},
     {"V","GUU"},{"V","GUC"},{"V","GUA"},{"V","GUG"},
 };
+
+double getScoreByCodon(std::string acid_label, std::string codon, bool is_DN){
+    static const std::unordered_map<std::string, int> baseMap = {
+        {"A", 1},
+        {"C", 2},
+        {"G", 3},
+        {"U", 4},
+        {"G_AG1", 5},
+        {"G_AG2", 6},
+        {"U_AG1", 7},
+        {"U_AG2", 8},
+        {"A1", 9},
+        {"A2", 10},
+        {"G1", 11},
+        {"G2", 12},
+        {"G_CU", 13},
+        {"U1", 14},
+        {"C1", 15}
+    };
+
+    for (const auto& [acid_label, sub_map] : (is_DN ? CodonSetCAIMap_DN : CodonSetCAIMap)) {
+        if(acid_label == 'L') {
+            if(codon[2] == 'A' || codon[2] == 'G'){
+                return sub_map.at(baseMap.at(std::string(1, codon[2]) + (codon[0]=='A'?"1":"2")) );
+            } else {
+                return sub_map.at(baseMap.at(std::string(1, codon[2])));
+            }
+        } else if (acid_label == 'S') {
+            return sub_map.at(baseMap.at(std::string(1, codon[2]) + (codon[0]=='A'?"1":"")));
+        } else if (acid_label == 'R') {
+            if(codon[2] == 'A' || codon[2] == 'G'){
+                return sub_map.at(baseMap.at(std::string(1, codon[2]) + (codon[0]=='A'?"1":"2")));
+            } else {
+                return sub_map.at(baseMap.at(std::string(1, codon[2])));
+            }
+        } else {
+            return sub_map.at(baseMap.at(std::string(1, codon[2])));
+        } 
+    }
+    return -9999;
+}
+
+std::string reCodon(std::string acid_label, int last_codon){
+    static const std::unordered_map<int, std::string> baseMap = {
+        {1, "A"},
+        {2, "C"},
+        {3, "G"},
+        {4, "U"},
+        {5, "G_AG1"},
+        {6, "G_AG2"},
+        {7, "U_AG1"},
+        {8, "U_AG2"},
+        {9, "A1"},
+        {10, "A2"},
+        {11, "G1"},
+        {12, "G2"},
+        {13, "G_CU"},
+        {14, "U1"},
+        {15, "C1"}
+    };
+
+    std::string last_codon_type = baseMap.at(last_codon);
+    if (acid_label == "S") {
+        if (last_codon_type == "C1" || last_codon_type == "U1") {
+            return "AG" + std::string(1, last_codon_type[0]);
+        } else {
+            return "UC" + std::string(1, last_codon_type[0]);
+        }
+    } else if (acid_label == "L") {
+        if (last_codon_type == "A1" || last_codon_type == "G1") {
+            return "AU" + std::string(1, last_codon_type[0]);
+        } else {
+            return "CU" + std::string(1, last_codon_type[0]);
+        }
+    } else if (acid_label == "R") {
+        if (last_codon_type == "A1" || last_codon_type == "G1") {
+            return "AG" + std::string(1, last_codon_type[0]);
+        } else {
+            return "CG" + std::string(1, last_codon_type[0]);
+        }
+    } else {
+        for(auto codon : Amino_to_nucs[last_codon_type[0]]) {
+            if(codon[2] == last_codon_type[0]){
+                return codon;
+            }
+        }
+    }
+    return "";
+}
 
 std::unordered_map<std::string,int> sp_loops = {
     {"CAACG",680},{"GUUAC",690},

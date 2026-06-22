@@ -21,7 +21,7 @@
 #include <queue>
 
 #include "LCDSfold.h"
-// #include "circLCDSfold.h"
+#include "circLCDSfold.h"
 using namespace std;
 
 int main(int argc, char** argv){
@@ -287,10 +287,19 @@ int main(int argc, char** argv){
                 }
                 gettimeofday(&end, 0);
 
+                //
+                // examine_bestTable(alltables.bestC, "bestC");
+                // examine_bestTable(alltables.bestM1, "bestM1");
+                // examine_bestTable(alltables.bestM2, "bestM2");
+                // examine_bestTable(alltables.bestMulti, "bestMulti");
+                // examine_bestSTable(alltables.bestS, "bestS");
+                //
+
                 double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
                 std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, is_DN);
-                
+
                 // Circular RNA Reconstruction
+                std::vector<pair<double,double>> result_c = circular_compose_v1<double>( alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, use_beam_pruning, is_DN);
             }
         }    
     } else { //RNA MODE

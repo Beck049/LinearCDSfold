@@ -35,8 +35,7 @@ bool debug = false;
 // #define debug
 
 template <typename T>
-T BackTrack(string& rna_solution, string& structure_solution, string& rna_seq, AllTables<T>& alltables, vector<int>& con_seq){
-    // cout<<"start back tracking"<<endl;
+void BacktrackStructure(string& rna_solution, string& structure_solution, int seq_length, int maxindex, State<T> state, AllTables<T>& alltables, int start_j = -1){
     std::vector<std::unordered_map<int, State<T>>>& bestN = alltables.bestN;
     std::vector<std::vector<std::unordered_map<int, State<T>>>>& bestS = alltables.bestS;
     std::vector<std::unordered_map<int, State<T>>>& bestF = alltables.bestF;
@@ -46,34 +45,9 @@ T BackTrack(string& rna_solution, string& structure_solution, string& rna_seq, A
     std::vector<std::unordered_map<int, State<T>>>& bestM2 = alltables.bestM2;
     std::vector<std::unordered_map<int, State<T>>>& bestMulti = alltables.bestMulti;
 
-    
-    int seq_length = rna_seq.size();
-    rna_solution.assign(seq_length, '.');
-    structure_solution.assign(seq_length, '.');
-
-    vector<int> first_nuclist = Base_table.at(rna_seq[0]);//i list
-    vector<int> last_nuclist = Base_table.at(rna_seq[seq_length-1]);//j list
-
-    // 找到最佳結構分數的 index & MANNER
-    // go through 所有 nuc[0] 和 nuc[n-1] 的組合，找到 bestF 中分數最高的組合
-    State<T> state;
-    T maxscore = VALUE_MIN<T>();
-    int maxindex;
-    for(int ci = 0; ci < first_nuclist.size(); ci++){
-        for(int cj = 0; cj < last_nuclist.size(); cj++){
-            int nuci = first_nuclist[ci];
-            int nucj = last_nuclist[cj];
-            int index = GetIndex(0, nuci, nucj); // 從 index i 開始，nuci 開頭，nucj 結尾
-            if(bestF[seq_length-1].count(index)){
-                T newscore = bestF[seq_length-1][index].score;
-                if (maxscore < newscore){
-                    maxscore = newscore;
-                    maxindex = index;
-                    state = bestF[seq_length-1][index];}}
-    }}
-
     stack<tuple<int, int, State<T>>> stk;
-    stk.push(make_tuple(seq_length-1, maxindex, state));
+    int j_start = (start_j >= 0) ? start_j : (seq_length - 1);
+    stk.push(make_tuple(j_start, maxindex, state));
     while ( !stk.empty() ) {
 
         tuple<int, int, State<T>> top = stk.top();
@@ -298,6 +272,39 @@ T BackTrack(string& rna_solution, string& structure_solution, string& rna_seq, A
         //cout<<mannerToString(MANNER)<<", "<<state.score/lambda<<", "<<i+1<<", "<<j+1<<endl;
         
     }
+}
+
+template <typename T>
+T BackTrack(string& rna_solution, string& structure_solution, string& rna_seq, AllTables<T>& alltables, vector<int>& con_seq){
+    // cout<<"start back tracking"<<endl;
+    std::vector<std::unordered_map<int, State<T>>>& bestF = alltables.bestF;
+
+    int seq_length = rna_seq.size();
+    rna_solution.assign(seq_length, '.');
+    structure_solution.assign(seq_length, '.');
+
+    vector<int> first_nuclist = Base_table.at(rna_seq[0]);//i list
+    vector<int> last_nuclist = Base_table.at(rna_seq[seq_length-1]);//j list
+
+    // 找到最佳結構分數的 index & MANNER
+    // go through 所有 nuc[0] 和 nuc[n-1] 的組合，找到 bestF 中分數最高的組合
+    State<T> state;
+    T maxscore = VALUE_MIN<T>();
+    int maxindex;
+    for(int ci = 0; ci < first_nuclist.size(); ci++){
+        for(int cj = 0; cj < last_nuclist.size(); cj++){
+            int nuci = first_nuclist[ci];
+            int nucj = last_nuclist[cj];
+            int index = GetIndex(0, nuci, nucj); // 從 index i 開始，nuci 開頭，nucj 結尾
+            if(bestF[seq_length-1].count(index)){
+                T newscore = bestF[seq_length-1][index].score;
+                if (maxscore < newscore){
+                    maxscore = newscore;
+                    maxindex = index;
+                    state = bestF[seq_length-1][index];}}
+    }}
+
+    BacktrackStructure(rna_solution, structure_solution, seq_length, maxindex, state, alltables);
 
     return maxscore;
 }
@@ -846,7 +853,7 @@ void CS_to_C_state(std::unordered_map<int, State<T>>& bestCS_j_1,
 
 /*
  * @brief 
- *   S + C -> CS state
+ *   C + S -> C state
  *   S + C + S -> CS state
  */
 template<typename T>
@@ -1485,20 +1492,18 @@ std::vector<pair<T,T>> result_output(AllTables<T> &alltables,string& rna_seq, ve
         std::cerr << "Score: " << maxscore << std::endl;
         outputfile << "Score: " << maxscore << std::endl;
     }
-           
+
     double mfe_value ;
     if(is_DN){
         mfe_value = -double(double(maxscore - weighted_cai_score)/(100.0*lambda));//*100
         std::cout << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;
         outputfile << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;
-    }
-    else{
+    } else {
         if(lambda){
             mfe_value = -double(double(maxscore - weighted_cai_score)/(100.0));//*100
             std::cout << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;
             outputfile << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;  
-        }
-        else{//only consider MFE
+        } else {//only consider MFE
             mfe_value = -(maxscore/(100.0));//*100
             std::cout << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;
             outputfile << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;  
@@ -1539,12 +1544,12 @@ template<typename T>
 void examine_bestTable(std::vector<std::unordered_map<int, State<T>>>& bestTable, const string& tableName){
     std::string fileName = "result_" + tableName + ".csv";
     std::ofstream outputcsv_bestC(fileName,std::ios::app);
-    outputcsv_bestC<<"score,index_i,nuci,index_j,nucj"<<std::endl;
+    outputcsv_bestC<<"score,index_i,nuci,index_j,nucj,manner"<<std::endl;
     for (size_t i = 0; i < bestTable.size(); ++i) {
         for (auto& [id, state] : bestTable[i]) {
             int pos, nuci, nucj;
             std::tie(pos, nuci, nucj) = GetIndexTuple(id);
-            outputcsv_bestC<<state.score<<","<<pos<<","<<reBASE(nuci)<<","<<i<<","<<reBASE(nucj)<<std::endl;
+            outputcsv_bestC<<state.score<<","<<pos<<","<<reBASE(nuci)<<","<<i<<","<<reBASE(nucj)<<","<<mannerToString(state.MANNER)<<std::endl;
         }
     }
     return;
@@ -1554,13 +1559,13 @@ template<typename T>
 void examine_bestSTable(std::vector<std::vector<std::unordered_map<int, State<T>>>>& bestTable, const string& tableName){
     std::string fileName = "result_" + tableName + ".csv";
     std::ofstream outputcsv_bestC(fileName,std::ios::app);
-    outputcsv_bestC<<"score,index_i,nuci,index_j,nucj"<<std::endl;
+    outputcsv_bestC<<"score,index_i,nuci,index_j,nucj,manner"<<std::endl;
     for (size_t i = 0; i < bestTable.size(); ++i) {
         for (size_t l = 1; l <= SINGLE_MAX_LEN; ++l) {
             for (auto& [id, state] : bestTable[i][l]) {
                 int pos, nuci, nucj;
                 std::tie(pos, nuci, nucj) = GetIndexTuple(id);
-                outputcsv_bestC<<state.score<<","<<pos<<","<<reBASE(nuci)<<","<<i<<","<<reBASE(nucj)<<std::endl;
+                outputcsv_bestC<<state.score<<","<<pos<<","<<reBASE(nuci)<<","<<i<<","<<reBASE(nucj)<<","<<mannerToString(state.MANNER)<<std::endl;
             }
         }
     }

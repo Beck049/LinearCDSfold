@@ -1474,11 +1474,15 @@ std::vector<pair<T,T>> result_output(AllTables<T> &alltables,string& rna_seq, ve
     outputfile << "Protein length: " << protein_length << std::endl;
 
     outputfile << "Lambda: " << std::fixed << std::setprecision(3) << lambda << std::endl;
+
+    outputfile << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
+    std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
+    outputfile << "Linear RNA Reconstruction:" << std::endl;
+    std::cout << "=== LinearRNA ===" << std::endl;
+
     T maxscore = BackTrack<T>(rna_solution, structure_solution, rna_seq, alltables, con_seq);
     T weighted_cai_score = GetCAIScore<T>(rna_solution,is_DN);
-    // cout<<"weighted_CAI: "<<weighted_cai_score<<endl;
     double cai_value = GetUnweghtedCAIScore(rna_solution);
-
     cai_value = exp(cai_value/double(ami_seq.size()));
     //output score and results
     std::cout << "Coding sequence and its secondary structure:" << std::endl;
@@ -1518,10 +1522,13 @@ std::vector<pair<T,T>> result_output(AllTables<T> &alltables,string& rna_seq, ve
     check_ami_solution(ami_seq, rna_solution);
 
     std::vector<pair<T,T>> result_container;
-    // result_container.push_back({round_up(cai_value),round_up(mfe_value)});
     result_container.push_back({round_up(cai_value),round_up(mfe_value)});
-    outputcsv<<PID<<","<<std::to_string(protein_length)<<","<<std::to_string(lambda)<<","<<std::to_string(mfe_value)<<","<<std::to_string(cai_value)<<","<<TimeSpend<<std::endl;
+    // output csv
+    outputcsv<<std::endl<<PID<<","<<std::to_string(protein_length)<<","<<std::to_string(lambda)<<","<<std::to_string(mfe_value)<<","<<std::to_string(cai_value)<<","<<TimeSpend;
 
+    outputcsv.close();
+    outputfile.close();
+    
     return result_container;
 
 }

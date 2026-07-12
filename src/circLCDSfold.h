@@ -38,9 +38,13 @@ std::vector<pair<T,T>> circular_compose_v1(AllTables<T> &alltables,string& rna_s
     std::string rna_solution;
     std::string structure_solution;
 
+    double c_TimeSpend = 0;
+    auto c_start_time = std::chrono::high_resolution_clock::now();
+
     outputfile << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
+    std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
     outputfile << "Circular RNA Reconstruction:" << std::endl;
-    std::cout << "=== CircularDesign ===" << std::endl;
+    std::cout << "=== CircularRNA ===" << std::endl;
 
     std::vector<std::unordered_map<int, State<T>>>& bestN = alltables.bestN;
     std::vector<std::vector<std::unordered_map<int, State<T>>>>& bestS = alltables.bestS;
@@ -58,19 +62,16 @@ std::vector<pair<T,T>> circular_compose_v1(AllTables<T> &alltables,string& rna_s
     // 用 CodonSetCAIMap or CodonSetCAIMap_DN
     std::unordered_map<char, std::pair<std::string, double>> BestAminoMap;
 
-    
-    for (const auto& [acid_label, sub_map] : (is_DN ? CodonSetCAIMap_DN : CodonSetCAIMap)) {
-        for (const auto& [last_nuc, new_score] : sub_map) {
-            std::string acid_codon = reCodon(std::string(1, acid_label), last_nuc);
-            if (BestAminoMap.count(acid_label)) {
-                if (BestAminoMap.at(acid_label).second < new_score) {
-                    BestAminoMap.at(acid_label) = {acid_codon, new_score};
-                }
-            } else {
-                BestAminoMap.insert({acid_label, {acid_codon, new_score}});
+    for (const auto& [label, codon_list] : Amino_to_nucs) {
+        // std::cout << "Label: " << label << std::endl;
+        for (const auto& codon : codon_list) {
+            // std::cout << "Codon: " << codon << " (" << unweighted_CAIMap.at(codon) << ")" << std::endl;
+            if (unweighted_CAIMap.at(codon) == 0){
+                BestAminoMap.insert({label, {codon, 0}});
             }
         }
     }
+
     // std::cout << "========= Best Amino Acid Codon Map =========\n";
     // for (const auto& [acid, info_pair] : BestAminoMap) {
     //     std::cout << "Amino: [" << acid << "] -> Best Codon: " << info_pair.first 
@@ -273,8 +274,8 @@ std::vector<pair<T,T>> circular_compose_v1(AllTables<T> &alltables,string& rna_s
     outputfile << c_structure_solution << std::endl;
 
     // MFE & CAI
-    T weighted_cai_score = GetCAIScore<T>(rna_solution,is_DN);
-    double cai_value = GetUnweghtedCAIScore(rna_solution);
+    T weighted_cai_score = GetCAIScore<T>(c_rna_solution,is_DN);
+    double cai_value = GetUnweghtedCAIScore(c_rna_solution);
     cai_value = exp(cai_value/double(ami_seq.size()));
 
     double mfe_value ;
@@ -296,7 +297,20 @@ std::vector<pair<T,T>> circular_compose_v1(AllTables<T> &alltables,string& rna_s
     std::cout << "CAI: " << cai_value << std::endl;
     outputfile << "CAI: " <<  cai_value << std::endl;
 
-    
+    auto c_end_time = std::chrono::high_resolution_clock::now();
+    c_TimeSpend = std::chrono::duration_cast<std::chrono::duration<double>>(c_end_time - c_start_time).count();
+    std::cout << "Total runtime: " << std::round(c_TimeSpend * 1000.0) / 1000.0 << " s" << std::endl;
+    outputfile <<  "Total runtime: " << std::round(c_TimeSpend * 1000.0) / 1000.0 << " s" << std::endl;
 
-    return {};
+    std::vector<pair<T,T>> result_container;
+    result_container.push_back({round_up(cai_value),round_up(mfe_value)});
+
+    // output csv
+    outputcsv << "," << mfe_value << "," << cai_value << "," << c_TimeSpend;
+
+
+    // PrintCalCAIMap(is_DN);
+    // PrintUnweightedCAIMap();
+
+    return result_container;
 }

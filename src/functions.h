@@ -1155,6 +1155,18 @@ T GetCAIScore(const std::string& rna_solution,bool is_DN){
     return score;
 }
 
+void PrintCalCAIMap(bool is_DN){
+    if(is_DN) {
+        for (const auto& pair : CalCAIMap_DN) {
+            std::cout << "Codon: " << pair.first << ", CAI Value: " << pair.second << std::endl;
+        }
+    } else {
+        for (const auto& pair : CalCAIMap) {
+            std::cout << "Codon: " << pair.first << ", CAI Value: " << pair.second << std::endl;
+        }
+    }
+}
+
 double GetUnweghtedCAIScore(const std::string& rna_solution){
     double score = 0;
     for (int i = 0; i <= rna_solution.size() - 3; i += 3) {
@@ -1163,6 +1175,13 @@ double GetUnweghtedCAIScore(const std::string& rna_solution){
     }
     return score;
 }
+
+void PrintUnweightedCAIMap(){
+    for (const auto& pair : unweighted_CAIMap) {
+        std::cout << "Codon: " << pair.first << ", Unweighted CAI Value: " << pair.second << std::endl;
+    }
+}
+
 double round_up(double x){
     return round(x*1000000.0)/1000000.0;
 }
@@ -1207,8 +1226,9 @@ inline void PrintInfo(std::string output_txt,std::string output_csv,std::string 
     if(output) std::cout << "Codon usage table: " << cai_file_path << std::endl;
     outputfile << "Codon usage table: " << cai_file_path << std::endl;
 
+    // TODO
     /*initialize CVS file*/
-    outputcsv <<"UniPort ID, Protein length, Lambda, MFE, CAI, Run time"<<std::endl;
+    outputcsv <<"UniPort ID, Protein length, Lambda, MFE, CAI, Run time, cMFE, cCAI, cRun time";
 
     /*OJ function*/
     if (objective == "DN") {

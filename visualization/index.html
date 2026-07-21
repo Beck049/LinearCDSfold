@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>RNA 2D Structure Visualization</title>
+  <link rel="stylesheet" type="text/css" href="css/fornac.css" />
+</head>
+<body>
+  <!-- 1. 輸入 RNA 結構 -->
+  <label>輸入 RNA 結構:</label>
+  <textarea id="rnaInput">AUGGGGCUGCGGUACAGCAAGGAGGUGAGGGAUCGUCAUGGGGAUAAGGAUCCUGAGGGCAGGAUCCCUAUCACCCAGACGAUGCCUCAGACACUGUACGGCAGAUAUAAUUGUAAGAGCUGUUGGUUCGCCAACAAGGGGCUGAUCAAGUGCUCUAACCAUUAUAUCUGCCUGCGGUGUCUGACCUCCAUGCUGAACCGCACUGACUACUGUGAGAUCUGUGGGGAGGUGCUGCCCAAGCGGCUCACCUUUGAGACCACUCCCACAGCACCUCCCUACACCCCG
+..((((.((((((.(((((.((((((((((.((((((.((((((((.((((((((....)))))))).)))).)))))))))).))))((((((((((.((((((((((((.((.(((((..((((((.(((.......))).))))))..))))).)).)))))))))))))))))))))).)))))).))))).))))))((.((....)).))...(((((((((((((((....((.((((((....)))).)).))....))))))))))))))))))).</textarea>
+  <button id="renderBtn">產生結構圖 (Linear)</button>
+  <button id="renderCircBtn">產生結構圖 (Circular)</button>
+  
+  <!-- 1. 用來渲染圖表 -->
+  <div id="rna_ss"></div>
+
+  <!-- 2. 載入 JS 檔案 -->
+  <script src="jquery.js"></script>
+  <script src="d3.js"></script>
+  <script src="fornac.js"></script>
+
+  <!-- 3. 初始化與載入數據 -->
+  <script>
+    // 1. 建立 Forna 容器
+    var container = new FornaContainer("#rna_ss", {
+      'applyForce': true // 是否啟用物理力學擺動，排版完成後可設為 false
+    });
+
+    // 2. 按鈕點擊事件
+    $('#renderBtn').on('click', function() {
+      // 取得輸入值並分割成陣列
+      var lines = $('#rnaInput').val().trim().split('\n');
+      
+      if(lines.length < 2) {
+        alert("請輸入兩行數據：第一行為 Sequence，第二行為 Structure");
+        return;
+      }
+
+      var options = {
+      'sequence': lines[0].trim(),
+      'structure': lines[1].trim()
+    };
+      // 清除舊圖
+      // container.clearNodes();
+
+      // 將 RNA 加入容器中渲染
+      container.addRNA(options.structure, options);
+    });
+
+    // 2. 按鈕點擊事件 前後連起來
+    $('#renderCircBtn').on('click', function() {
+      // 取得輸入值並分割成陣列
+      var lines = $('#rnaInput').val().trim().split('\n');
+      
+      if(lines.length < 2) {
+        alert("請輸入兩行數據：第一行為 Sequence，第二行為 Structure");
+        return;
+      }
+
+      var options = {
+      'sequence': lines[0].trim(),
+      'structure': lines[1].trim(),
+      'circular': true
+    };
+      // 清除舊圖
+      // container.clearNodes();
+
+      // 將 RNA 加入容器中渲染
+      container.addRNA(options.structure, options);
+    });
+
+  </script>
+</body>
+</html>

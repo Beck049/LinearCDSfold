@@ -96,7 +96,7 @@ std::vector<pair<T,T>> circular_compose_v1(AllTables<T> &alltables,string& rna_s
      * 
      * 向前後延伸，並計算 CAI & MFE
      */
-    if(!is_beam) {
+    // if(!is_beam) {
         // go through bestM1 中所有元素，找到分數最高的 circular structure
         for (size_t j = 0; j < bestM1.size(); ++j) {
             for (auto& [id, state] : bestM1[j]) {
@@ -207,12 +207,12 @@ std::vector<pair<T,T>> circular_compose_v1(AllTables<T> &alltables,string& rna_s
                 }
             }
         }
-    } else {
-    /** 
-     * ToDo: Beam 模式
-     */
-
-    }
+    // } else {
+    // /** 
+    //  * ToDo: Beam 模式
+    //  */
+    //     return {};
+    // }
 
     if (max_index == -1) {
         std::cout << "No circular structure found." << std::endl;
@@ -294,8 +294,8 @@ std::vector<pair<T,T>> circular_compose_v1(AllTables<T> &alltables,string& rna_s
             outputfile << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;  
         }
     }
-    std::cout << "CAI: " << cai_value << std::endl;
-    outputfile << "CAI: " <<  cai_value << std::endl;
+    std::cout << "CAI: " << std::round(cai_value * 1000.0) / 1000.0 << std::endl;
+    outputfile << "CAI: " <<  std::round(cai_value * 1000.0) / 1000.0 << std::endl;
 
     auto c_end_time = std::chrono::high_resolution_clock::now();
     c_TimeSpend = std::chrono::duration_cast<std::chrono::duration<double>>(c_end_time - c_start_time).count();

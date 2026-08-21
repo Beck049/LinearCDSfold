@@ -35,9 +35,6 @@ std::vector<pair<T,T>> circular_compose_v1(AllTables<T> &alltables,string& rna_s
     std::ofstream outputfile(output_txt,std::ios::app);
     std::ofstream outputcsv(output_csv,std::ios::app);
 
-    std::string rna_solution;
-    std::string structure_solution;
-
     double c_TimeSpend = 0;
     auto c_start_time = std::chrono::high_resolution_clock::now();
 
@@ -56,8 +53,6 @@ std::vector<pair<T,T>> circular_compose_v1(AllTables<T> &alltables,string& rna_s
     std::vector<std::unordered_map<int, State<T>>>& bestMulti = alltables.bestMulti;
 
     int seq_length = rna_seq.size();
-    rna_solution.assign(seq_length, '.');
-    structure_solution.assign(seq_length, '.');
 
     // 用 CodonSetCAIMap or CodonSetCAIMap_DN
     std::unordered_map<char, std::pair<std::string, double>> BestAminoMap;
@@ -96,123 +91,116 @@ std::vector<pair<T,T>> circular_compose_v1(AllTables<T> &alltables,string& rna_s
      * 
      * 向前後延伸，並計算 CAI & MFE
      */
-    // if(!is_beam) {
-        // go through bestM1 中所有元素，找到分數最高的 circular structure
-        for (size_t j = 0; j < bestM1.size(); ++j) {
-            for (auto& [id, state] : bestM1[j]) {
-                // 為 從 i 到 j 結構
-                int i, nuci, nucj, last_pair_pos;
-                Manner manner;
-                std::tie(i, nuci, nucj) = GetIndexTuple(id);
-                manner = state.MANNER;
-                double cur_score = state.score;
-                std::string codon_j = "";
-                // 子結構為 C, M2
-                //  nuc  為 i ~ j
-                // amino 為 i/3 ~ j/3
-                if (manner == MANNER_CtoM1 ||  manner == MANNER_M2toM1) {
-                    int hairpin_len = seq_length - j + i;
-                    // cout << "nuc (" << i << "~" << j << "); acid (" << i/3 << "~" << j/3 << ")" << std::endl;
+    // go through bestM1 中所有元素，找到分數最高的 circular structure
+    for (size_t j = 0; j < bestM1.size(); ++j) {
+        for (auto& [id, state] : bestM1[j]) {
+            // 為 從 i 到 j 結構
+            int i, nuci, nucj, last_pair_pos;
+            Manner manner = state.MANNER;
+            std::tie(i, nuci, nucj) = GetIndexTuple(id);
+            double cur_score = state.score;
+            std::string codon_i = "";
+            std::string codon_j = "";
+            // 子結構為 C, M2 且 hairpin < MAXLOOP 才考慮
+            //  nuc  為 i ~ j
+            // amino 為 i/3 ~ j/3
+            int hairpin_len = seq_length - j + i;
+            if ((manner == MANNER_CtoM1 ||  manner == MANNER_M2toM1) && hairpin_len < MAXLOOP) {
+                // cout << "nuc (" << i << "~" << j << "); acid (" << i/3 << "~" << j/3 << ")" << std::endl;
 
-                    // MFE
-                    double extra_mfe = 0;
-                    if (manner == MANNER_CtoM1) { // hairpin
-                        extra_mfe += hairpin37[min(hairpin_len, 30)];
-                        extra_mfe += (hairpin_len > 30) ? (int)(lxc37*log((hairpin_len)/30.)) : 0;
-                    } else if (manner == MANNER_M2toM1) { // multi
-                        extra_mfe -= ML_intern37 + ML_closing37;
-                    }
-                    if (is_DN) extra_mfe *= lambda;
+                // MFE
+                double extra_mfe = 0;
+                if (manner == MANNER_CtoM1) { // hairpin
+                    extra_mfe += hairpin37[min(hairpin_len, 30)];
+                    extra_mfe += (hairpin_len > 30) ? (int)(lxc37*log((hairpin_len)/30.)) : 0;
+                } else if (manner == MANNER_M2toM1) { // multi
+                    extra_mfe -= ML_intern37 + ML_closing37;
+                }
+                if (is_DN) extra_mfe *= lambda;
 
-                    // CAI (只考慮 acid[j] 的 cai)
-                    double extra_cai = -9999;
-                    if(j%3 == 2) {
-                        extra_cai = 0;
-                    } else if(j%3 == 0) {
-                        // std::cout << ami_seq[j/3] << "(" << reBASE(nucj) << "," << j%3 << ")" << " (";
-                        std::vector<std::string> all_nuc = Amino_to_nucs.at(ami_seq[j/3]);
-                        for (size_t i = 0; i < all_nuc.size(); ++i) {
-                            if(all_nuc[i][j%3] == reBASE(nucj)){
-                                if (extra_cai < getScoreByCodon(std::string(1, ami_seq[j/3]), all_nuc[i], is_DN)){
-                                    extra_cai = getScoreByCodon(std::string(1, ami_seq[j/3]), all_nuc[i], is_DN);
-                                    codon_j = all_nuc[i];
-                                }
+                // CAI (只考慮 acid[j] 的 cai)
+                double extra_cai = INT_MIN;
+                if(j%3 == 2) {
+                    extra_cai = 0;
+                } else if(j%3 == 0) {
+                    // std::cout << ami_seq[j/3] << "(" << reBASE(nucj) << "," << j%3 << ")" << " (";
+                    std::vector<std::string> all_nuc = Amino_to_nucs.at(ami_seq[j/3]);
+                    for (size_t i = 0; i < all_nuc.size(); ++i) {
+                        if(all_nuc[i][j%3] == reBASE(nucj)){
+                            if (extra_cai < getScoreByCodon(std::string(1, ami_seq[j/3]), all_nuc[i], is_DN)){
+                                extra_cai = getScoreByCodon(std::string(1, ami_seq[j/3]), all_nuc[i], is_DN);
+                                codon_j = all_nuc[i];
                             }
                         }
-                        // std::cout << codon_j << " " << getScoreByCodon(std::string(1, ami_seq[j/3]), codon_j, is_DN) << ")" << std::endl;
-                    } else if(j%3 == 1) {
-                        // 加 backtrack
-                        State<T> c_state;
-                        int nucj_1;
-                        if(manner == MANNER_CtoM1){
-                            c_state = bestC[j][state.index_1];
-                        } else if (manner == MANNER_M2toM1) {
-                            State<T> m2_state = bestM2[j][state.index_1];
-                            c_state = bestC[j][m2_state.index_2];
-                        }
-                        Manner preManner = c_state.MANNER;
-                        int i, nuci;
-                        switch (preManner){
-                            case MANNER_NtoC:
-                                std::tie(i, nuci, nucj_1) = GetIndexTuple(c_state.index_1);
-                                break;
-                            case MANNER_CtoC:
-                                std::tie(i, nuci, nucj_1) = GetIndexTuple(c_state.index_1);
-                                break;
-                            case MANNER_S_CtoC:
-                                std::tie(i, nuci, nucj_1) = GetIndexTuple(c_state.index_2);
-                                break;
-                            case MANNER_CStoC:
-                                std::tie(i, nuci, nucj_1) = GetIndexTuple(c_state.index_1);
-                                break;
-                            case MANNER_C_StoC:
-                                std::tie(i, nuci, nucj_1) = GetIndexTuple(c_state.index_2);
-                                break;
-                            case MANNER_S_CStoC:
-                                std::tie(i, nuci, nucj_1) = GetIndexTuple(c_state.index_2);
-                                break;
-                            case MANNER_S_C_StoC:
-                                std::tie(i, nuci, nucj_1) = GetIndexTuple(c_state.index_3);
-                                break;
-                            case MANNER_MultitoC:
-                                std::tie(i, nuci, nucj_1) = GetIndexTuple(c_state.index_1);
-                                break;                            
-                            default:
-                                break;
-                        }
+                    }
+                    // std::cout << codon_j << " " << getScoreByCodon(std::string(1, ami_seq[j/3]), codon_j, is_DN) << ")" << std::endl;
+                } else if(j%3 == 1) {
+                    // 加 backtrack
+                    State<T> c_state;
+                    int nucj_1;
+                    if(manner == MANNER_CtoM1){
+                        c_state = bestC[j][state.index_1];
+                    } else if (manner == MANNER_M2toM1) {
+                        State<T> m2_state = bestM2[j][state.index_1];
+                        c_state = bestC[j][m2_state.index_2];
+                    }
+                    Manner preManner = c_state.MANNER;
+                    int i, nuci;
+                    switch (preManner){
+                        case MANNER_NtoC:
+                            std::tie(i, nuci, nucj_1) = GetIndexTuple(c_state.index_1);
+                            break;
+                        case MANNER_CtoC:
+                            std::tie(i, nuci, nucj_1) = GetIndexTuple(c_state.index_1);
+                            break;
+                        case MANNER_S_CtoC:
+                            std::tie(i, nuci, nucj_1) = GetIndexTuple(c_state.index_2);
+                            break;
+                        case MANNER_CStoC:
+                            std::tie(i, nuci, nucj_1) = GetIndexTuple(c_state.index_1);
+                            break;
+                        case MANNER_C_StoC:
+                            std::tie(i, nuci, nucj_1) = GetIndexTuple(c_state.index_2);
+                            break;
+                        case MANNER_S_CStoC:
+                            std::tie(i, nuci, nucj_1) = GetIndexTuple(c_state.index_2);
+                            break;
+                        case MANNER_S_C_StoC:
+                            std::tie(i, nuci, nucj_1) = GetIndexTuple(c_state.index_3);
+                            break;
+                        case MANNER_MultitoC:
+                            std::tie(i, nuci, nucj_1) = GetIndexTuple(c_state.index_1);
+                            break;                            
+                        default:
+                            break;
+                    }
 
-                        // std::cout << ami_seq[j/3] << "(" << reBASE(nucj) << "," << j%3 << ")" << " (";
-                        std::vector<std::string> all_nuc = Amino_to_nucs.at(ami_seq[j/3]);
-                        for (size_t i = 0; i < all_nuc.size(); ++i) {
-                            if(all_nuc[i][j%3] == reBASE(nucj) && all_nuc[i][(j%3)-1] == reBASE(nucj_1)){
-                                if (extra_cai < getScoreByCodon(std::string(1, ami_seq[j/3]), all_nuc[i], is_DN)){
-                                    extra_cai = getScoreByCodon(std::string(1, ami_seq[j/3]), all_nuc[i], is_DN);
-                                    codon_j = all_nuc[i];
-                                }
+                    // std::cout << ami_seq[j/3] << "(" << reBASE(nucj) << "," << j%3 << ")" << " (";
+                    std::vector<std::string> all_nuc = Amino_to_nucs.at(ami_seq[j/3]);
+                    for (size_t i = 0; i < all_nuc.size(); ++i) {
+                        if(all_nuc[i][j%3] == reBASE(nucj) && all_nuc[i][(j%3)-1] == reBASE(nucj_1)){
+                            if (extra_cai < getScoreByCodon(std::string(1, ami_seq[j/3]), all_nuc[i], is_DN)){
+                                extra_cai = getScoreByCodon(std::string(1, ami_seq[j/3]), all_nuc[i], is_DN);
+                                codon_j = all_nuc[i];
                             }
                         }
-                        // std::cout << codon_j << " " << getScoreByCodon(std::string(1, ami_seq[j/3]), codon_j, is_DN) << ")" << std::endl;
                     }
+                    // std::cout << codon_j << " " << getScoreByCodon(std::string(1, ami_seq[j/3]), codon_j, is_DN) << ")" << std::endl;
+                }
 
-                    // compare
-                    if (max_score < cur_score + extra_mfe && (hairpin_len > HAIRPIN_GAP || hairpin_len == 0)) {
-                        max_score = cur_score + extra_mfe;
-                        max_index = id;
-                        best_i = i;
-                        best_j = j;
-                        best_codon_j = codon_j;
-                        bestState = state;
-                        max_manner = manner;
-                    }
+                // compare
+                if (max_score < cur_score + extra_mfe && (hairpin_len > HAIRPIN_GAP || hairpin_len == 0)) {
+                    max_score = cur_score + extra_mfe;
+                    max_index = id;
+                    best_i = i;
+                    best_j = j;
+                    best_codon_j = codon_j;
+                    bestState = state;
+                    max_manner = manner;
                 }
             }
         }
-    // } else {
-    // /** 
-    //  * ToDo: Beam 模式
-    //  */
-    //     return {};
-    // }
+    }
 
     if (max_index == -1) {
         std::cout << "No circular structure found." << std::endl;
@@ -230,7 +218,7 @@ std::vector<pair<T,T>> circular_compose_v1(AllTables<T> &alltables,string& rna_s
     BacktrackStructure(c_rna_solution, c_structure_solution, seq_length, max_index, bestState, alltables, best_j);
     // 補齊 i, j
     std::vector<std::string> all_nuci = Amino_to_nucs.at(ami_seq[best_i/3]);
-    double max_nuci_score = -9999;
+    double max_nuci_score = INT_MIN;
     for (size_t i = 0; i < all_nuci.size(); ++i) {
         if((best_i%3 == 1 && all_nuci[i][1] == c_rna_solution[best_i] && all_nuci[i][2] == c_rna_solution[best_i+1]) ||
             (best_i%3 == 2 && all_nuci[i][2] == c_rna_solution[best_i])){

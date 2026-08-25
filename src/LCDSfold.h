@@ -854,7 +854,7 @@ void CS_to_C_state(std::unordered_map<int, State<T>>& bestCS_j_1,
 /*
  * @brief 
  *   C + S -> C state
- *   S + C + S -> CS state
+ *   S + C + S -> C state
  */
 template<typename T>
 void S_C_S_state(std::vector<std::unordered_map<int, State<T>>>& bestC,

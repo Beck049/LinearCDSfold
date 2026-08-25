@@ -104,6 +104,7 @@ std::vector<std::vector<std::string>> CodonSet=
     {"V","GUU"},{"V","GUC"},{"V","GUA"},{"V","GUG"},
 };
 
+// 給定 氨基酸, codon(AUCG only) 回傳該 codon 分數
 double getScoreByCodon(std::string acid_label, std::string codon, bool is_DN){
     static const std::unordered_map<std::string, int> baseMap = {
         {"A", 1},
@@ -142,7 +143,7 @@ double getScoreByCodon(std::string acid_label, std::string codon, bool is_DN){
             return sub_map.at(baseMap.at(std::string(1, codon[2])));
         } 
     }
-    return -9999;
+    return INT_MIN;
 }
 
 std::string reCodon(std::string acid_label, int last_codon){
@@ -881,99 +882,6 @@ inline int getLastExtendedNuc(char amino_ ,std::string codon_){
     }
     return last_nuc;
 }
-
-// inline void Read_CAI_file(std::string cai_file_path){
-//     std::ifstream cai_file(cai_file_path);
-//     if(!cai_file.is_open()){
-//         std::cout<<"Can't open "<<cai_file_path<<"."<<std::endl;
-//         return ;
-//     }
-
-//     std::string line;
-//     bool first_line = true;
-//     while(getline(cai_file, line)){
-//         if(first_line){
-//             first_line = false;
-//             continue;
-//         }
-
-//         std::stringstream ss(line);
-//         std::vector<std::string> row;
-//         std::string cell;
-
-//         while(getline(ss, cell ,',')){
-//             row.push_back(cell);
-//             std::cout<<cell<<",";
-//         }
-//         std::cout<<std::endl;
-
-//         char amino_ = row[1][0];
-//         std::string codon_ = row[0];
-//         int last_nuc = BASE(std::string(1, codon_[2]));
-//         double cai_value_ = std::stod(row[2]);
-//         double cai_value = (cai_value_ == 0)? -999999 : log(cai_value_);
-
-//         if(amino_ == 'R'){
-//             if(codon_ == "AGA")
-//                 last_nuc = BASE("A1");
-//             if(codon_ == "AGG")
-//                 last_nuc = BASE("G1");
-            
-//             if(codon_ == "CGA")
-//                 last_nuc = BASE("A2");
-//             if(codon_ == "CGG")
-//                 last_nuc = BASE("G2");
-//             if(codon_ == "CGC")
-//                 last_nuc = BASE("C");
-//             if(codon_ == "CGU")
-//                 last_nuc = BASE("U");
-//             // {"CGU","R"}, {"CGC","R"}, {"CGA","R"}, {"CGG","R"}, {"AGA","R"}, {"AGG","R"},
-//         }
-//         else if(amino_ == 'L'){
-//             if(codon_ == "CUU")
-//                 last_nuc = BASE("U");
-//             if(codon_ == "CUC")
-//                 last_nuc = BASE("C");
-//             if(codon_ == "CUA")
-//                 last_nuc = BASE("A2");
-//             if(codon_ == "CUG")
-//                 last_nuc = BASE("G2");
-            
-//             if(codon_ == "UUA")
-//                 last_nuc = BASE("A1");
-//             if(codon_ == "UUG")
-//                 last_nuc = BASE("G1");
-//             // {"CUU","L"}, {"CUC","L"}, {"CUA","L"}, {"CUG","L"}, {"UUA","L"}, {"UUG","L"},
-//         }
-//         else if(amino_ == 'S'){
-//             if(codon_ == "UCU")
-//                 last_nuc = BASE("U");
-//             if(codon_ == "UCC")
-//                 last_nuc = BASE("C");
-//             if(codon_ == "UCA")
-//                 last_nuc = BASE("A");
-//             if(codon_ == "UCG")
-//                 last_nuc = BASE("G");
-            
-//             if(codon_ == "AGU")
-//                 last_nuc = BASE("U1");
-//             if(codon_ == "AGC")
-//                 last_nuc = BASE("C1"); 
-//             // {"UCU","S"}, {"UCC","S"}, {"UCA","S"}, {"UCG","S"}, {"AGU","S"}, {"AGC","S"},
-//         }
-//         unweighted_CAIMap[codon_] = cai_value;
-//         CodonSetCAIMap[amino_][last_nuc] = cai_value;
-//     }
-// }
-
-// inline void initialize_CAI_table2(bool is_DN){
-//     for (auto &item : CodonSetCAIMap) {
-//         std::cout<<item.first<<",";
-//         for(auto &item2 : item.second){
-//             std::cout<<item2.first<<","<<item2.second<<std::endl;
-//         }
-//     }
-// }
 
 bool isCSV(const std::string& file_path) {
     // Check if file_path ends with ".csv"

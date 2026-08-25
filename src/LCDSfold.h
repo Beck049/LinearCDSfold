@@ -367,6 +367,17 @@ void update(std::unordered_map<int, State<T>>& stateMap, int index, double newsc
     }
 }
 
+template <typename T>
+void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, int preindex_2, int preindex_3, Manner MANNER, int last_pair_pos){
+
+    auto it = stateMap.find(index);
+
+    if (it == stateMap.end() || newscore > it->second.score) {
+        State<T> newState(newscore, preindex_1, preindex_2, preindex_3, MANNER, last_pair_pos);
+        stateMap[index] = newState;
+    }
+}
+
 /** *************************************************************************************************************** */
 
 inline bool isLastNuc(int pos){
@@ -1091,7 +1102,7 @@ void Multi_state(std::vector<std::unordered_map<int, State<T>>>& bestMulti,
 
                     // Multi->Multi
                     index = GetIndex(i, nuci, nucj);
-                    update(bestMulti_j, index, newscore, index_j_1, MANNER_Multi_EtoMulti, last_pair_pos_Multi);
+                    update(bestMulti_j, index, newscore, index_j_1, -1, stateMulti_j_1.index_3, MANNER_Multi_EtoMulti, last_pair_pos_Multi);
                 }
 
                 int i_1 = i - 1;
@@ -1149,7 +1160,7 @@ void M1_C_to_M2_state(std::vector<std::unordered_map<int, State<T>>>& bestM1,
         }
 
         // C->M1
-        update(bestM1_j, index_j, newscore, index_j, MANNER_CtoM1, j);
+        update(bestM1_j, index_j, newscore, index_j, -1, 1, MANNER_CtoM1, j);
 
         int i_1 = i - 1;
         if (i_1 >= HAIRPIN_GAP + 1) {
@@ -1167,7 +1178,7 @@ void M1_C_to_M2_state(std::vector<std::unordered_map<int, State<T>>>& bestM1,
                     }
                     // M1+C->M2
                     index = GetIndex(k, nuck, nucj);
-                    update(bestM2_j, index, newscore, index_i_1, index_j, MANNER_M1_CtoM2, j);
+                    update(bestM2_j, index, newscore, index_i_1, index_j, stateM1_i_1.index_3+1, MANNER_M1_CtoM2, j);
                 }
             }
         }
@@ -1209,7 +1220,7 @@ void M1_to_M1_state(std::vector<std::unordered_map<int, State<T>>>& bestM1,
 
                 // M1->M1
                 index = GetIndex(i, nuci, nucj);
-                update(bestM1_j, index, newscore, index_j_1, MANNER_M1_EtoM1, last_pair_pos_M1);
+                update(bestM1_j, index, newscore, index_j_1, -1, stateM1_j_1.index_3, MANNER_M1_EtoM1, last_pair_pos_M1);
             }
         }
     }
@@ -1239,9 +1250,9 @@ void M2_state(std::vector<std::vector<std::unordered_map<int, State<T>>>>& bestS
         int last_pair_pos_M2 = stateM2_j.last_pair_pos;
 
         // M2->M1
-        update(bestM1_j, index_j, newscore, index_j, MANNER_M2toM1, last_pair_pos_M2);
+        update(bestM1_j, index_j, newscore, index_j, -1, stateM2_j.index_3, MANNER_M2toM1, last_pair_pos_M2);
         // M2->Multi
-        update(bestMulti_j, index_j, newscore, index_j, MANNER_M2toMulti, last_pair_pos_M2);
+        update(bestMulti_j, index_j, newscore, index_j, -1, stateM2_j.index_3, MANNER_M2toMulti, last_pair_pos_M2);
         int i_1 = i - 1;
         if (i_1 >= 0) {
             for (int l = 1; l <= min(SINGLE_MAX_LEN, i_1); l++) {
@@ -1255,7 +1266,7 @@ void M2_state(std::vector<std::vector<std::unordered_map<int, State<T>>>>& bestS
                         newscore = stateM2_j.score + stateS_i_1.score;
                         // S+M2->Multi
                         index = GetIndex(k, nuck, nucj);
-                        update(bestMulti_j, index, newscore, index_i_1, index_j, MANNER_S_M2toMulti, last_pair_pos_M2);
+                        update(bestMulti_j, index, newscore, index_i_1, index_j, stateM2_j.index_3, MANNER_S_M2toMulti, last_pair_pos_M2);
                     }
                 }
             }

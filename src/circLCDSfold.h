@@ -26,6 +26,7 @@
 #include "utility.h"
 #include "beamprune.h"
 #include "ac_matcher.h"
+#include "LCDSfold.h"
 
 using namespace std;
 using namespace oligodesign;
@@ -102,7 +103,7 @@ std::pair<std::string, double> compute_extra_cai(
             } else if (target_ami == 'L') {
                 if (nucn == 7)       nucn_1 = 'U';
                 else if (nucn == 8)  nucn_1 = 'C';
-                else if (nucn == 4)  nucn_1 = 'C';
+                else if (nucn == 14)  nucn_1 = 'C';
             } else if (target_ami == 'S') {
                 if (nucn == 3)       nucn_1 = 'A';
                 else if (nucn == 2)  nucn_1 = 'U';
@@ -119,12 +120,150 @@ std::pair<std::string, double> compute_extra_cai(
                     }
                 }
             } else if (type == 'i') {
-                codon_n += nucn_1 + reBASE(nucn) + '.';
+                if (nucn_1 != '\0') {
+                    codon_n = std::string(1, nucn_1) + reBASE(nucn) + '.';
+                } else {
+                    // 若找不到前一個配對字元，補預設值或原始字元
+                    codon_n = std::string(".") + reBASE(nucn) + '.';
+                }
             }
         }
     }
 
     return {codon_n, extra_cai};
+}
+
+/**
+ * @brief 計算 Circular RNA 在連接跨端區間形成的 Interior loop / External connection MFE
+ * 
+ * @tparam T 數值型別 (float, double)
+ * @param alltables DP 狀態記錄表
+ * @param rna_seq 原始輸入 RNA 序列
+ * @param ami_seq 胺基酸序列
+ * @param BestAminoMap 各胺基酸最佳 CAI 的 Codon 對應表
+ * @param state 當前候選的狀態 (State<T>)
+ * @param id 當前狀態的編號 index
+ * @param ith 當前結構左端索引
+ * @param jth 當前結構右端索引
+ * @param codon_i 補齊 i 所屬 Codon 的字串
+ * @param codon_j 補齊 j 所屬 Codon 的字串
+ * @param seq_length 序列總長度
+ * @param debug 是否印出偵錯資訊
+ * @return double 計算得到的額外能量補償 (extra_mfe)
+ */
+template<typename T>
+double calcInternalMFE(
+    AllTables<T>& alltables,
+    const std::string& rna_seq,
+    const std::string& ami_seq,
+    const std::unordered_map<char, std::pair<std::string, double>>& BestAminoMap,
+    const State<T>& state,
+    int id,
+    int ith,
+    int jth,
+    const std::string& codon_i,
+    const std::string& codon_j,
+    int seq_length,
+    bool debug = true
+) {
+    // 1. 回溯取得當前局部解的二級結構與序列
+    std::string tmp_rna(seq_length, '.');
+    std::string tmp_structure(seq_length, '.');
+    BacktrackStructure(tmp_rna, tmp_structure, seq_length, id, state, alltables, jth);
+
+    // 2. 找出在 [ith, jth] 範圍內 exterior loop 的所有 base pairs
+    std::vector<std::pair<int, int>> exterior_pairs;
+    std::stack<int> bp_stack;
+
+    for (int pos = ith; pos <= jth; ++pos) {
+        if (tmp_structure[pos] == '(') {
+            bp_stack.push(pos);
+        } else if (tmp_structure[pos] == ')') {
+            if (!bp_stack.empty()) {
+                int open_idx = bp_stack.top();
+                bp_stack.pop();
+                if (bp_stack.empty()) {
+                    exterior_pairs.push_back({open_idx, pos});
+                }
+            }
+        }
+    }
+
+    // 3. 補齊 ith 與 jth 所屬 Codon
+    if(codon_i != ""){
+        for(int k = 0; k < 3; ++k){
+            if(codon_i[k] == '.') continue;
+            tmp_rna[((ith/3)*3)+k] = codon_i[k];
+        }
+    }
+    if(codon_j != ""){
+        for(int k = 0; k < 3; ++k){
+            tmp_rna[((jth/3)*3)+k] = codon_j[k];
+        }
+    }
+
+    // 4. 補齊 ith-1 與 jth+1 的 codon
+    const int ami_i = (ith / 3) - 1;
+    if( ami_i >= 0 ){
+        const std::string&  best_codon_i_1 = BestAminoMap.at(ami_seq[ami_i]).first;
+        for (int k = 0; k < 3; ++k) {
+            tmp_rna[ami_i * 3 + k] = best_codon_i_1[k];
+        }
+    }
+    
+    const int ami_j = (jth / 3) + 1;
+    if( ami_j < ami_seq.size() ){
+        const std::string& best_codon_j_1 = BestAminoMap.at(ami_seq[ami_j]).first;
+        for (int k = 0; k < 3; ++k) {
+            tmp_rna[ami_j * 3 + k] = best_codon_j_1[k];
+        }
+    } else if (ami_i != 0) {
+        const std::string& best_codon_j_1 = BestAminoMap.at(ami_seq[0]).first;
+        for (int k = 0; k < 3; ++k) {
+            tmp_rna[k] = best_codon_j_1[k];
+        }
+    }
+
+    // 5. 偵錯資訊輸出
+    if (debug) {
+        std::cout << "\n[Debug Interior Structure " << ith << " " << jth << "]: \n"
+                  << tmp_rna << "\n" << tmp_structure << std::endl;
+        std::cout << codon_i << ", " << codon_j << std::endl;
+        std::cout << "Exterior pairs in range [" << ith << ", " << jth << "]: ";
+        for (const auto& [u, v] : exterior_pairs) {
+            std::cout << "(" << u + 1 << ", " << v + 1 << ") [" << tmp_rna[u] << "-" << tmp_rna[v] << "] ";
+        }
+        std::cout << std::endl;
+    }
+
+    // 6. 計算能量 (MFE)
+    // 預設為閉合 Multiloop / Interior loop 扣除開環代價
+    int i = exterior_pairs[0].first;
+    int j = exterior_pairs[0].second;
+    int p = exterior_pairs[1].first;
+    int q = exterior_pairs[1].second;
+    // std::cout << "(" << i << ", " << j << ")" << "NUC: " << tmp_rna[i] << ", " << tmp_rna[i+1] << ", " << tmp_rna[j-1] << ", " << tmp_rna[j] << std::endl;
+    // std::cout << "(" << p << ", " << q << ")" << "NUC: " << tmp_rna[p-1] << ", " << tmp_rna[p] << ", " << tmp_rna[q] << ", " << tmp_rna[(q+1) % seq_length] << std::endl;
+
+    auto to_nuc_id = [&](char c) -> int {
+        char upper_c = std::toupper(static_cast<unsigned char>(c));
+        switch (upper_c) {
+            case 'A': return 1;
+            case 'C': return 2;
+            case 'G': return 3;
+            case 'U': case 'T': return 4;
+            default:
+                std::cerr << "[Warning] Unrecognized nucleotide: '" << c << "'\n";
+                return 0;
+        }
+    };
+
+    double extra_mfe = -v_score_single(
+        i, j, p, q,
+        to_nuc_id(tmp_rna[i]), to_nuc_id(tmp_rna[i+1]), to_nuc_id(tmp_rna[j-1]), to_nuc_id(tmp_rna[j]),
+        to_nuc_id(tmp_rna[p-1]), to_nuc_id(tmp_rna[p]), to_nuc_id(tmp_rna[q]), to_nuc_id(tmp_rna[(q+1) % seq_length])
+    );
+    return extra_mfe;
 }
 
 template<typename T>
@@ -205,11 +344,16 @@ std::vector<pair<T,T>> circular_compose_v1(AllTables<T> &alltables,string& rna_s
 
                 // MFE
                 double extra_mfe = 0;
-                if (manner == MANNER_CtoM1) { // hairpin
+                if (manner == MANNER_CtoM1) {   // hairpin
                     extra_mfe += hairpin37[min(hairpin_len, 30)];
                     extra_mfe += (hairpin_len > 30) ? (int)(lxc37*log((hairpin_len)/30.)) : 0;
-                } else if (manner == MANNER_M2toM1) { // multi
-                    extra_mfe -= ML_intern37 + ML_closing37;
+                } else if (manner == MANNER_M2toM1) {
+                    if(state.index_3 > 2) { // Multi
+                        extra_mfe -= ML_intern37 + ML_closing37;
+                    } else {    // Interior
+                        extra_mfe += calcInternalMFE<T>(alltables, rna_seq, ami_seq, BestAminoMap, state,
+                                                            id, ith, jth, codon_i, codon_j, seq_length, false );
+                    }
                 }
                 if (is_DN) extra_mfe *= lambda;
 

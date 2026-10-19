@@ -27,6 +27,7 @@ using namespace std;
 int main(int argc, char** argv){
     std::string seq="";
     std::string objective ;
+    std::string circ_objective ;
     std::ifstream fasta_file;
     std::ifstream cai_file;
 
@@ -43,6 +44,8 @@ int main(int argc, char** argv){
     pareto = false;
     is_beam_speedup = false;
     objective = "LD";
+    circ_objective = "Non";
+    bool is_circ = false;
     double threshold1 = 0.0025;
     double threshold2 = 0.00075;
     
@@ -104,8 +107,19 @@ int main(int argc, char** argv){
             std::cerr << "Error: objective is not LD or DN." << std::endl;
             return 0;
         }
-
     }
+
+    /*Circular Objective function*/
+    std::string circ_objective_ = input.getCmdOption("-C");
+    if (!circ_objective_.empty()) {
+        circ_objective = circ_objective_;
+
+        if (circ_objective != "vienna" && circ_objective != "mfold" && circ_objective != "IRES") {
+            std::cerr << "Error: objective can only be vienna, mfold, or IRES." << std::endl;
+            return 0;
+        }
+    }
+    is_circ = (circ_objective != "Non");
 
     // Read sequence file 
     if (!file.empty()){
@@ -251,7 +265,7 @@ int main(int argc, char** argv){
         beamsize = 0;
     }
         
-    PrintInfo(output_txt, output_csv, file, beamsize, cai_file_path, lambda, objective, pareto, is_rna_file, true);
+    PrintInfo(output_txt, output_csv, file, beamsize, cai_file_path, lambda, objective, pareto, is_circ, is_rna_file, true);
     if(!is_rna_file){ // NORMAL MODE
         bool is_DN = (objective == "DN");
         std::cout << (is_DN? "====== DERNA =======" : "=== LinearDesign ===") << std::endl;
@@ -271,13 +285,16 @@ int main(int argc, char** argv){
             if(pareto && is_DN) {
                 Pareto_solution<double>(threshold1, threshold2, rna_seq, con_seq, ami_seq, cai_vector, output_txt, output_csv, show_score, PID, protein_len);
             } else {
+                // 輸出 Input Data Info
                 std::cout << "Protein ID: " << PID << std::endl;
                 std::cout << "Protein length: " << protein_len << std::endl;
                 std::cout <<"Lambda: " << std::fixed << std::setprecision(3) << lambda << std::endl;
                 if(lambda == 0 && is_DN)//prevent MFE not predictable
                     lambda += 0.00001;
+                // Init Tables
                 AllTables<double> alltables(rna_seq, rna_seq.size());
                 initialize_CAI_table(cai_vector,is_DN);
+                // 開始 Linear 計算
                 gettimeofday(&start, 0);
                 initialize_Special_HP<double>(alltables, rna_seq, con_seq, ami_seq, is_DN);
                 if(beamsize) {
@@ -295,11 +312,15 @@ int main(int argc, char** argv){
                 // examine_bestSTable(alltables.bestS, "bestS");
                 //
 
+                // Backtrack 並輸出 Linear Result
                 double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
                 std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, is_DN);
 
+
                 // Circular RNA Reconstruction
-                std::vector<pair<double,double>> result_c = circular_compose_v1<double>( alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, use_beam_pruning, is_DN);
+                if (circ_objective == "vienna"){
+                    std::vector<pair<double,double>> result_c = circular_compose_v1<double>( alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, use_beam_pruning, is_DN);
+                }
             }
         }    
     } else { //RNA MODE

@@ -266,6 +266,8 @@ double calcInternalMFE(
     return extra_mfe;
 }
 
+
+// 直接環化（用 vienna 環化方式）
 template<typename T>
 std::vector<pair<T,T>> circular_compose_v1(AllTables<T> &alltables,string& rna_seq, vector<int>& con_seq, string& ami_seq, string& output_txt, string& output_csv,  string& PID, int protein_length, double TimeSpend, bool show_score, bool is_beam, bool is_DN){//return {CAI,MFE}
     std::ofstream outputfile(output_txt,std::ios::app);
@@ -461,6 +463,175 @@ std::vector<pair<T,T>> circular_compose_v1(AllTables<T> &alltables,string& rna_s
 
     // PrintCalCAIMap(is_DN);
     // PrintUnweightedCAIMap();
+
+    return result_container;
+}
+
+// 直接環化（用 mfold 環化方式）
+template<typename T>
+std::vector<pair<T,T>> circular_compose_m1(AllTables<T> &alltables,string& rna_seq, vector<int>& con_seq, string& ami_seq, string& output_txt, string& output_csv,  string& PID, int protein_length, double TimeSpend, bool show_score, bool is_beam, bool is_DN){//return {CAI,MFE}
+    std::ofstream outputfile(output_txt,std::ios::app);
+    std::ofstream outputcsv(output_csv,std::ios::app);
+
+    double c_TimeSpend = 0;
+    auto c_start_time = std::chrono::high_resolution_clock::now();
+
+    outputfile << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
+    std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
+    outputfile << "Circular RNA Reconstruction:" << std::endl;
+    std::cout << "=== CircularRNA ===" << std::endl;
+
+    std::vector<std::unordered_map<int, State<T>>>& bestC = alltables.bestC;
+
+    int seq_length = rna_seq.size() / 2;
+
+    // 考慮 除了 dangling end 以外的 circular structure
+    CircularCandidate<T> best_struct;
+
+    int best_i = -1;
+    int best_j = -1;
+    int best_id1 = -1;
+    int best_id2 = -1;
+    State<T> best_state1;
+    State<T> best_state2;
+    T best_score = -std::numeric_limits<T>::infinity();
+
+    // 1. 遍歷 j from 0 to seq_length
+    // 尋找 C(i, j) 與 C(j, i + seq_length) 的最優組合
+    for (int j = 0; j < seq_length; ++j) {
+        if (j >= bestC.size() || bestC[j].empty()) continue;
+
+        for (const auto& [id1, state1] : bestC[j]) {
+            int i, nuci1, nucj1;
+            std::tie(i, nuci1, nucj1) = GetIndexTuple(id1);
+
+            int second_end = i + seq_length;
+            if (second_end >= bestC.size() || bestC[second_end].empty()) continue;
+
+            // 尋找右側閉合區塊 C(j, i + seq_length)
+            for (const auto& [id2, state2] : bestC[second_end]) {
+                int start2, nucj2, nuci2;
+                std::tie(start2, nucj2, nuci2) = GetIndexTuple(id2);
+
+                // 確認起點與第一個區塊的終點 j 相接且核苷酸相容
+                if (start2 == j && nucj1 == nucj2 && nuci1 == nuci2) {
+                    T combined_score = state1.score + state2.score;
+
+                    if (combined_score > best_score) { // 若分數越高越好用 >，反之用 <
+                        best_score = combined_score;
+                        best_i = i;
+                        best_j = j;
+                        best_id1 = id1;
+                        best_id2 = id2;
+                        best_state1 = state1;
+                        best_state2 = state2;
+                    }
+                }
+            }
+        }
+    }
+
+    if (best_i == -1) {
+        std::cout << "No circular structure found." << std::endl;
+        outputfile << "No circular structure found." << std::endl;
+        return {};
+    }
+
+    // 建構 Output
+    // 2. 回溯雙倍長度的序列與結構 (長度 2 * seq_length)
+    std::string full_rna(rna_seq.size(), '.');
+    std::string full_struct(rna_seq.size(), '.');
+
+    // 分別 Backtrack 兩個配對區塊 C(i, j) 與 C(j, i + seq_length)
+    BacktrackStructure(full_rna, full_struct, rna_seq.size(), best_id1, best_state1, alltables, best_j);
+    BacktrackStructure(full_rna, full_struct, rna_seq.size(), best_id2, best_state2, alltables, best_i + seq_length);
+
+    // 未配對部分填入 rna_seq 原始核苷酸
+    for (size_t pos = 0; pos < full_rna.size(); ++pos) {
+        if (full_rna[pos] == '.' || full_rna[pos] == 'X') {
+            full_rna[pos] = rna_seq[pos];
+        }
+    }
+
+    // 3. 截取 [best_i, best_i + seq_length - 1] 作為單倍長度的 CDS 與二級結構輸出
+    //    旋轉回到原本 0 ~ seq_length-1 (1 ~ seq_length) 的順序, 原區間為 [best_i, best_i + seq_length - 1]，對應的原座標為 k % seq_length
+    std::string c_rna_solution(seq_length, ' ');
+    std::string c_structure_solution(seq_length, '.');
+
+    // 收集區間 [best_i, best_i + seq_length - 1] 內產生的配對清單 (u, v)
+    std::vector<int> pair_table(2 * seq_length, -1);
+    std::stack<int> st;
+    for (int k = best_i; k < best_i + seq_length; ++k) {
+        if (full_struct[k] == '(') {
+            st.push(k);
+        } else if (full_struct[k] == ')') {
+            if (!st.empty()) {
+                int left = st.top();
+                st.pop();
+                pair_table[left] = k;
+                pair_table[k] = left;
+            }
+        }
+    }
+
+    // 將序列填回 0 ~ seq_length-1 (1-based 的 1 ~ seq_length)
+    for (int offset = 0; offset < seq_length; ++offset) {
+        int original_pos = (best_i + offset) % seq_length;
+        c_rna_solution[original_pos] = full_rna[best_i + offset];
+    }
+
+    // 依據原始座標重構配對括號 (保持 '(' 在前、')' 在後)
+    for (int k = best_i; k < best_i + seq_length; ++k) {
+        if (pair_table[k] != -1 && k < pair_table[k]) {
+            int pos1 = k % seq_length;
+            int pos2 = pair_table[k] % seq_length;
+
+            if (pos1 > pos2) std::swap(pos1, pos2);
+
+            c_structure_solution[pos1] = '(';
+            c_structure_solution[pos2] = ')';
+        }
+    }
+
+    std::cout << "Optimal circular pair split at: i=" << best_i << ", j=" << best_j 
+              << ", i+L=" << (best_i + seq_length) << std::endl;
+    std::cout << "Coding sequence and its secondary structure (range [" << best_i << ", " << best_i + seq_length - 1 << "]):" << std::endl;
+    outputfile << "Coding sequence and its secondary structure :" << std::endl;
+
+    std::cout << c_rna_solution << std::endl;
+    outputfile << c_rna_solution << std::endl;
+    std::cout << c_structure_solution << std::endl;
+    outputfile << c_structure_solution << std::endl;
+
+    // 4. 計算 MFE 與 CAI
+    T weighted_cai_score = GetCAIScore<T>(c_rna_solution, is_DN);
+    double cai_value = GetUnweghtedCAIScore(c_rna_solution);
+    cai_value = exp(cai_value / double(ami_seq.size() / 2)); // 此處 ami_seq 原為 2 倍長度，故除以原始長度
+
+    double mfe_value;
+    if (is_DN) {
+        mfe_value = -double(double(best_score - weighted_cai_score) / (100.0 * lambda));
+    } else {
+        if (lambda) {
+            mfe_value = -double(double(best_score - weighted_cai_score) / 100.0);
+        } else {
+            mfe_value = -(best_score / 100.0);
+        }
+    }
+
+    std::cout << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;
+    outputfile << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;
+    std::cout << "CAI: " << std::round(cai_value * 1000.0) / 1000.0 << std::endl;
+    outputfile << "CAI: " << std::round(cai_value * 1000.0) / 1000.0 << std::endl;
+
+    auto c_end_time = std::chrono::high_resolution_clock::now();
+    c_TimeSpend = std::chrono::duration_cast<std::chrono::duration<double>>(c_end_time - c_start_time).count();
+    std::cout << "Total runtime: " << std::round(c_TimeSpend * 1000.0) / 1000.0 << " s" << std::endl;
+    outputfile << "Total runtime: " << std::round(c_TimeSpend * 1000.0) / 1000.0 << " s" << std::endl;
+
+    std::vector<pair<T,T>> result_container;
+    result_container.push_back({round_up(cai_value), round_up(mfe_value)});
+    outputcsv << "," << mfe_value << "," << cai_value << "," << c_TimeSpend;
 
     return result_container;
 }

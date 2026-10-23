@@ -276,6 +276,12 @@ int main(int argc, char** argv){
             int protein_len = inseq_list[i].length();
             ami_seq = inseq_list[i];
             transform(ami_seq.begin(), ami_seq.end(), ami_seq.begin(), ::toupper);
+
+            // mfold 要延長 2 倍
+            if (circ_objective == "mfold") {
+                ami_seq = ami_seq + ami_seq;
+            }
+
             ami_to_rna(rna_seq_list, ami_seq);
             add_con_seq(con_seq_list, ami_seq);
 
@@ -305,7 +311,7 @@ int main(int argc, char** argv){
                 gettimeofday(&end, 0);
 
                 //
-                // examine_bestTable(alltables.bestC, "bestC");
+                // examine_bestTable(alltables.bestC,  "bestC");
                 // examine_bestTable(alltables.bestM1, "bestM1");
                 // examine_bestTable(alltables.bestM2, "bestM2");
                 // examine_bestTable(alltables.bestMulti, "bestMulti");
@@ -314,12 +320,24 @@ int main(int argc, char** argv){
 
                 // Backtrack 並輸出 Linear Result
                 double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
-                std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, is_DN);
+                if (circ_objective == "mfold") {
+                    // 1. 取得單倍長度 (nt) 與單倍胺基酸序列
+                    int single_rna_len = protein_len * 3; // 或 rna_seq.size() / 2
+                    std::string single_rna_seq = rna_seq.substr(0, single_rna_len);
+                    std::string single_ami_seq = ami_seq.substr(0, protein_len);
+                    std::vector<int> single_con_seq(con_seq.begin(), con_seq.begin() + single_rna_len);
 
+                    // 2. 輸出 Linear Result
+                    std::vector<pair<double,double>> result = result_output<double>(alltables, single_rna_seq, single_con_seq, single_ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, is_DN);
+                } else {
+                    std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, is_DN);
+                }
 
                 // Circular RNA Reconstruction
                 if (circ_objective == "vienna"){
                     std::vector<pair<double,double>> result_c = circular_compose_v1<double>( alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, use_beam_pruning, is_DN);
+                } else if (circ_objective == "mfold") {
+                    std::vector<pair<double,double>> result_c = circular_compose_m1<double>( alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, use_beam_pruning, is_DN);
                 }
             }
         }    

@@ -1,111 +1,127 @@
-import pandas as pd
+import csv
+import math
 import sys
-from typing import Any
-from collections.abc import Iterator
 
-def read_protein_pandas(file_path: str) -> pd.DataFrame:
-    # 自動偵測標頭並讀取
-    df = pd.read_csv(file_path, skipinitialspace=True)
-    return df
+# 忽略不比對的欄位
+IGNORE_COLUMNS = {"Run time", "cRun time"}
 
-def yield_protein_blocks(file_path: str) -> Iterator[dict[str, Any]]:
-    with open(file_path, 'r', encoding='utf-8') as f:
-        block = {}
-        capture_next_lines = 0  # 用來追蹤是否正在讀取 CDS 與 Structure
-        
-        for line in f:
-            line = line.strip()
-            
-            # 1. 分隔線處理：吐出資料並重置
-            if line.startswith('====='):
-                if block:
-                    yield block
-                    block = {}
-                capture_next_lines = 0
-                continue
-            
-            # 2. 處理「標籤在下一行」的特殊欄位
-            if line.startswith("Coding sequence and its secondary structure:"):
-                capture_next_lines = 2 # 接下來兩行分別是 CDS 和 Structure
-                continue
-            
-            if capture_next_lines == 2:
-                block["CDS"] = line
-                capture_next_lines -= 1
-                continue
-            elif capture_next_lines == 1:
-                block["Structure"] = line
-                capture_next_lines -= 1
-                continue
-            
-            # 3. 解析冒號分隔的一般欄位
-            if ':' in line:
-                key, value = line.split(':', 1)
-                key, value = key.strip(), value.strip()
-                
-                if key == "Protein ID":
-                    block["UniPort ID"] = value
-                elif key == "Protein length":
-                    block["Protein length"] = int(value)
-                elif key == "Lambda":
-                    block["Lambda"] = float(value)
-                elif key == "Folding free energy":
-                    block["MFE"] = float(value.split()[0])
-                elif key == "CAI":
-                    block["CAI"] = float(value)
-                elif key == "Total runtime":
-                    block["Run time"] = float(value.split()[0])
-        
-        # 處理檔案末尾
-        if block:
-            yield block
+# 浮點數比對容許誤差 (可依需求調整，如 1e-4)
+TOLERANCE = 1e-4
 
-def check_structure(structure: str) -> bool:
-    stack = 0
-    for char in structure:
-        if char == '(':
-            stack += 1
-        elif char == ')':
-            stack -= 1
-            if stack < 0:
-                return False
-    return stack == 0
 
-# main function
-if __name__ == "__main__":
-    if len(sys.argv) >= 3:
-        txt_file = sys.argv[1]
-        csv_file = sys.argv[2]
+def normalize_value(val: str):
+    """清理字串並嘗試轉為 float 比對數值；若非數值則回傳修剪後的字串。"""
+    val = val.strip()
+    try:
+        return float(val)
+    except ValueError:
+        return val
+
+
+def is_equal(v1, v2) -> bool:
+    """比較兩值是否相同（支援浮點數誤差容許）。"""
+    if isinstance(v1, float) and isinstance(v2, float):
+        return math.isclose(v1, v2, abs_tol=TOLERANCE)
+    return v1 == v2
+
+
+def load_csv_data(filepath: str) -> dict:
+    """讀取 CSV 並以 ID（第一欄）為 key 建立字典。"""
+    data = {}
+    with open(filepath, mode="r", encoding="utf-8-sig") as f:
+        reader = csv.reader(f)
+        try:
+            raw_headers = next(reader)
+        except StopIteration:
+            return {}, []
+
+        headers = [h.strip() for h in raw_headers]
+        id_col_name = headers[0]
+
+        for line_num, row in enumerate(reader, start=2):
+            if not row or not any(row):
+                continue
+            row_dict = {
+                h: normalize_value(v)
+                for h, v in zip(headers, row)
+                if h not in IGNORE_COLUMNS
+            }
+            row_id = row_dict.get(id_col_name)
+
+            if row_id in data:
+                print(f"[警告] 檔案 {filepath} 第 {line_num} 行出現重複 ID: {row_id}")
+            data[row_id] = row_dict
+
+    return data, headers
+
+
+def main():
+    if len(sys.argv) < 3:
+        print("Usage: python check.py <test.csv> <answer.csv>")
+        sys.exit(1)
+
+    test_file = sys.argv[1]
+    ans_file = sys.argv[2]
+
+    test_data, _ = load_csv_data(test_file)
+    ans_data, ans_headers = load_csv_data(ans_file)
+
+    test_ids = set(test_data.keys())
+    ans_ids = set(ans_data.keys())
+
+    has_error = False
+
+    # 1. 檢查缺少或多出的 ID
+    missing_ids = ans_ids - test_ids
+    extra_ids = test_ids - ans_ids
+
+    if missing_ids:
+        has_error = True
+        print(f"[錯誤] 比對序列缺少以下 ID ({len(missing_ids)} 個):")
+        for mid in sorted(missing_ids):
+            print(f"  - 缺少: {mid}")
+
+    if extra_ids:
+        has_error = True
+        print(f"[錯誤] 比對序列多出以下 ID ({len(extra_ids)} 個):")
+        for eid in sorted(extra_ids):
+            print(f"  - 多出: {eid}")
+
+    # 2. 針對共同存在的 ID 比對各欄位數值
+    common_ids = test_ids & ans_ids
+    compare_columns = [
+        col
+        for col in ans_headers
+        if col not in IGNORE_COLUMNS and col != ans_headers[0]
+    ]
+
+    diff_count = 0
+    for row_id in sorted(common_ids):
+        row_test = test_data[row_id]
+        row_ans = ans_data[row_id]
+
+        row_errors = []
+        for col in compare_columns:
+            val_test = row_test.get(col)
+            val_ans = row_ans.get(col)
+
+            if not is_equal(val_test, val_ans):
+                row_errors.append(f"  欄位 [{col}]: 輸出={val_test} | 預期={val_ans}")
+
+        if row_errors:
+            has_error = True
+            diff_count += 1
+            print(f"[數值不符] ID: {row_id}")
+            for err in row_errors:
+                print(err)
+
+    if not has_error:
+        print(" 比對完全正確（順序無關）")
+        sys.exit(0)
     else:
-        txt_file = 'multiple_seqs.txt'
-        csv_file = 'result.csv'
+        print(f"\n比對結束：發現錯誤，共有 {diff_count} 筆資料欄位不符。")
+        sys.exit(1)
 
-    df = read_protein_pandas(csv_file)
-    txt = yield_protein_blocks(txt_file)
 
-    counter = 0
-    for block in txt:
-        # block 是一個 dict
-        print(f"------------- 正在處理 {block['UniPort ID']} -------------")
-        df_row = df[counter:counter+1]
-        if not df_row.empty and df_row.iloc[0]['UniPort ID'] == block['UniPort ID']:
-            # 比對 DataFrame 中的資料
-            is_match = True
-            is_match &= (df_row.iloc[0]['Protein length'] == block['Protein length'])
-            is_match &= (abs(df_row.iloc[0]['Lambda'] - block['Lambda']) < 1e-6)
-            is_match &= (round(df_row.iloc[0]['MFE'], 3) == block['MFE'])
-            is_match &= (round(df_row.iloc[0]['CAI'], 3) == block['CAI'])
-            if not is_match:
-                print("DataFrame 中的資料與預期不符：")
-                print(f"received: {block['Lambda']}\t{block['MFE']}\t{block['CAI']}")
-                print(f"expected: {df_row.iloc[0]['Lambda']}\t{df_row.iloc[0]['MFE']}\t{df_row.iloc[0]['CAI']}")
-            # 比對 2nd Structure
-            structure = block['Structure']
-            is_valid_structure = check_structure(structure)
-            if not is_valid_structure:
-                print("2nd Structure 格式不正確")
-        else:
-            print("DataFrame 中找不到對應的 UniPort ID")
-            sys.exit(1)
-
-        counter += 1
+if __name__ == "__main__":
+    main()

@@ -8,8 +8,8 @@
 ||`-m <method>`|`exact`: 最佳解</br>`beam `: 近似解 (慢)</br>`beam2`: 近似解 (快)|
 ||`-b <beam_size>`||
 ||`-C <circ_method>`|`vienna`: 用 vienna 直接環化</br>`mfold`: 用 mfold 直接環化</br>`IRES`: 用 vienna 加上 IRES 環化|
-||-i <IRES_file>|IRES input file|
-||-k <crosspair_penalty>|object function 中 crosspair 的權重|
+||`-i <IRES_file>`|IRES input file|
+||`-k <crosspair_penalty>`|object function 中 crosspair 的權重|
 ||`-c <codon_usage_csv>`||
 ||`-o <output_txt>`||
 ||`-f <output_csv>`||
@@ -35,7 +35,7 @@
 ### Output File Example
 #### CSV
 |UniPort ID|Protein length|Lambda|MFE|CAI|Run time|cMFE|cCAI|cRun time|
-|---|---|---|---|---|---|---|---|---|
+|------|---|-------|-----------|--------|-------|--------|--------|----------|
 |A9JR22|95|2.000000|-165.100000|0.895415|4.35439|-172.197|0.886991|0.00242767|
 
 #### TXT
@@ -67,11 +67,8 @@ Total runtime: 0.002 s
 ```
 
 ## ToDo
-2. 若 `-C IRES`，則
+1. 若 `-C IRES`，則
    1. 需輸入 `-i <IRES_file>`
    2. 需輸入 `-k <crosspair_penalty>`
    3. 不輸出 Linear 結果！！
-3. 實作 mFold
-   1. 在 2n folding 中找出 Linear 最佳解
-   2. 找 x[i, j] + x[j, i+N] 的最佳解
-4. 實作 IRES Method
+2. 實作 IRES Method

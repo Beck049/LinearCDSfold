@@ -1384,7 +1384,6 @@ void LCDSfoldCAI_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& con
         //  C  -> F State
         // F+C -> F State
         C_and_F_state<T>(bestF, bestF_j, bestC_j, con_seq, ami_seq, nucj_list, j, seq_length, is_DN, param);
-        //BeamPrune(con_seq, rna_seq, bestF_j, bestF, false);
 
     } //j end
 }

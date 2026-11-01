@@ -291,18 +291,24 @@ T BackTrack(string& rna_solution, string& structure_solution, string& rna_seq, A
     State<T> state;
     T maxscore = VALUE_MIN<T>();
     int maxindex;
-    for(int ci = 0; ci < first_nuclist.size(); ci++){
-        for(int cj = 0; cj < last_nuclist.size(); cj++){
+    
+    for (int ci = 0; ci < first_nuclist.size(); ci++) {
+        for (int cj = 0; cj < last_nuclist.size(); cj++) {
             int nuci = first_nuclist[ci];
             int nucj = last_nuclist[cj];
-            int index = GetIndex(0, nuci, nucj); // 從 index i 開始，nuci 開頭，nucj 結尾
-            if(bestF[seq_length-1].count(index)){
-                T newscore = bestF[seq_length-1][index].score;
-                if (maxscore < newscore){
+            int index = GetIndex(0, nuci, nucj);
+
+            auto it = bestF[seq_length - 1].find(index);
+            if (it != bestF[seq_length - 1].end()) {
+                T newscore = it->second.score;
+                if (maxscore < newscore) {
                     maxscore = newscore;
                     maxindex = index;
-                    state = bestF[seq_length-1][index];}}
-    }}
+                    state = it->second;
+                }
+            }
+        }
+    }
 
     BacktrackStructure(rna_solution, structure_solution, seq_length, maxindex, state, alltables);
 
@@ -313,68 +319,68 @@ T BackTrack(string& rna_solution, string& structure_solution, string& rna_seq, A
 
 
 template <typename T>
-void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, Manner MANNER){
-
+void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, Manner MANNER) {
     auto it = stateMap.find(index);
 
-    if (it == stateMap.end() || newscore > it->second.score) {
-        State<T> newState(newscore, preindex_1, -1, -1,MANNER);
-        stateMap[index] = newState;
+    if (it == stateMap.end()) {
+        stateMap.emplace(index, State<T>(newscore, preindex_1, -1, -1, -1, MANNER));
+    } else if (newscore > it->second.score) {
+        it->second = State<T>(newscore, preindex_1, -1, -1, -1, MANNER);
     }
 }
 
 template <typename T>
-void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, int preindex_2, Manner MANNER){
-
+void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, int preindex_2, Manner MANNER) {
     auto it = stateMap.find(index);
 
-    if (it == stateMap.end() || newscore > it->second.score) {
-        State<T> newState(newscore, preindex_1, preindex_2, -1,MANNER);
-        stateMap[index] = newState;
+    if (it == stateMap.end()) {
+        stateMap.emplace(index, State<T>(newscore, preindex_1, preindex_2, -1, -1, MANNER));
+    } else if (newscore > it->second.score) {
+        it->second = State<T>(newscore, preindex_1, preindex_2, -1, -1, MANNER);
     }
 }
 
 template <typename T>
-void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, Manner MANNER, int last_pair_pos){
-
+void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, Manner MANNER, int last_pair_pos) {
     auto it = stateMap.find(index);
 
-    if (it == stateMap.end() || newscore > it->second.score) {
-        State<T> newState(newscore, preindex_1, -1, -1,MANNER, last_pair_pos);
-        stateMap[index] = newState;
+    if (it == stateMap.end()) {
+        stateMap.emplace(index, State<T>(newscore, preindex_1, -1, -1, -1, MANNER, -1, last_pair_pos));
+    } else if (newscore > it->second.score) {
+        it->second = State<T>(newscore, preindex_1, -1, -1, -1, MANNER, -1, last_pair_pos);
     }
 }
 
 template <typename T>
-void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, int preindex_2, Manner MANNER, int last_pair_pos){
-
+void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, int preindex_2, Manner MANNER, int last_pair_pos) {
     auto it = stateMap.find(index);
 
-    if (it == stateMap.end() || newscore > it->second.score) {
-        State<T> newState(newscore, preindex_1, preindex_2, -1, MANNER, last_pair_pos);
-        stateMap[index] = newState;
+    if (it == stateMap.end()) {
+        stateMap.emplace(index, State<T>(newscore, preindex_1, preindex_2, -1, -1, MANNER, -1, last_pair_pos));
+    } else if (newscore > it->second.score) {
+        it->second = State<T>(newscore, preindex_1, preindex_2, -1, -1, MANNER, -1, last_pair_pos);
     }
 }
 
 template <typename T>
-void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, int preindex_2, int preindex_3, Manner MANNER){
-
+void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, int preindex_2, int preindex_3, Manner MANNER) {
     auto it = stateMap.find(index);
 
-    if (it == stateMap.end() || newscore > it->second.score) {
-        State<T> newState(newscore, preindex_1, preindex_2, preindex_3, MANNER);
-        stateMap[index] = newState;
+    if (it == stateMap.end()) {
+        stateMap.emplace(index, State<T>(newscore, preindex_1, preindex_2, preindex_3, -1, MANNER));
+    } else if (newscore > it->second.score) {
+        it->second = State<T>(newscore, preindex_1, preindex_2, preindex_3, -1, MANNER);
     }
 }
 
 template <typename T>
-void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, int preindex_2, int preindex_3, Manner MANNER, int last_pair_pos){
-
+void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, int preindex_2, int preindex_3, Manner MANNER, int last_pair_pos) {
     auto it = stateMap.find(index);
 
-    if (it == stateMap.end() || newscore > it->second.score) {
-        State<T> newState(newscore, preindex_1, preindex_2, preindex_3, MANNER, last_pair_pos);
-        stateMap[index] = newState;
+    if (it == stateMap.end()) {
+        stateMap.emplace(index, State<T>(newscore, preindex_1, preindex_2, preindex_3, -1, MANNER, -1, last_pair_pos));
+    } else if (newscore > it->second.score) {
+        it->second = State<T>(newscore, preindex_1, preindex_2, preindex_3, -1, MANNER, -1, last_pair_pos);
     }
 }
 
@@ -452,8 +458,7 @@ void initialize_Special_HP(AllTables<T>& alltables, string& rna_seq, vector<int>
                 string codon_ = h.substr(h.length()-3,3);
                 last_nuc.push_back(getLastExtendedNuc(re_Amino_label[codon_][0],codon_));
                 //cout<<CheckReBASE(getLastExtendedNuc(re_Amino_label[codon_][0],codon_))<<endl;//Not finish
-            }
-            else{
+            } else {
                 vector<int> &nuc_list = Base_table.at(rna_seq[last_idx]);
                 vector<int> &nuc_list2 = Base_table.at(rna_seq[last_idx-1]);
                 for(auto &nuc : nuc_list){
@@ -464,7 +469,6 @@ void initialize_Special_HP(AllTables<T>& alltables, string& rna_seq, vector<int>
                             }
                         }
                     }
-                    
                 }
             }
 
@@ -482,8 +486,7 @@ void initialize_Special_HP(AllTables<T>& alltables, string& rna_seq, vector<int>
                         }
                     }
                 }
-            }
-            else{
+            } else {
                 vector<int> &nuc_list = Base_table.at(rna_seq[first_idx]);
                 for(auto &nuc : nuc_list){
                     if(reBASE(nuc) == h[0]){

@@ -22,11 +22,14 @@ constexpr T VALUE_MIN() { return std::numeric_limits<T>::lowest(); }
 #define cube_base_number 4096
 #define fourthPower_base_number 65536
 
+#define MIN2(A, B) ((A) < (B) ? (A) : (B))
+#define MAX2(A, B) ((A) > (B) ? (A) : (B))
 
 //global variables
-// double LDCONST = 100;
 double LDCONST = 100;
 double lambda;
+double MFE_scalar;
+double CAI_scalar;
 int beamsize;
 bool pareto;
 bool is_beam_speedup;
@@ -42,6 +45,7 @@ std::unordered_map<char, std::unordered_map<int, double>> CodonSetCAIMap_DN;
 std::unordered_map<std::string, double> CalCAIMap;
 std::unordered_map<std::string, double> CalCAIMap_DN;
 std::unordered_map<std::string, double> unweighted_CAIMap;
+std::vector<std::array<std::array<uint8_t, 16>, 16>> IsLegal_temp;
 std::unordered_map<int, std::string> sp_backtrack;
 std::unordered_map<std::string, float> cai_table_csv;
 // declaration of functions
@@ -284,6 +288,16 @@ bool FindOption(int &argc, char **argv, std::string option){
     return false;
 }
 
+void update_scalar(bool is_DN) {
+    if (is_DN) {
+        MFE_scalar = lambda;
+        CAI_scalar = 1.0 - lambda;
+    } else {
+        MFE_scalar = 1.0;
+        CAI_scalar = LDCONST * lambda;
+    }
+}
+
 void PrintHelp() {
     std::cout
           << "USAGE:\n"
@@ -334,7 +348,24 @@ enum Manner {
     MANNER_CStoC,
     MANNER_C_StoC,
     MANNER_CtoC,
-    MANNER_S_CtoC
+    MANNER_S_CtoC,
+    // sparse structure
+    MANNER_S_S_F,
+    MANNER_N_N_F,
+    MANNER_C_H,
+    MANNER_C_I,
+    MANNER_C_M2,
+    MANNER_M2_M2_F,
+    MANNER_M2_M1_M1,
+    MANNER_M2_F_M2,
+    MANNER_M1_M2,
+    MANNER_M1_M1_F,
+    MANNER_M1_F_M1,
+    MANNER_M1_C,
+    MANNER_F_C,
+    MANNER_F_F_F,
+    MANNER_F_F_C
+    // MANNER_S_HP
 };
 
 std::string mannerToString(Manner manner) {
@@ -391,6 +422,37 @@ std::string mannerToString(Manner manner) {
             return "MANNER_S_C_StoC";
         case MANNER_C_StoCS:
             return "MANNER_C_StoCS";
+        // sparse loop use
+        case MANNER_N_N_F:
+            return "MANNER_N_N_F";
+        case MANNER_S_S_F:
+            return "MANNER_S_S_F";
+        case MANNER_C_H:
+            return "MANNER_C_H";
+        case MANNER_C_I:
+            return "MANNER_C_I";
+        case MANNER_C_M2:
+            return "MANNER_C_M2";
+        case MANNER_M2_M2_F:
+            return "MANNER_M2_M2_F";
+        case MANNER_M2_M1_M1:
+            return "MANNER_M2_M1_M1";
+        case MANNER_M2_F_M2:
+            return "MANNER_M2_F_M2";
+        case MANNER_M1_M2:
+            return "MANNER_M1_M2";
+        case MANNER_M1_M1_F:
+            return "MANNER_M1_M1_F";
+        case MANNER_M1_F_M1:
+            return "MANNER_M1_F_M1";
+        case MANNER_M1_C:
+            return "MANNER_M1_C";
+        case MANNER_F_C:
+            return "MANNER_F_C";
+        case MANNER_F_F_F:
+            return "MANNER_F_F_F";
+        case MANNER_F_F_C:
+            return "MANNER_F_F_C";
         default:
             return "UNKNOWN";
     }
@@ -420,14 +482,22 @@ std::string mannerToString(Manner manner) {
 //     return std::make_tuple(i, nuci, nuci_pair,nucj, nucx, len);
 // }
 
-inline int GetIndex(int i, int nuci, int nucj){
+inline int GetIndex(int i, int nuci, int nucj) {
     return i*square_base_number+nuci*base_number+nucj;
+}
+inline int GetIndex1(int nuci, int nucj) {
+    return nuci * base_number + nucj;
+}
+inline int GetOCTkey(int j, int nucj) { 
+    // encode subinstance
+    return j * base_number + nucj;
 }
 
 // speedup
 inline int GetIndexSpeedup(int i, int nuci, int nuci1,int nucj_1, int nucj){//i : start posi, nuci :start nuc, nuci_pair : the nuc pair with nuci ,nucj:end nuc, nucx: single start, len : single length
     return i*fourthPower_base_number + nuci* cube_base_number+ nuci1*square_base_number + nucj_1*base_number + nucj;
 }
+
 inline std::tuple<int, int, int, int, int> GetIndexTupleSpeedup(int index_i_j) {
     int i = index_i_j/fourthPower_base_number;
     int temp = index_i_j % fourthPower_base_number;
@@ -447,6 +517,7 @@ inline std::tuple<int, int, int, int, int> GetIndexTupleSpeedup(int index_i_j) {
 inline int GetIndexCS(int i, int nuci, int nuci_pair,int nucj, int nucx ,int len){//i : start posi, nuci :start nuc, nuci_pair : the nuc pair with nuci ,nucj:end nuc, nucx: single start, len : single length
     return i*cube_base_number*(SINGLE_MAX_LEN+1) + len * cube_base_number+ nuci*square_base_number + nucj*base_number + nucx;
 }
+
 inline std::tuple<int, int, int, int, int, int> GetIndexTupleCS(int index_i_j) {
     int i = index_i_j/(cube_base_number*(SINGLE_MAX_LEN+1));
     int temp = index_i_j % (cube_base_number*(SINGLE_MAX_LEN+1));
@@ -473,19 +544,36 @@ inline std::tuple<int, int, int> GetIndexTuple(int index_i_j) {
 }
 
 template<typename T>
-struct State {
+struct State
+{
     T score;
     int index_1;
     int index_2;
     int index_3;
+    int index_q;
     Manner MANNER;
-    int last_pair_pos;
+    bool is_F_STEP = false;
+    bool is_M1_STEP = false;
+    int first_pair_pos = -1;
+    int last_pair_pos = -1;
+    int cross_pair_num = 0;
+    std::vector<int> outer_pairs;
 
-    State() : score(VALUE_MIN<T>()), index_1(-1), index_2(-1), index_3(-1),MANNER(NONE), last_pair_pos(-1){}
-    State(double score_, const int& index_1_, const int& index_2_, const int& index_3_, Manner MANNER_)
-        : score(score_), index_1(index_1_), index_2(index_2_), index_3(index_3_), MANNER(MANNER_){}
-    State(double score_, const int& index_1_, const int& index_2_, const int& index_3_,Manner MANNER_, const int& last_pair_pos_)
-        : score(score_), index_1(index_1_), index_2(index_2_), index_3(index_3_), MANNER(MANNER_), last_pair_pos(last_pair_pos_){}
+    State() 
+        : score(VALUE_MIN<T>()), index_1(-1), index_2(-1), index_3(-1), index_q(-1), 
+          MANNER(NONE), is_F_STEP(false), is_M1_STEP(false), 
+          first_pair_pos(-1), last_pair_pos(-1), cross_pair_num(0) {}
+
+    State(double score_, int index_1_, int index_2_, int index_3_, int index_q_, Manner MANNER_)
+        : score(score_), index_1(index_1_), index_2(index_2_), index_3(index_3_), index_q(index_q_), 
+          MANNER(MANNER_), is_F_STEP(false), is_M1_STEP(false), 
+          first_pair_pos(-1), last_pair_pos(-1), cross_pair_num(0) {}
+
+    State(double score_, int index_1_, int index_2_, int index_3_, int index_q_, Manner MANNER_, 
+          int first_pair_pos_, int last_pair_pos_, int cross_pair_num_ = 0)
+        : score(score_), index_1(index_1_), index_2(index_2_), index_3(index_3_), index_q(index_q_), 
+          MANNER(MANNER_), is_F_STEP(false), is_M1_STEP(false), 
+          first_pair_pos(first_pair_pos_), last_pair_pos(last_pair_pos_), cross_pair_num(cross_pair_num_) {}
 };
 
 template<typename T>
@@ -500,7 +588,12 @@ public:
     std::vector<std::unordered_map<int, State<T>>> bestM1;
     std::vector<std::unordered_map<int, State<T>>> bestM2;
     std::vector<std::unordered_map<int, State<T>>> bestMulti;
-    std::vector<std::vector<std::unordered_map<int, State<T>>>> speedup;//speedup[j][l][index]
+    // sparse use
+    std::vector<std::vector<std::array<State<T>, 257>>> bestSS;
+    std::vector<std::vector<std::array<bool, 257>>> bestSS_check;
+    std::vector<std::vector<std::unordered_map<int, State<T>>>> bestSC;
+    //speedup[j][l][index]
+    std::vector<std::vector<std::unordered_map<int, State<T>>>> speedup;
 
     AllTables(std::string rna_seq, int size_) {
         bestN = initi_vec(rna_seq, size_);
@@ -511,15 +604,28 @@ public:
         bestM1 = initi_vec(rna_seq, size_);
         bestM2 = initi_vec(rna_seq, size_);
         bestMulti = initi_vec(rna_seq, size_);
+        // sparse
+        bestSS = initi_vec_arr(rna_seq, size_, std::min(size_, SINGLE_MAX_LEN) + 1);
+        bestSS_check = initi_vec_arr_check(rna_seq, size_, std::min(size_, SINGLE_MAX_LEN) + 1);
+        bestSC = initi_vec_S(rna_seq, size_, size_ + 1);
+        // speedup
         speedup = initi_vec_S(rna_seq, size_, SINGLE_MAX_LEN+1);//speedup
     }
 
-    std::vector<std::unordered_map<int, State<T>>> initi_vec(std::string& rna_seq, int size_){
+    std::vector<std::unordered_map<int, State<T>>> initi_vec(std::string& rna_seq, int size_) {
         std::vector<std::unordered_map<int, State<T>>> seq_tables_(size_);
         return seq_tables_;
     }
-    std::vector<std::vector<std::unordered_map<int, State<T>>>> initi_vec_S(std::string& rna_seq, int size_, int len){
+    std::vector<std::vector<std::unordered_map<int, State<T>>>> initi_vec_S(std::string& rna_seq, int size_, int len) {
         std::vector<std::vector<std::unordered_map<int, State<T>>>> seq_tables_(size_,std::vector<std::unordered_map<int, State<T>>>(len));
+        return seq_tables_;
+    }
+    std::vector<std::vector<std::array<State<T>, 257>>> initi_vec_arr(std::string &rna_seq, int size_, int len) {
+        std::vector<std::vector<std::array<State<T>, 257>>> seq_tables_(size_, std::vector<std::array<State<T>, 257>>(len));
+        return seq_tables_;
+    }
+    std::vector<std::vector<std::array<bool, 257>>> initi_vec_arr_check(std::string &rna_seq, int size_, int len) {
+        std::vector<std::vector<std::array<bool, 257>>> seq_tables_(size_, std::vector<std::array<bool, 257>>(len));
         return seq_tables_;
     }
 
@@ -684,6 +790,28 @@ void initialize(){
 }
 
 //...[i][j]...
+bool IsLegal_sub(std::vector<int> &con_seq, int base_i, int base_i1, int pos_i) {
+    // j must be i+1
+    int amino_ = con_seq[pos_i];
+    int pos_i1 = pos_i + 1;
+    // if ((pos_i / 3) == (pos_i1 / 3))
+    if (pos_i % 3 != 2) {
+        if (amino_ != normal_ami) {
+            int amino_index = pos_i % 3;
+            if (xcon_table[amino_][amino_index][base_i][base_i1]) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    } else {
+        return true;
+    }
+}
+
+//...[i][j]...
 inline bool IsLegal(std::vector<int>& con_seq, int base_i, int base_i1, int pos_i){
     //j must be i+1
     int amino_ = con_seq[pos_i];
@@ -703,6 +831,23 @@ inline bool IsLegal(std::vector<int>& con_seq, int base_i, int base_i1, int pos_
         return true;
     }
     
+}
+
+bool IsLegal_sparse(std::vector<int> &con_seq, int base_i, int base_i1, int pos_i) {
+    return IsLegal_temp[pos_i][base_i][base_i1];
+}
+
+void IsLegal_init(std::vector<int> &con_seq) {
+    int l = con_seq.size();
+
+    IsLegal_temp.resize(l);
+    for (int i = 0; i < l; i++) {
+        for (int j = 0; j < 16; j++) {
+            for (int k = 0; k < 16; k++) {
+                IsLegal_temp[i][j][k] = IsLegal_sub(con_seq, j, k, i) ? 1 : 0;
+            }
+        }
+    }
 }
 
 // trim from end (in place)

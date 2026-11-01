@@ -15,9 +15,6 @@
 
 #define MAXLOOP 30
 
-inline int MIN2(int a, int b) {if (a <= b)return a;else return b;}
-inline int MAX2(int a, int b) {if (a >= b)return a;else return b;}
-
 // 給定兩個 nucleotide x, y ，回傳它們的 pairing type
 #define NUC_TO_PAIR(x,y) (x==1? (y==4?5:0) : (x==2? (y==3?1:0) : (x==3 ? (y==2?2:(y==4?3:0)) : (x==4 ? (y==3?4:(y==1?6:0)) : 0))))
 
@@ -92,6 +89,13 @@ inline int v_score_external_paired(int nuci, int nucj) {
 
     if(type > 2) {  energy += TerminalAU37; }
     return energy;
+}
+
+inline int v_score_single_stacking(int nuci, int nucj, int nucp, int nucq) {
+    int type = NUC_TO_PAIR(nuci, nucj);
+    int type_2 = NUC_TO_PAIR(nucq, nucp);
+    /* stack */
+    return stack37[type][type_2];
 }
 
 /**
@@ -173,11 +177,90 @@ inline int v_score_single(int i, int j, int p, int q,
   return energy;
 }
 
+inline int v_score_single_bulge(int i, int j, int p, int q,
+                        int nuci, int nuci1, int nucj_1, int nucj,
+                        int nucp_1, int nucp, int nucq, int nucq1){
+
+    int type = NUC_TO_PAIR(nuci, nucj);
+    int type_2 = NUC_TO_PAIR(nucq, nucp);
+    int n1 = p-i-1;
+    int n2 = j-q-1;
+    int nl, ns, u, energy;
+
+    if (n1>n2) { nl=n1; ns=n2;}
+    else {nl=n2; ns=n1;}
+    /* bulge */
+    energy = (nl<=MAXLOOP)?bulge37[nl]:
+    (bulge37[30]+(int)(lxc37*log(nl/30.)));
+    if (nl==1) {
+      energy += stack37[type][type_2];
+    } else {
+      if (type>2) energy += TerminalAU37;
+      if (type_2>2) energy += TerminalAU37;
+    }
+    return energy;
+}
+
+
+inline int v_score_single_internal(int i, int j, int p, int q,
+                        int nuci, int nuci1, int nucj_1, int nucj,
+                        int nucp_1, int nucp, int nucq, int nucq1){
+
+    int type = NUC_TO_PAIR(nuci, nucj);
+    int type_2 = NUC_TO_PAIR(nucq, nucp);
+    int n1 = p-i-1;
+    int n2 = j-q-1;
+    int nl, ns, u, energy;
+    energy = 0;
+
+    if (n1>n2) { nl=n1; ns=n2;}
+    else {nl=n2; ns=n1;}
+
+    /* interior loop */
+    if (ns==1) {
+      if (nl==1){                    /* 1x1 loop */
+        return int11_37[type][type_2][nuci1][nucj_1];
+      }
+      if (nl==2) {                  /* 2x1 loop */
+        if (n1==1) {
+          energy = int21_37[type][type_2][nuci1][nucq1][nucj_1];
+        } else {
+          energy = int21_37[type_2][type][nucq1][nuci1][nucp_1];
+        }
+        return energy;
+      } else {  /* 1xn loop */
+        energy = (nl+1<=MAXLOOP)?(internal_loop37[nl+1]) : (internal_loop37[30]+(int)(lxc37*log((nl+1)/30.)));
+        energy += MIN2(MAX_NINIO, (nl-ns)*ninio37);
+        energy += mismatch1nI37[type][nuci1][nucj_1] + mismatch1nI37[type_2][nucq1][nucp_1];
+        return energy;
+      }
+    }
+    else if (ns==2) {
+      if(nl==2) {                 /* 2x2 loop */
+        return int22_37[type][type_2][nuci1][nucp_1][nucq1][nucj_1];
+      } else if (nl==3){          /* 2x3 loop */
+        energy = internal_loop37[5]+ninio37;
+        energy += mismatch23I37[type][nuci1][nucj_1] + mismatch23I37[type_2][nucq1][nucp_1];
+        return energy;
+      }
+
+    }
+    { /* generic interior loop (no else here!)*/
+      u = nl + ns;
+      energy = (u <= MAXLOOP) ? (internal_loop37[u]) : (internal_loop37[30]+(int)(lxc37*log((u)/30.)));
+
+      energy += MIN2(MAX_NINIO, (nl-ns)*ninio37);
+
+      energy += mismatchI37[type][nuci1][nucj_1] + mismatchI37[type_2][nucq1][nucp_1];
+    }
+  return energy;
+}
+
 /**
  * @brief 計算內環外側閉合處 (Exterior closing pair) 的錯配能量
  * @details 用於模組化計算通用內環時，單獨提取外側的錯配交互作用能
  */
-inline int v_score_exterior_mismatch(int i, int j, int nuci, int nuci1, int nucj_1, int nucj){
+inline int v_score_exterior_mismatch(int nuci, int nuci1, int nucj_1, int nucj){
   int type = NUC_TO_PAIR(nuci, nucj);
   return mismatchI37[type][nuci1][nucj_1];
 }
@@ -186,7 +269,7 @@ inline int v_score_exterior_mismatch(int i, int j, int nuci, int nuci1, int nucj
  * @brief 計算內環內側閉合處 (Interior closing pair) 的錯配能量
  * @details 用於模組化計算通用內環時，單獨提取內側的錯配交互作用能
  */
-inline int v_score_interior_mismatch(int p, int q, int nucp_1, int nucp, int nucq, int nucq1){
+inline int v_score_interior_mismatch(int nucp_1, int nucp, int nucq, int nucq1){
   int type_2 = NUC_TO_PAIR(nucq, nucp);
   return mismatchI37[type_2][nucq1][nucp_1];
 }

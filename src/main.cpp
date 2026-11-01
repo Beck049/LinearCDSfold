@@ -21,6 +21,7 @@
 #include <queue>
 
 #include "LCDSfold.h"
+#include "sparseCDSfold.h"
 #include "circLCDSfold.h"
 using namespace std;
 
@@ -38,6 +39,7 @@ int main(int argc, char** argv){
 
     bool is_rna_file = false;
     bool show_score = false;
+    show_processing = true;
     initialize();
     beamsize = 0;
     lambda = 0;
@@ -174,7 +176,7 @@ int main(int argc, char** argv){
     if (mode_.empty()) {
         mode_ = input.getCmdOption("--mode");
     }
-    if (mode_.empty() || mode_ == "exact" || mode_ == "Exact") {
+    if (mode_.empty() || mode_ == "exact" || mode_ == "Exact" || mode_ == "sparse" || mode_ == "Sparse") {
         beamsize = 0;
     } else if (mode_ == "beam" || mode_ == "Beam") {
         use_beam_pruning = true;
@@ -264,7 +266,7 @@ int main(int argc, char** argv){
         objective = "DN";
         beamsize = 0;
     }
-        
+
     PrintInfo(output_txt, output_csv, file, beamsize, cai_file_path, lambda, objective, pareto, is_circ, is_rna_file, true);
     if(!is_rna_file){ // NORMAL MODE
         bool is_DN = (objective == "DN");
@@ -288,8 +290,12 @@ int main(int argc, char** argv){
             rna_seq = rna_seq_list[i];
             std::vector<int> con_seq = con_seq_list[i];
 
-            if(pareto && is_DN) {
-                Pareto_solution<double>(threshold1, threshold2, rna_seq, con_seq, ami_seq, cai_vector, output_txt, output_csv, show_score, PID, protein_len);
+            if(pareto) {
+                if(is_DN) {
+                    Pareto_solution<double>(threshold1, threshold2, rna_seq, con_seq, ami_seq, cai_vector, output_txt, output_csv, show_score, PID, protein_len);
+                } else {
+                    std::cerr << "Pareto 只支援 DERNA 不支援 Linear Design\n";
+                }
             } else {
                 // 輸出 Input Data Info
                 std::cout << "Protein ID: " << PID << std::endl;
@@ -302,20 +308,26 @@ int main(int argc, char** argv){
                 initialize_CAI_table(cai_vector,is_DN);
                 // 開始 Linear 計算
                 gettimeofday(&start, 0);
-                initialize_Special_HP<double>(alltables, rna_seq, con_seq, ami_seq, is_DN);
-                if(beamsize) {
-                    LCDSfoldCAI_beam<double>(alltables, rna_seq, con_seq, ami_seq, is_DN, is_beam_speedup);
+                if(mode_ == "sparse") {
+                    update_scalar(is_DN);
+                    initialize_Special_HP_sparse<double>(alltables, rna_seq, con_seq, ami_seq, is_DN);
+                    SparseCDSfoldCAI<double>(alltables, rna_seq, con_seq, ami_seq, is_DN);
                 } else {
-                    LCDSfoldCAI_exact<double>(alltables, rna_seq, con_seq, ami_seq, is_DN);
+                    initialize_Special_HP<double>(alltables, rna_seq, con_seq, ami_seq, is_DN);
+                    if(beamsize) {
+                        LCDSfoldCAI_beam<double>(alltables, rna_seq, con_seq, ami_seq, is_DN, is_beam_speedup);
+                    } else {
+                        LCDSfoldCAI_exact<double>(alltables, rna_seq, con_seq, ami_seq, is_DN);
+                    }
                 }
                 gettimeofday(&end, 0);
-
+                
                 //
                 // examine_bestTable(alltables.bestC,  "bestC");
                 // examine_bestTable(alltables.bestM1, "bestM1");
                 // examine_bestTable(alltables.bestM2, "bestM2");
                 // examine_bestTable(alltables.bestMulti, "bestMulti");
-                // examine_bestSTable(alltables.bestS, "bestS");
+                // examine_bestTable(alltables.bestS, "bestSS");
                 //
 
                 // Backtrack 並輸出 Linear Result
@@ -328,16 +340,28 @@ int main(int argc, char** argv){
                     std::vector<int> single_con_seq(con_seq.begin(), con_seq.begin() + single_rna_len);
 
                     // 2. 輸出 Linear Result
-                    std::vector<pair<double,double>> result = result_output<double>(alltables, single_rna_seq, single_con_seq, single_ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, is_DN);
+                    if(mode_ == "sparse") {
+                        // TODO: 看能不能合併
+                        std::vector<pair<double,double>> sparse_result = sparse_result_output<double>(alltables, single_rna_seq, single_con_seq, single_ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, is_DN);
+                    } else {
+                        std::vector<pair<double,double>> result = result_output<double>(alltables, single_rna_seq, single_con_seq, single_ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, is_DN);
+                    }
                 } else {
-                    std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, is_DN);
+                    if(mode_ == "sparse") {
+                        // TODO: 看能不能合併
+                        std::vector<pair<double,double>> sparse_result = sparse_result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, is_DN);
+                    } else {
+                        std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, is_DN);
+                    }
                 }
 
                 // Circular RNA Reconstruction
-                if (circ_objective == "vienna"){
-                    std::vector<pair<double,double>> result_c = circular_compose_v1<double>( alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, use_beam_pruning, is_DN);
-                } else if (circ_objective == "mfold") {
-                    std::vector<pair<double,double>> result_c = circular_compose_m1<double>( alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, use_beam_pruning, is_DN);
+                if(mode_ != "sparse") {
+                    if (circ_objective == "vienna"){
+                        std::vector<pair<double,double>> result_c = circular_compose_v1<double>( alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, use_beam_pruning, is_DN);
+                    } else if (circ_objective == "mfold") {
+                        std::vector<pair<double,double>> result_c = circular_compose_m1<double>( alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, use_beam_pruning, is_DN);
+                    }
                 }
             }
         }    

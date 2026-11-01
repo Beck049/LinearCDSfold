@@ -84,7 +84,6 @@ T BeamPrune(std::vector<int>& con_seq, std::string& rna_seq, std::unordered_map<
 
                     int nucindex = GetIndex(0, nucf, nuci_1);
                     if(IsLegal(con_seq, nuci_1, nuci, i_1) && bestF[i_1].count(nucindex)) {
-                        
                         pre_newscore = bestF[i_1][nucindex].score;
                         have_previous = true;
                         if(pre_newscore > best_pre_newscore) {

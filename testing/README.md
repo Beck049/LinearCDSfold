@@ -5,7 +5,7 @@
 |---|---|---|
 |`./LinearCDSfold`|`-l <lambda>`|object function 的權重|
 ||`-O <obj_func>`|`DN`: DERNA </br>`LD`: Linear Design|
-||`-m <method>`|`exact`: 最佳解</br>`beam `: 近似解 (慢)</br>`beam2`: 近似解 (快)|
+||`-m <method>`|`exact`: 最佳解</br>`beam `: 近似解 (慢)</br>`beam2`: 近似解 (快)</br>`sparse`: Sparse|
 ||`-b <beam_size>`||
 ||`-C <circ_method>`|`vienna`: 用 vienna 直接環化</br>`mfold`: 用 mfold 直接環化</br>`IRES`: 用 vienna 加上 IRES 環化|
 ||`-i <IRES_file>`|IRES input file|
@@ -72,3 +72,6 @@ Total runtime: 0.002 s
    2. 需輸入 `-k <crosspair_penalty>`
    3. 不輸出 Linear 結果！！
 2. 實作 IRES Method
+3. Sparse
+   1. 合併 output function
+   2. sparse 加入 circular

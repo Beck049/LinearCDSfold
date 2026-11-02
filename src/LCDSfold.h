@@ -406,7 +406,7 @@ inline bool compare(double x, double y, double epsilon = 1.0E-5) {
 }
 
 template <typename T>
-void initialize_Special_HP(AllTables<T>& alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq, bool is_DN){
+void initialize_Special_HP(AllTables<T>& alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq, int ires_len, bool is_DN){
     std::vector<std::unordered_map<int, State<T>>>& bestC = alltables.bestC;
     ACMatcher<char,256> matcher;
             
@@ -422,7 +422,7 @@ void initialize_Special_HP(AllTables<T>& alltables, string& rna_seq, vector<int>
 
     
     unordered_map<int,unordered_set<string>> global_sp;//<index, all special hairpins could appear>
-    for(int i = 0;i < ami_seq.length()-3;i++){
+    for(int i = ires_len; i < ami_seq.length()-3; i++){
         vector<string> &Amino_1 = Amino_to_nucs[ami_seq[i]];
         vector<string> &Amino_2 = Amino_to_nucs[ami_seq[i+1]];
         vector<string> &Amino_3 = Amino_to_nucs[ami_seq[i+2]];
@@ -1474,7 +1474,7 @@ void LCDSfoldCAI_exact(AllTables<T>& alltables, string& rna_seq, vector<int>& co
 /** *************************************************************************************************************** */
 
 template<typename T>
-std::vector<pair<T,T>> result_output(AllTables<T> &alltables,string& rna_seq, vector<int>& con_seq, string& ami_seq, string& output_txt, string& output_csv,  string& PID, int protein_length, double TimeSpend, bool show_score,bool is_DN){//return {CAI,MFE}
+std::vector<pair<T,T>> result_output(AllTables<T> &alltables,string& rna_seq, vector<int>& con_seq, string& ami_seq, string& output_txt, string& output_csv,  string& PID, int protein_length, string& ires_id, int ires_len, double TimeSpend, bool show_score,bool is_DN){//return {CAI,MFE}
     std::ofstream outputfile(output_txt,std::ios::app);
     std::ofstream outputcsv(output_csv,std::ios::app);
 
@@ -1485,9 +1485,13 @@ std::vector<pair<T,T>> result_output(AllTables<T> &alltables,string& rna_seq, ve
 
     outputfile << "Protein ID: " << PID << std::endl;
     outputfile << "Protein length: " << protein_length << std::endl;
-
     outputfile << "Lambda: " << std::fixed << std::setprecision(3) << lambda << std::endl;
 
+    if(ires_id != ""){
+        outputfile << "IRES ID" << ires_id << std::endl;
+        outputfile << "IRES length: " << ires_len << std::endl;
+        outputfile << "Crosspair Penalty: " << std::fixed << std::setprecision(3) << crosspair_penalty << std::endl;
+    }
     outputfile << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
     std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
     outputfile << "Linear RNA Reconstruction:" << std::endl;
@@ -1532,7 +1536,7 @@ std::vector<pair<T,T>> result_output(AllTables<T> &alltables,string& rna_seq, ve
     std::cout << "Total runtime: " << TimeSpend << " s" << std::endl;
     outputfile <<  "Total runtime: " << TimeSpend << " s" << std::endl;
 
-    check_ami_solution(ami_seq, rna_solution);
+    check_ami_solution(ami_seq, rna_solution, ires_len);
 
     std::vector<pair<T,T>> result_container;
     result_container.push_back({round_up(cai_value),round_up(mfe_value)});
@@ -1593,7 +1597,7 @@ void examine_bestSTable(std::vector<std::vector<std::unordered_map<int, State<T>
 }
 
 template<typename T>
-void Pareto_solution(double threshold1, double threshold2, string& rna_seq, vector<int>& con_seq, string& ami_seq, vector<double>& cai_vector, string &output_txt, string &output_csv, bool show_score, string& PID, int protein_len){
+void Pareto_solution(double threshold1, double threshold2, string& ires_seq, string& rna_seq, vector<int>& con_seq, string& ami_seq, vector<double>& cai_vector, string &output_txt, string &output_csv, bool show_score, string& PID, int protein_len, string& ires_id, int ires_len){
     double left_lambda,right_lambda;
     double left_cai,left_mfe,right_cai,right_mfe;
     timeval start,end;
@@ -1618,18 +1622,23 @@ void Pareto_solution(double threshold1, double threshold2, string& rna_seq, vect
             std::cout << "Protein ID: " << PID << std::endl;
             std::cout << "Protein length: " << protein_len << std::endl;
             std::cout <<"Lambda: " << std::fixed << std::setprecision(3) << lambda << std::endl;
+            if(ires_id != ""){
+                std::cout <<"IRES ID: " << ires_id << std::endl;
+                std::cout <<"IRES length: " << ires_len << std::endl;
+                std::cout <<"Crosspair Penalty: " << std::fixed << std::setprecision(3) << crosspair_penalty << std::endl;
+            }
             AllTables<T> alltables(rna_seq, rna_seq.size());
             std::string rna_solution;
             std::string structure_solution;
             initialize_CAI_table(cai_vector,true);
 
             gettimeofday(&start,0);
-            initialize_Special_HP<double>(alltables,rna_seq, con_seq, ami_seq, true);
+            initialize_Special_HP<double>(alltables, rna_seq, con_seq, ami_seq, ires_seq.length(), true);
             LCDSfoldCAI_exact<double>(alltables, rna_seq, con_seq, ami_seq, true);
             gettimeofday(&end,0);
             double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
 
-            std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq,output_txt,output_csv, PID, protein_len, TimeSpend, show_score,true);
+            std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq,output_txt,output_csv, PID, protein_len, ires_id, ires_len, TimeSpend, show_score,true);
             CAI_map[left_lambda] = result.front().first;
             MFE_map[left_lambda] = result.front().second;
             left_cai = CAI_map[left_lambda];
@@ -1646,18 +1655,23 @@ void Pareto_solution(double threshold1, double threshold2, string& rna_seq, vect
             std::cout << "Protein ID: " << PID << std::endl;
             std::cout << "Protein length: " << protein_len << std::endl;
             std::cout <<"Lambda: " << std::fixed << std::setprecision(3) << lambda << std::endl;
+            if(ires_id != ""){
+                std::cout <<"IRES ID: " << ires_id << std::endl;
+                std::cout <<"IRES length: " << ires_len << std::endl;
+                std::cout <<"Crosspair Penalty: " << std::fixed << std::setprecision(3) << crosspair_penalty << std::endl;
+            }
             AllTables<T> alltables(rna_seq, rna_seq.size());
             std::string rna_solution;
             std::string structure_solution;
             initialize_CAI_table(cai_vector,true);
 
             gettimeofday(&start,0);
-            initialize_Special_HP<double>(alltables,rna_seq, con_seq, ami_seq, true);
+            initialize_Special_HP<double>(alltables, rna_seq, con_seq, ami_seq, ires_seq.length(), true);
             LCDSfoldCAI_exact<double>(alltables, rna_seq, con_seq, ami_seq, true);
             gettimeofday(&end,0);
             double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
 
-            std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq,output_txt,output_csv, PID, protein_len, TimeSpend, show_score, true);
+            std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq,output_txt,output_csv, PID, protein_len, ires_id, ires_len, TimeSpend, show_score, true);
             CAI_map[right_lambda] = result.front().first;
             MFE_map[right_lambda] = result.front().second;
             right_cai = CAI_map[right_lambda];

@@ -25,6 +25,19 @@
 #include "circLCDSfold.h"
 using namespace std;
 
+// 輔助函式：檢查副檔名是否為 .fa 或 .fasta
+bool isValidFastaExtension(const std::string& filename) {
+    std::string lower_filename = filename;
+    std::transform(lower_filename.begin(), lower_filename.end(), lower_filename.begin(), ::tolower);
+    if (lower_filename.size() >= 3 && lower_filename.substr(lower_filename.size() - 3) == ".fa") {
+        return true;
+    }
+    if (lower_filename.size() >= 6 && lower_filename.substr(lower_filename.size() - 6) == ".fasta") {
+        return true;
+    }
+    return false;
+}
+
 int main(int argc, char** argv){
     std::string seq="";
     std::string objective ;
@@ -50,7 +63,13 @@ int main(int argc, char** argv){
     bool is_circ = false;
     double threshold1 = 0.0025;
     double threshold2 = 0.00075;
-    
+
+    // 新增：IRES 與 crosspair penalty 變數
+    std::string ires_file_path = "";
+    double crosspair_penalty = 0.0;
+    std::string ires_id = "";
+    std::string ires_seq = "";
+    std::string ires_structure = "";
 
     InputParser input(argc, argv);
     if(input.cmdOptionExists("-h") || input.cmdOptionExists("--h") || input.cmdOptionExists("-help") || input.cmdOptionExists("--help")){
@@ -122,6 +141,69 @@ int main(int argc, char** argv){
         }
     }
     is_circ = (circ_objective != "Non");
+
+    // 解析 -k: crosspair_penalty
+    std::string k_str = input.getCmdOption("-k");
+    if (!k_str.empty()) {
+        try {
+            crosspair_penalty = std::stod(k_str);
+        } catch (const std::exception& e) {
+            std::cerr << "Error: Invalid value for -k (crosspair_penalty): " << k_str << std::endl;
+            return 1;
+        }
+    }
+
+    /* 解析與讀取 -i: IRES file */
+    ires_file_path = input.getCmdOption("-i");
+    if (!ires_file_path.empty()) {
+        if (!isValidFastaExtension(ires_file_path)) {
+            std::cerr << "Error: IRES file must have .fa or .fasta extension: " << ires_file_path << std::endl;
+            return 1;
+        }
+
+        std::ifstream ires_file(ires_file_path);
+        if (!ires_file.is_open()) {
+            std::cerr << "Error: Cannot open IRES file: " << ires_file_path << std::endl;
+            return 1;
+        }
+
+        std::string line;
+        while (std::getline(ires_file, line)) {
+            // 去除前後空白與換行符
+            rtrim(line);
+            if (line.empty()) continue;
+
+            if (line[0] == '>' || line[0] == ';') {
+                std::stringstream ss(line.substr(1));
+                ss >> ires_id;
+            } else if (ires_seq.empty()) {
+                // 第一筆非 Header 內容為 RNA 序列
+                ires_seq = line;
+            } else if (ires_structure.empty()) {
+                // 第二筆內容為二級結構 (dot-bracket)
+                ires_structure = line;
+            }
+        }
+        ires_file.close();
+
+        if (ires_seq.empty() || ires_structure.empty()) {
+            std::cerr << "Error: Incomplete IRES file format. Expected Header, Sequence, and Dot-Bracket structure." << std::endl;
+            return 1;
+        }
+
+        if (ires_seq.length() != ires_structure.length()) {
+            std::cerr << "Error: IRES sequence length (" << ires_seq.length() 
+                      << ") does not match dot-bracket structure length (" << ires_structure.length() << ")." << std::endl;
+            return 1;
+        }
+    } else if (circ_objective == "IRES") {
+        std::cerr << "Error: -C IRES was specified, but no -i <IRES_file> was provided." << std::endl;
+        return 1;
+    }
+
+    if(!ires_seq.empty()){
+        std::cout << "IRES ID: " << ires_id << std::endl << "IRES Sequence: " << ires_seq << std::endl << "IRES Structure: " << ires_structure << std::endl << "crosspair_penalty: " << crosspair_penalty << std::endl;
+    }
 
     // Read sequence file 
     if (!file.empty()){
@@ -284,15 +366,16 @@ int main(int argc, char** argv){
                 ami_seq = ami_seq + ami_seq;
             }
 
-            ami_to_rna(rna_seq_list, ami_seq);
-            add_con_seq(con_seq_list, ami_seq);
+            ami_to_rna(rna_seq_list, ami_seq, ires_seq);
+            add_con_seq(con_seq_list, ami_seq, ires_seq);
+
 
             rna_seq = rna_seq_list[i];
             std::vector<int> con_seq = con_seq_list[i];
 
             if(pareto) {
                 if(is_DN) {
-                    Pareto_solution<double>(threshold1, threshold2, rna_seq, con_seq, ami_seq, cai_vector, output_txt, output_csv, show_score, PID, protein_len);
+                    Pareto_solution<double>(threshold1, threshold2, ires_seq, rna_seq, con_seq, ami_seq, cai_vector, output_txt, output_csv, show_score, PID, protein_len, ires_id, ires_seq.length());
                 } else {
                     std::cerr << "Pareto 只支援 DERNA 不支援 Linear Design\n";
                 }
@@ -301,6 +384,11 @@ int main(int argc, char** argv){
                 std::cout << "Protein ID: " << PID << std::endl;
                 std::cout << "Protein length: " << protein_len << std::endl;
                 std::cout <<"Lambda: " << std::fixed << std::setprecision(3) << lambda << std::endl;
+                if(ires_id != ""){
+                    std::cout <<"IRES ID: " << ires_id << std::endl;
+                    std::cout <<"IRES length: " << ires_seq.length() << std::endl;
+                    std::cout <<"Crosspair Penalty: " << std::fixed << std::setprecision(3) << crosspair_penalty << std::endl;
+                }
                 if(lambda == 0 && is_DN)//prevent MFE not predictable
                     lambda += 0.00001;
                 // Init Tables
@@ -310,10 +398,10 @@ int main(int argc, char** argv){
                 gettimeofday(&start, 0);
                 if(mode_ == "sparse") {
                     update_scalar(is_DN);
-                    initialize_Special_HP_sparse<double>(alltables, rna_seq, con_seq, ami_seq, is_DN);
+                    initialize_Special_HP_sparse<double>(alltables, rna_seq, con_seq, ami_seq, ires_seq.length(), is_DN);
                     SparseCDSfoldCAI<double>(alltables, rna_seq, con_seq, ami_seq, is_DN);
                 } else {
-                    initialize_Special_HP<double>(alltables, rna_seq, con_seq, ami_seq, is_DN);
+                    initialize_Special_HP<double>(alltables, rna_seq, con_seq, ami_seq, ires_seq.length(), is_DN);
                     if(beamsize) {
                         LCDSfoldCAI_beam<double>(alltables, rna_seq, con_seq, ami_seq, is_DN, is_beam_speedup);
                     } else {
@@ -342,16 +430,16 @@ int main(int argc, char** argv){
                     // 2. 輸出 Linear Result
                     if(mode_ == "sparse") {
                         // TODO: 看能不能合併
-                        std::vector<pair<double,double>> sparse_result = sparse_result_output<double>(alltables, single_rna_seq, single_con_seq, single_ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, is_DN);
+                        std::vector<pair<double,double>> sparse_result = sparse_result_output<double>(alltables, single_rna_seq, single_con_seq, single_ami_seq, output_txt, output_csv, PID, protein_len, ires_id, ires_seq.length(), TimeSpend, show_score, is_DN);
                     } else {
-                        std::vector<pair<double,double>> result = result_output<double>(alltables, single_rna_seq, single_con_seq, single_ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, is_DN);
+                        std::vector<pair<double,double>> result = result_output<double>(alltables, single_rna_seq, single_con_seq, single_ami_seq, output_txt, output_csv, PID, protein_len, ires_id, ires_seq.length(), TimeSpend, show_score, is_DN);
                     }
                 } else {
                     if(mode_ == "sparse") {
                         // TODO: 看能不能合併
-                        std::vector<pair<double,double>> sparse_result = sparse_result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, is_DN);
+                        std::vector<pair<double,double>> sparse_result = sparse_result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, ires_id, ires_seq.length(), TimeSpend, show_score, is_DN);
                     } else {
-                        std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, is_DN);
+                        std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, ires_id, ires_seq.length(), TimeSpend, show_score, is_DN);
                     }
                 }
 
@@ -379,12 +467,12 @@ int main(int argc, char** argv){
             std::vector<int> con_seq(rna_seq.size(), normal_ami);
             AllTables<double> alltables(rna_seq, rna_seq.size());
             gettimeofday(&start, 0);
-            initialize_Special_HP<double>(alltables, rna_seq, con_seq, ami_seq, false);
+            initialize_Special_HP<double>(alltables, rna_seq, con_seq, ami_seq, ires_seq.length(), false);
             LCDSfoldCAI_exact<double>(alltables, rna_seq, con_seq, ami_seq, false);
             gettimeofday(&end, 0);
             
             double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
-            std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, true);
+            std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, ires_id, ires_seq.length(), TimeSpend, show_score, true);
 
         }
 

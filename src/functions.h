@@ -28,6 +28,7 @@ constexpr T VALUE_MIN() { return std::numeric_limits<T>::lowest(); }
 //global variables
 double LDCONST = 100;
 double lambda;
+double crosspair_penalty;
 double MFE_scalar;
 double CAI_scalar;
 int beamsize;
@@ -875,10 +876,13 @@ static inline void rtrim(std::string &s) {
  * - 目前函式簽名接受 std::string& ami_seq，但函式並未修改該參數；若希望表意更明確，建議改為 const std::string&。
  * - 函式會在 rna_seq_list 中新增一個元素，不會清除或覆寫已有元素。
  */
-void ami_to_rna(std::vector<std::string>& rna_seq_list, std::string& ami_seq){
+void ami_to_rna(std::vector<std::string>& rna_seq_list, std::string& ami_seq, std::string& ires_seq) {
     std::string rna_seq;
     std::string Amino1;
     std::string codon;
+    for(int i = 0; i < ires_seq.size(); i++){
+        rna_seq.push_back(ires_seq[i]=='T'?'U':ires_seq[i]);
+    }
     for(int i = 0; i < ami_seq.size(); i++){
         Amino1 = ami_seq[i];
         codon = Amino_label.at(Amino1);
@@ -913,9 +917,12 @@ void ami_to_rna(std::vector<std::string>& rna_seq_list, std::string& ami_seq){
  * 回傳值：
  *   - void（結果透過 con_seq_list 傳出）
  */
-void add_con_seq(std::vector<std::vector<int>>& con_seq_list, std::string& ami_seq){
+void add_con_seq(std::vector<std::vector<int>>& con_seq_list, std::string& ami_seq, std::string& ires_seq) {
     std::vector<int> con_seq;
     char Amino1; 
+    for(int i = 0; i < ires_seq.size(); i++){
+        con_seq.push_back(normal_ami);
+    }
     for(int i=0; i<ami_seq.size(); i++){
         Amino1 = ami_seq[i];
         if(Amino1=='R') {
@@ -939,11 +946,11 @@ void add_con_seq(std::vector<std::vector<int>>& con_seq_list, std::string& ami_s
     con_seq_list.push_back(con_seq);
 }
 
-void check_valid_ami(int seq_size, std::string result_seq, std::string& ami_seq){
+void check_valid_ami(int seq_size, std::string result_seq, std::string& ami_seq, int ires_len) {
     std::string sub_str;
     std::string index;
     for(int i=0; i<seq_size; i++) {
-        sub_str =  result_seq.substr(3*i,3);
+        sub_str =  result_seq.substr(ires_len+(3*i),3);
         if(re_Amino_label.count(sub_str)) {
             index = re_Amino_label.at(sub_str);    
         } else {
@@ -952,8 +959,7 @@ void check_valid_ami(int seq_size, std::string result_seq, std::string& ami_seq)
             std::cout << "error index: ";
             std::cout << i << std::endl;
             break;
-        }
-                
+        }   
         ami_seq.push_back(index[0]);
         
     }
@@ -1177,15 +1183,15 @@ inline void initialize_CAI_table(std::vector<double> cai_vector_, bool is_DN){
     }
 }
 
-void check_ami_solution(std::string ami_seq, std::string rna_solution){
+void check_ami_solution(std::string ami_seq, std::string rna_solution, int ires_len){
     std::string check_ami_seq;
-    check_valid_ami(ami_seq.size(), rna_solution, check_ami_seq);
+    check_valid_ami(ami_seq.size(), rna_solution, check_ami_seq, ires_len);
 
 
-    // //check correct
+    //check correct
     if(ami_seq != check_ami_seq) {
         std::cout << "Current backtracked amino acids sequence:" << std::endl;
-        std::cout << check_ami_seq << std::endl;
+        std::cout << check_ami_seq << "|" << ami_seq << std::endl;
         std::cout << "ERROR: Codon sequences cannot transfer into amino acids." << std::endl;
     }
 }

@@ -319,68 +319,68 @@ T BackTrack(string& rna_solution, string& structure_solution, string& rna_seq, A
 
 
 template <typename T>
-void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, Manner MANNER) {
+void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, Manner MANNER, int cross_pair_num = 0) {
     auto it = stateMap.find(index);
 
     if (it == stateMap.end()) {
-        stateMap.emplace(index, State<T>(newscore, preindex_1, -1, -1, -1, MANNER));
+        stateMap.emplace(index, State<T>(newscore, preindex_1, -1, -1, -1, MANNER, -1, -1, cross_pair_num));
     } else if (newscore > it->second.score) {
-        it->second = State<T>(newscore, preindex_1, -1, -1, -1, MANNER);
+        it->second = State<T>(newscore, preindex_1, -1, -1, -1, MANNER, -1, -1, cross_pair_num);
     }
 }
 
 template <typename T>
-void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, int preindex_2, Manner MANNER) {
+void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, int preindex_2, Manner MANNER, int cross_pair_num = 0) {
     auto it = stateMap.find(index);
 
     if (it == stateMap.end()) {
-        stateMap.emplace(index, State<T>(newscore, preindex_1, preindex_2, -1, -1, MANNER));
+        stateMap.emplace(index, State<T>(newscore, preindex_1, preindex_2, -1, -1, MANNER, -1, -1, cross_pair_num));
     } else if (newscore > it->second.score) {
-        it->second = State<T>(newscore, preindex_1, preindex_2, -1, -1, MANNER);
+        it->second = State<T>(newscore, preindex_1, preindex_2, -1, -1, MANNER, -1, -1, cross_pair_num);
     }
 }
 
 template <typename T>
-void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, Manner MANNER, int last_pair_pos) {
+void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, Manner MANNER, int last_pair_pos, int cross_pair_num) {
     auto it = stateMap.find(index);
 
     if (it == stateMap.end()) {
-        stateMap.emplace(index, State<T>(newscore, preindex_1, -1, -1, -1, MANNER, -1, last_pair_pos));
+        stateMap.emplace(index, State<T>(newscore, preindex_1, -1, -1, -1, MANNER, -1, last_pair_pos, cross_pair_num));
     } else if (newscore > it->second.score) {
-        it->second = State<T>(newscore, preindex_1, -1, -1, -1, MANNER, -1, last_pair_pos);
+        it->second = State<T>(newscore, preindex_1, -1, -1, -1, MANNER, -1, last_pair_pos, cross_pair_num);
     }
 }
 
 template <typename T>
-void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, int preindex_2, Manner MANNER, int last_pair_pos) {
+void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, int preindex_2, Manner MANNER, int last_pair_pos, int cross_pair_num) {
     auto it = stateMap.find(index);
 
     if (it == stateMap.end()) {
-        stateMap.emplace(index, State<T>(newscore, preindex_1, preindex_2, -1, -1, MANNER, -1, last_pair_pos));
+        stateMap.emplace(index, State<T>(newscore, preindex_1, preindex_2, -1, -1, MANNER, -1, last_pair_pos, cross_pair_num));
     } else if (newscore > it->second.score) {
-        it->second = State<T>(newscore, preindex_1, preindex_2, -1, -1, MANNER, -1, last_pair_pos);
+        it->second = State<T>(newscore, preindex_1, preindex_2, -1, -1, MANNER, -1, last_pair_pos, cross_pair_num);
     }
 }
 
 template <typename T>
-void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, int preindex_2, int preindex_3, Manner MANNER) {
+void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, int preindex_2, int preindex_3, Manner MANNER, int cross_pair_num = 0) {
     auto it = stateMap.find(index);
 
     if (it == stateMap.end()) {
-        stateMap.emplace(index, State<T>(newscore, preindex_1, preindex_2, preindex_3, -1, MANNER));
+        stateMap.emplace(index, State<T>(newscore, preindex_1, preindex_2, preindex_3, -1, MANNER, -1, -1, cross_pair_num));
     } else if (newscore > it->second.score) {
-        it->second = State<T>(newscore, preindex_1, preindex_2, preindex_3, -1, MANNER);
+        it->second = State<T>(newscore, preindex_1, preindex_2, preindex_3, -1, MANNER, -1, -1, cross_pair_num);
     }
 }
 
 template <typename T>
-void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, int preindex_2, int preindex_3, Manner MANNER, int last_pair_pos) {
+void update(std::unordered_map<int, State<T>>& stateMap, int index, double newscore, int preindex_1, int preindex_2, int preindex_3, Manner MANNER, int last_pair_pos, int cross_pair_num) {
     auto it = stateMap.find(index);
 
     if (it == stateMap.end()) {
-        stateMap.emplace(index, State<T>(newscore, preindex_1, preindex_2, preindex_3, -1, MANNER, -1, last_pair_pos));
+        stateMap.emplace(index, State<T>(newscore, preindex_1, preindex_2, preindex_3, -1, MANNER, -1, last_pair_pos, cross_pair_num));
     } else if (newscore > it->second.score) {
-        it->second = State<T>(newscore, preindex_1, preindex_2, preindex_3, -1, MANNER, -1, last_pair_pos);
+        it->second = State<T>(newscore, preindex_1, preindex_2, preindex_3, -1, MANNER, -1, last_pair_pos, cross_pair_num);
     }
 }
 
@@ -405,6 +405,16 @@ inline bool compare(double x, double y, double epsilon = 1.0E-5) {
     return false;
 }
 
+inline int isCrossTalk(int i, int j, int ires_len){
+    if(i < ires_len && j >= ires_len){
+        return 1;
+    } else if(i >= ires_len && j < ires_len) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 template <typename T>
 void initialize_Special_HP(AllTables<T>& alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq, int ires_len, bool is_DN){
     std::vector<std::unordered_map<int, State<T>>>& bestC = alltables.bestC;
@@ -420,9 +430,8 @@ void initialize_Special_HP(AllTables<T>& alltables, string& rna_seq, vector<int>
         return ;
     }
 
-    
     unordered_map<int,unordered_set<string>> global_sp;//<index, all special hairpins could appear>
-    for(int i = ires_len; i < ami_seq.length()-3; i++){
+    for(int i = ires_len; i < (int)ami_seq.length()-3; i++){
         vector<string> &Amino_1 = Amino_to_nucs[ami_seq[i]];
         vector<string> &Amino_2 = Amino_to_nucs[ami_seq[i+1]];
         vector<string> &Amino_3 = Amino_to_nucs[ami_seq[i+2]];
@@ -432,7 +441,6 @@ void initialize_Special_HP(AllTables<T>& alltables, string& rna_seq, vector<int>
                 for(auto &A3 : Amino_3){
                     for(auto &A4 : Amino_4){
                         std::string sub_seq = A1 + A2 + A3 + A4;
-                        //cout<<sub_seq<<endl;
                         unordered_map<int,int> sp;
                         matcher.SearchPositions(sub_seq.c_str(),i*3,0,sub_seq.length()-1,sp);
                         for(auto ss:sp){
@@ -440,24 +448,20 @@ void initialize_Special_HP(AllTables<T>& alltables, string& rna_seq, vector<int>
                             if(global_sp[ss.first].count(special_hp) == 0) {
                                 global_sp[ss.first].insert(special_hp);
                             }
-                            //cout<<"position "<<ss.first<<" have sp loop :"<<sub_seq.substr(ss.first - i*3 - ss.second +1,ss.second)<<endl;
                         }
                     }
                 }
-        
     }
     
     for(auto g:global_sp){
-        // cout<<"position "<<g.first<<" have sp loop(s) : ";
         for(auto h : g.second){
             vector<int> last_nuc ,first_nuc;
-            int last_idx = g.first,first_idx = last_idx - h.length() +1;
+            int last_idx = g.first, first_idx = last_idx - h.length() + 1;
             unordered_map<int,T> first_CAI;
-            // cout<<"{"<<h <<", "<<sp_loops[h]<< ", ";
+            
             if(isLastNuc(last_idx)){//third place in a codon
                 string codon_ = h.substr(h.length()-3,3);
                 last_nuc.push_back(getLastExtendedNuc(re_Amino_label[codon_][0],codon_));
-                //cout<<CheckReBASE(getLastExtendedNuc(re_Amino_label[codon_][0],codon_))<<endl;//Not finish
             } else {
                 vector<int> &nuc_list = Base_table.at(rna_seq[last_idx]);
                 vector<int> &nuc_list2 = Base_table.at(rna_seq[last_idx-1]);
@@ -482,7 +486,6 @@ void initialize_Special_HP(AllTables<T>& alltables, string& rna_seq, vector<int>
                                 first_nuc.push_back(nuc);
                                 first_CAI[nuc] = getCAI(ami_seq[(first_idx+1)/3], nuc2, is_DN);
                             }
-                                
                         }
                     }
                 }
@@ -495,6 +498,7 @@ void initialize_Special_HP(AllTables<T>& alltables, string& rna_seq, vector<int>
                 }
             }
             
+            int cross_num = isCrossTalk(first_idx, last_idx, ires_len);
             std::unordered_map<int, State<T>>& bestC_j = bestC[last_idx];
             for(auto &nuci : first_nuc){
                 for(auto &nucj : last_nuc){
@@ -512,10 +516,11 @@ void initialize_Special_HP(AllTables<T>& alltables, string& rna_seq, vector<int>
                                 newscore += getCAI(ami_seq[x/3], nucx, is_DN);
                             } 
                         }
-                            
                     }
+                    newscore -= cross_num * crosspair_penalty;
+
                     int index = GetIndex(first_idx, nuci, nucj);
-                    update(bestC_j, index, newscore, -1, MANNER_S_HP);
+                    update(bestC_j, index, newscore, -1, MANNER_S_HP, cross_num);
                     if(bestC_j[index].score == newscore) {
                         sp_backtrack[index] = h;
                     }
@@ -542,6 +547,7 @@ void init_and_N_state(std::vector<std::unordered_map<int, State<T>>>& bestN,
                       string& ami_seq,
                       const vector<int>& nucj_list,
                       int j,
+                      int ires_len,
                       bool is_DN,
                       double param) {
     int index;
@@ -559,8 +565,8 @@ void init_and_N_state(std::vector<std::unordered_map<int, State<T>>>& bestN,
         if (isLastNuc(j) && param)
             newscore += getCAI(ami_seq[j / 3], nucj, is_DN);
 
-        update(bestS_j[1], index, newscore, -1, MANNER_NONEtoS); // initialize bestS[j]
-        update(bestN_j, index, newscore, -1, MANNER_NONEtoN); // initialize bestN[j]
+        update(bestS_j[1], index, newscore, -1, MANNER_NONEtoS, 0); // initialize bestS[j]
+        update(bestN_j, index, newscore, -1, MANNER_NONEtoN, 0); // initialize bestN[j]
 
         /*all N -> another state*/
         for (auto &itemN_j_1 : bestN_j_1) { // all different states -> N at position j-1
@@ -576,7 +582,7 @@ void init_and_N_state(std::vector<std::unordered_map<int, State<T>>>& bestN,
                     newscore += getCAI(ami_seq[j / 3], nucj, is_DN);
                 // N -> N
                 index = GetIndex(i, nuci, nucj);
-                update(bestN_j, index, newscore, index_j_1, MANNER_N_EtoN);
+                update(bestN_j, index, newscore, index_j_1, MANNER_N_EtoN, stateN_j_1.cross_pair_num);
 
                 int i_1 = i - 1; // the continuous Non-pairing is from i to j-1, so if we want to transfer N -> C ,the pairing must be i-1 and j (loop : i ~ j-1)
                 if ((i_1 >= 0) && (j - i_1 > HAIRPIN_GAP)) { // consider hairpin(gap > 3)
@@ -594,9 +600,14 @@ void init_and_N_state(std::vector<std::unordered_map<int, State<T>>>& bestN,
                                     newscore += getCAI(ami_seq[j / 3], nucj, is_DN);
                                 if (isLastNuc(i_1) && param)
                                     newscore += getCAI(ami_seq[i_1 / 3], nuci_1, is_DN);
+
+                                int cross_delta = isCrossTalk(i_1, j, ires_len);
+                                int total_cross = stateN_j_1.cross_pair_num + cross_delta;
+                                newscore -= cross_delta * crosspair_penalty;
+                                
                                 // N->C
                                 index = GetIndex(i_1, nuci_1, nucj);
-                                update(bestC_j, index, newscore, index_j_1, MANNER_NtoC);
+                                update(bestC_j, index, newscore, index_j_1, MANNER_NtoC, total_cross);
                             }
                         }
                     }
@@ -638,7 +649,7 @@ void S_to_S_state(std::vector<std::vector<std::unordered_map<int, State<T>>>>& b
                         newscore += getCAI(ami_seq[j / 3], nucj, is_DN);
                     // S -> S
                     index = GetIndex(i, nuci, nucj);
-                    update(bestS_j[l + 1], index, newscore, index_j_1, MANNER_S_EtoS);
+                    update(bestS_j[l + 1], index, newscore, index_j_1, MANNER_S_EtoS, stateS_j_1.cross_pair_num);
                 }
             }
         }
@@ -679,7 +690,7 @@ void C_and_F_state(std::vector<std::unordered_map<int, State<T>>>& bestF,
                     newscore += getCAI(ami_seq[j / 3], nucj, is_DN);
                 // F->F
                 index = GetIndex(i, nuci, nucj);
-                update(bestF_j, index, newscore, index_j_1, MANNER_F_EtoF);
+                update(bestF_j, index, newscore, index_j_1, MANNER_F_EtoF, stateF_j_1.cross_pair_num);
             }
         }
     }
@@ -697,7 +708,7 @@ void C_and_F_state(std::vector<std::unordered_map<int, State<T>>>& bestF,
                 newscore = stateC_j.score - v_score_external_paired(EnrBASE(nuci), EnrBASE(nucj));
             }
             // C->F
-            update(bestF_j, index_j, newscore, index_j, MANNER_CtoF);
+            update(bestF_j, index_j, newscore, index_j, MANNER_CtoF, stateC_j.cross_pair_num);
         }
 
         int i_1 = i - 1;
@@ -715,8 +726,9 @@ void C_and_F_state(std::vector<std::unordered_map<int, State<T>>>& bestF,
                         newscore = stateF_i_1.score + stateC_j.score - v_score_external_paired(EnrBASE(nuci), EnrBASE(nucj));
                     }
                     // F+C->F
+                    int total_cross = stateF_i_1.cross_pair_num + stateC_j.cross_pair_num;
                     index = GetIndex(k, nuck, nucj);
-                    update(bestF_j, index, newscore, index_i_1, index_j, MANNER_F_CtoF);
+                    update(bestF_j, index, newscore, index_i_1, index_j, MANNER_F_CtoF, total_cross);
                 }
             }
         }
@@ -754,9 +766,11 @@ void C_to_CS_state(std::vector<std::unordered_map<int, State<T>>>& bestS_j,
 
                     if (k >= 0 && IsLegal(con_seq, nuci_1, nuci, i_1)) {
                         newscore = stateS_j.score + stateC_i_1.score;
+                        int total_cross = stateS_j.cross_pair_num + stateC_i_1.cross_pair_num;
+
                         // C+S->CS
                         index = GetIndexCS(k, nuck, nuci_1, nucj, nuci, l);
-                        update(bestCS_j, index, newscore, index_i_1, index_j, MANNER_C_StoCS);
+                        update(bestCS_j, index, newscore, index_i_1, index_j, MANNER_C_StoCS, total_cross);
                     }
                 }
             }
@@ -778,6 +792,7 @@ void CS_to_C_state(std::unordered_map<int, State<T>>& bestCS_j_1,
                    string& ami_seq,
                    int nucj,
                    int j,
+                   int ires_len,
                    bool is_DN,
                    double param) {
     int index;
@@ -814,9 +829,13 @@ void CS_to_C_state(std::unordered_map<int, State<T>>& bestCS_j_1,
                     if (isLastNuc(i) && param)
                         newscore += getCAI(ami_seq[i / 3], nuci, is_DN);
 
+                    int cross_delta = isCrossTalk(i, j, ires_len);
+                    int total_cross = stateCS_j_1.cross_pair_num + cross_delta;
+                    newscore -= cross_delta * crosspair_penalty;
+
                     // CS->C
                     index = GetIndex(i, nuci, nucj);
-                    update(bestC_j, index, newscore, index_j_1, MANNER_CStoC);
+                    update(bestC_j, index, newscore, index_j_1, MANNER_CStoC, total_cross);
                 }
             }
 
@@ -853,9 +872,13 @@ void CS_to_C_state(std::unordered_map<int, State<T>>& bestCS_j_1,
                                 if (isLastNuc(k) && param)
                                     newscore += getCAI(ami_seq[k / 3], nuck, is_DN);
 
+                                int cross_delta = isCrossTalk(k, j, ires_len);
+                                int total_cross = stateCS_j_1.cross_pair_num + stateS_i.cross_pair_num + cross_delta;
+                                newscore -= cross_delta * crosspair_penalty;
+
                                 // S+CS->C
                                 index = GetIndex(k, nuck, nucj);
-                                update(bestC_j, index, newscore, index_i, index_j_1, MANNER_S_CStoC);
+                                update(bestC_j, index, newscore, index_i, index_j_1, MANNER_S_CStoC, total_cross);
                             }
                         }
                     }
@@ -880,6 +903,7 @@ void S_C_S_state(std::vector<std::unordered_map<int, State<T>>>& bestC,
                  string& ami_seq,
                  const vector<int>& nucj_list,
                  int j,
+                 int ires_len,
                  bool is_DN,
                  double param,
                  bool mid_beam_prune = false) {
@@ -925,8 +949,12 @@ void S_C_S_state(std::vector<std::unordered_map<int, State<T>>>& bestC,
                                     if (isLastNuc(i) && param)
                                         newscore += getCAI(ami_seq[i / 3], nuci, is_DN);
 
+                                    int cross_delta = isCrossTalk(i, j, ires_len);
+                                    int total_cross = stateS_j_1.cross_pair_num + stateC_q.cross_pair_num + cross_delta;
+                                    newscore -= cross_delta * crosspair_penalty;
+
                                     index = GetIndex(i, nuci, nucj);
-                                    update(bestC_j, index, newscore, index_q, index_j_1, MANNER_C_StoC);
+                                    update(bestC_j, index, newscore, index_q, index_j_1, MANNER_C_StoC, total_cross);
                                 }
                             }
 
@@ -960,8 +988,12 @@ void S_C_S_state(std::vector<std::unordered_map<int, State<T>>>& bestC,
                                                 if (isLastNuc(i) && param)
                                                     newscore += getCAI(ami_seq[i / 3], nuci, is_DN);
 
+                                                int cross_delta = isCrossTalk(i, j, ires_len);
+                                                int total_cross = stateS_j_1.cross_pair_num + stateC_q.cross_pair_num + stateS_p_1.cross_pair_num + cross_delta;
+                                                newscore -= cross_delta * crosspair_penalty;
+
                                                 index = GetIndex(i, nuci, nucj);
-                                                update(bestC_j, index, newscore, index_p_1, index_q, index_j_1, MANNER_S_C_StoC);
+                                                update(bestC_j, index, newscore, index_p_1, index_q, index_j_1, MANNER_S_C_StoC, total_cross);
                                             }
                                         }
                                     }
@@ -989,6 +1021,7 @@ void C_state(std::vector<std::unordered_map<int, State<T>>>& bestC,
              string& ami_seq,
              const vector<int>& nucj_list,
              int j,
+             int ires_len,
              bool is_DN,
              double param) {
     int index;
@@ -1021,9 +1054,13 @@ void C_state(std::vector<std::unordered_map<int, State<T>>>& bestC,
                         if (isLastNuc(i) && param)
                             newscore += getCAI(ami_seq[i / 3], nuci, is_DN);
 
+                        int cross_delta = isCrossTalk(i, j, ires_len);
+                        int total_cross = stateC_j_1.cross_pair_num + cross_delta;
+                        newscore -= cross_delta * crosspair_penalty;
+
                         // C->C
                         index = GetIndex(i, nuci, nucj);
-                        update(bestC_j, index, newscore, index_j_1, MANNER_CtoC);
+                        update(bestC_j, index, newscore, index_j_1, MANNER_CtoC, total_cross);
                     }
                 }
 
@@ -1054,9 +1091,13 @@ void C_state(std::vector<std::unordered_map<int, State<T>>>& bestC,
                                         if (isLastNuc(k) && param)
                                             newscore += getCAI(ami_seq[k / 3], nuck, is_DN);
 
+                                        int cross_delta = isCrossTalk(k, j, ires_len);
+                                        int total_cross = stateC_j_1.cross_pair_num + stateS_i.cross_pair_num + cross_delta;
+                                        newscore -= cross_delta * crosspair_penalty;
+
                                         // S+C->C
                                         index = GetIndex(k, nuck, nucj);
-                                        update(bestC_j, index, newscore, index_i, index_j_1, MANNER_S_CtoC);
+                                        update(bestC_j, index, newscore, index_i, index_j_1, MANNER_S_CtoC, total_cross);
                                     }
                                 }
                             }
@@ -1082,6 +1123,7 @@ void Multi_state(std::vector<std::unordered_map<int, State<T>>>& bestMulti,
                  string& ami_seq,
                  const vector<int>& nucj_list,
                  int j,
+                 int ires_len,
                  bool is_DN,
                  double param) {
     int index;
@@ -1105,7 +1147,7 @@ void Multi_state(std::vector<std::unordered_map<int, State<T>>>& bestMulti,
 
                     // Multi->Multi
                     index = GetIndex(i, nuci, nucj);
-                    update(bestMulti_j, index, newscore, index_j_1, -1, stateMulti_j_1.index_3, MANNER_Multi_EtoMulti, last_pair_pos_Multi);
+                    update(bestMulti_j, index, newscore, index_j_1, -1, stateMulti_j_1.index_3, MANNER_Multi_EtoMulti, last_pair_pos_Multi, stateMulti_j_1.cross_pair_num);
                 }
 
                 int i_1 = i - 1;
@@ -1124,9 +1166,13 @@ void Multi_state(std::vector<std::unordered_map<int, State<T>>>& bestMulti,
                             if (isLastNuc(i_1) && param)
                                 newscore += getCAI(ami_seq[i_1 / 3], nuci_1, is_DN);
 
+                            int cross_delta = isCrossTalk(i_1, j, ires_len);
+                            int total_cross = stateMulti_j_1.cross_pair_num + cross_delta;
+                            newscore -= cross_delta * crosspair_penalty;
+
                             // Multi->C
                             index = GetIndex(i_1, nuci_1, nucj);
-                            update(bestC_j, index, newscore, index_j_1, MANNER_MultitoC);
+                            update(bestC_j, index, newscore, index_j_1, MANNER_MultitoC, total_cross);
                         }
                     }
                 }
@@ -1163,7 +1209,7 @@ void M1_C_to_M2_state(std::vector<std::unordered_map<int, State<T>>>& bestM1,
         }
 
         // C->M1
-        update(bestM1_j, index_j, newscore, index_j, -1, 1, MANNER_CtoM1, j);
+        update(bestM1_j, index_j, newscore, index_j, -1, 1, MANNER_CtoM1, j, stateC_j.cross_pair_num);
 
         int i_1 = i - 1;
         if (i_1 >= HAIRPIN_GAP + 1) {
@@ -1179,9 +1225,11 @@ void M1_C_to_M2_state(std::vector<std::unordered_map<int, State<T>>>& bestM1,
                     } else {
                         newscore = -v_score_M1(EnrBASE(nuci), EnrBASE(nucj)) + stateC_j.score + stateM1_i_1.score;
                     }
+                    int total_cross = stateC_j.cross_pair_num + stateM1_i_1.cross_pair_num;
+
                     // M1+C->M2
                     index = GetIndex(k, nuck, nucj);
-                    update(bestM2_j, index, newscore, index_i_1, index_j, stateM1_i_1.index_3+1, MANNER_M1_CtoM2, j);
+                    update(bestM2_j, index, newscore, index_i_1, index_j, stateM1_i_1.index_3 + 1, MANNER_M1_CtoM2, j, total_cross);
                 }
             }
         }
@@ -1223,7 +1271,7 @@ void M1_to_M1_state(std::vector<std::unordered_map<int, State<T>>>& bestM1,
 
                 // M1->M1
                 index = GetIndex(i, nuci, nucj);
-                update(bestM1_j, index, newscore, index_j_1, -1, stateM1_j_1.index_3, MANNER_M1_EtoM1, last_pair_pos_M1);
+                update(bestM1_j, index, newscore, index_j_1, -1, stateM1_j_1.index_3, MANNER_M1_EtoM1, last_pair_pos_M1, stateM1_j_1.cross_pair_num);
             }
         }
     }
@@ -1253,9 +1301,10 @@ void M2_state(std::vector<std::vector<std::unordered_map<int, State<T>>>>& bestS
         int last_pair_pos_M2 = stateM2_j.last_pair_pos;
 
         // M2->M1
-        update(bestM1_j, index_j, newscore, index_j, -1, stateM2_j.index_3, MANNER_M2toM1, last_pair_pos_M2);
+        update(bestM1_j, index_j, newscore, index_j, -1, stateM2_j.index_3, MANNER_M2toM1, last_pair_pos_M2, stateM2_j.cross_pair_num);
         // M2->Multi
-        update(bestMulti_j, index_j, newscore, index_j, -1, stateM2_j.index_3, MANNER_M2toMulti, last_pair_pos_M2);
+        update(bestMulti_j, index_j, newscore, index_j, -1, stateM2_j.index_3, MANNER_M2toMulti, last_pair_pos_M2, stateM2_j.cross_pair_num);
+
         int i_1 = i - 1;
         if (i_1 >= 0) {
             for (int l = 1; l <= min(SINGLE_MAX_LEN, i_1); l++) {
@@ -1267,9 +1316,10 @@ void M2_state(std::vector<std::vector<std::unordered_map<int, State<T>>>>& bestS
                     std::tie(k, nuck, nuci_1) = GetIndexTuple(index_i_1);
                     if (IsLegal(con_seq, nuci_1, nuci, i_1)) {
                         newscore = stateM2_j.score + stateS_i_1.score;
+                        int total_cross = stateM2_j.cross_pair_num + stateS_i_1.cross_pair_num;
                         // S+M2->Multi
                         index = GetIndex(k, nuck, nucj);
-                        update(bestMulti_j, index, newscore, index_i_1, index_j, stateM2_j.index_3, MANNER_S_M2toMulti, last_pair_pos_M2);
+                        update(bestMulti_j, index, newscore, index_i_1, index_j, stateM2_j.index_3, MANNER_S_M2toMulti, last_pair_pos_M2, total_cross);
                     }
                 }
             }
@@ -1280,7 +1330,7 @@ void M2_state(std::vector<std::vector<std::unordered_map<int, State<T>>>>& bestS
 /** *************************************************************************************************************** */
 
 template<typename T>
-void LCDSfoldCAI_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq, bool is_DN, bool is_beam_speedup){
+void LCDSfoldCAI_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq, int ires_len, bool is_DN, bool is_beam_speedup){
     //DERNA
     int seq_length = rna_seq.size();
     T newscore;
@@ -1299,12 +1349,12 @@ void LCDSfoldCAI_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& con
     std::vector<std::unordered_map<int, State<T>>>& bestCS = alltables.bestCS;
 
     vector<int> nuc0_list = Base_table.at(rna_seq[0]); //j list
-    for(int c0 = 0; c0 < nuc0_list.size(); ++c0){
+    for(size_t c0 = 0; c0 < nuc0_list.size(); ++c0){
         int nuc0 = nuc0_list[c0];
         index = GetIndex(0, nuc0, nuc0);
-        update(bestN[0], index, 0, -1, MANNER_NONEtoN);
-        update(bestF[0], index, 0, -1, MANNER_NONEtoF);
-        update(bestS[0][1], index, 0, -1, MANNER_NONEtoS);
+        update(bestN[0], index, 0, -1, MANNER_NONEtoN, 0);
+        update(bestF[0], index, 0, -1, MANNER_NONEtoF, 0);
+        update(bestS[0][1], index, 0, -1, MANNER_NONEtoS, 0);
     }
     
     for(int j = 1; j < seq_length; ++j){// 1 ~ seq_length
@@ -1325,7 +1375,7 @@ void LCDSfoldCAI_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& con
         // None -> S/N state
         //  N   ->  N  state
         //  N   ->  C  state
-        init_and_N_state<T>(bestN, bestS_j, bestC_j, rna_seq, con_seq, ami_seq, nucj_list, j, is_DN, param);
+        init_and_N_state<T>(bestN, bestS_j, bestC_j, rna_seq, con_seq, ami_seq, nucj_list, j, ires_len, is_DN, param);
         
         BeamPrune(con_seq, rna_seq, bestN_j, bestF, !param);
         
@@ -1337,8 +1387,8 @@ void LCDSfoldCAI_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& con
                 std::unordered_map<int, State<T>>& bestCS_j_1 = bestCS[j_1];
                 // CS -> C
                 // S+CS -> C
-                CS_to_C_state<T>(bestCS_j_1, bestC_j, bestS, rna_seq, con_seq, ami_seq, nucj, j, is_DN, param);
-                if(is_DN) { // TODO: check if this is really needed 
+                CS_to_C_state<T>(bestCS_j_1, bestC_j, bestS, rna_seq, con_seq, ami_seq, nucj, j, ires_len, is_DN, param);
+                if(is_DN) {
                     BeamPrune(con_seq, rna_seq, bestC_j, bestF, false);
                 }
 
@@ -1349,26 +1399,23 @@ void LCDSfoldCAI_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& con
         } else {
             //  C+S  -> C state
             // S+C+S -> C state
-            S_C_S_state<T>(bestC, bestC_j, bestS, bestF, rna_seq, con_seq, ami_seq, nucj_list, j, is_DN, param, true);
+            S_C_S_state<T>(bestC, bestC_j, bestS, bestF, rna_seq, con_seq, ami_seq, nucj_list, j, ires_len, is_DN, param, true);
             BeamPrune(con_seq, rna_seq, bestC_j, bestF, false);
         }
 
         // C -> C state
         // S+C -> C state
-        C_state<T>(bestC, bestC_j, bestS, rna_seq, con_seq, ami_seq, nucj_list, j, is_DN, param);
-        
+        C_state<T>(bestC, bestC_j, bestS, rna_seq, con_seq, ami_seq, nucj_list, j, ires_len, is_DN, param);
         BeamPrune(con_seq, rna_seq, bestC_j, bestF, false);
         
         // Multi -> Multi state
         // Multi -> C state
-        Multi_state<T>(bestMulti, bestMulti_j, bestC_j, rna_seq, con_seq, ami_seq, nucj_list, j, is_DN, param);
-        
+        Multi_state<T>(bestMulti, bestMulti_j, bestC_j, rna_seq, con_seq, ami_seq, nucj_list, j, ires_len, is_DN, param);
         BeamPrune(con_seq, rna_seq, bestC_j, bestF, false);
 
         // C -> M1 state
         // M1 + C -> M2 state
         M1_C_to_M2_state<T>(bestM1, bestM1_j, bestM2_j, bestC_j, con_seq, j, is_DN);
-        
         BeamPrune(con_seq, rna_seq, bestM2_j, bestF, false);
 
         // M1 -> M1 state
@@ -1392,7 +1439,7 @@ void LCDSfoldCAI_beam(AllTables<T>& alltables, string& rna_seq, vector<int>& con
 }
 
 template<typename T>
-void LCDSfoldCAI_exact(AllTables<T>& alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq, bool is_DN){
+void LCDSfoldCAI_exact(AllTables<T>& alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq, int ires_len, bool is_DN){
     //DERNA
     int seq_length = rna_seq.size();
     T newscore;
@@ -1409,12 +1456,12 @@ void LCDSfoldCAI_exact(AllTables<T>& alltables, string& rna_seq, vector<int>& co
     std::vector<std::unordered_map<int, State<T>>>& bestMulti = alltables.bestMulti;
 
     vector<int> nuc0_list = Base_table.at(rna_seq[0]); //j list
-    for(int c0 = 0; c0 < nuc0_list.size(); ++c0){
+    for(size_t c0 = 0; c0 < nuc0_list.size(); ++c0){
         int nuc0 = nuc0_list[c0];
         index = GetIndex(0, nuc0, nuc0);
-        update(bestN[0], index, 0, -1, MANNER_NONEtoN);
-        update(bestF[0], index, 0, -1, MANNER_NONEtoF);
-        update(bestS[0][1], index, 0, -1, MANNER_NONEtoS);
+        update(bestN[0], index, 0, -1, MANNER_NONEtoN, 0);
+        update(bestF[0], index, 0, -1, MANNER_NONEtoF, 0);
+        update(bestS[0][1], index, 0, -1, MANNER_NONEtoS, 0);
     }
     
     for(int j = 1; j < seq_length; ++j){// 1 ~ seq_length
@@ -1433,22 +1480,22 @@ void LCDSfoldCAI_exact(AllTables<T>& alltables, string& rna_seq, vector<int>& co
         // None -> S/N state
         //  N   ->  N  state
         //  N   ->  C  state
-        init_and_N_state<T>(bestN, bestS_j, bestC_j, rna_seq, con_seq, ami_seq, nucj_list, j, is_DN, param);
+        init_and_N_state<T>(bestN, bestS_j, bestC_j, rna_seq, con_seq, ami_seq, nucj_list, j, ires_len, is_DN, param);
 
         // S -> S state
         S_to_S_state<T>(bestS, bestS_j, con_seq, ami_seq, nucj_list, j, is_DN, param);
 
         //  C+S  -> C state
         // S+C+S -> C state
-        S_C_S_state<T>(bestC, bestC_j, bestS, bestF, rna_seq, con_seq, ami_seq, nucj_list, j, is_DN, param);
+        S_C_S_state<T>(bestC, bestC_j, bestS, bestF, rna_seq, con_seq, ami_seq, nucj_list, j, ires_len, is_DN, param);
         
         // C -> C state
         // S+C -> C state
-        C_state<T>(bestC, bestC_j, bestS, rna_seq, con_seq, ami_seq, nucj_list, j, is_DN, param);
+        C_state<T>(bestC, bestC_j, bestS, rna_seq, con_seq, ami_seq, nucj_list, j, ires_len, is_DN, param);
         
         // Multi -> Multi state
         // Multi -> C state
-        Multi_state<T>(bestMulti, bestMulti_j, bestC_j, rna_seq, con_seq, ami_seq, nucj_list, j, is_DN, param);
+        Multi_state<T>(bestMulti, bestMulti_j, bestC_j, rna_seq, con_seq, ami_seq, nucj_list, j, ires_len, is_DN, param);
 
         // C -> M1 state
         // M1 + C -> M2 state
@@ -1473,10 +1520,30 @@ void LCDSfoldCAI_exact(AllTables<T>& alltables, string& rna_seq, vector<int>& co
 
 /** *************************************************************************************************************** */
 
+inline int getCrossPairNum(const std::string& structure, int ires_len) {
+    if (ires_len <= 0) return 0;
+    int cross_count = 0;
+    std::vector<int> stack;
+    for (int j = 0; j < (int)structure.length(); ++j) {
+        if (structure[j] == '(') {
+            stack.push_back(j);
+        } else if (structure[j] == ')') {
+            if (!stack.empty()) {
+                int i = stack.back();
+                stack.pop_back();
+                if (isCrossTalk(i, j, ires_len)) {
+                    cross_count++;
+                }
+            }
+        }
+    }
+    return cross_count;
+}
+
 template<typename T>
-std::vector<pair<T,T>> result_output(AllTables<T> &alltables,string& rna_seq, vector<int>& con_seq, string& ami_seq, string& output_txt, string& output_csv,  string& PID, int protein_length, string& ires_id, int ires_len, double TimeSpend, bool show_score,bool is_DN){//return {CAI,MFE}
-    std::ofstream outputfile(output_txt,std::ios::app);
-    std::ofstream outputcsv(output_csv,std::ios::app);
+std::vector<pair<T,T>> result_output(AllTables<T> &alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq, string& output_txt, string& output_csv, string& PID, int protein_length, string& ires_id, int ires_len, double TimeSpend, bool show_score, bool is_DN) { // return {CAI, MFE}
+    std::ofstream outputfile(output_txt, std::ios::app);
+    std::ofstream outputcsv(output_csv, std::ios::app);
 
     std::string rna_solution;
     std::string structure_solution;
@@ -1487,8 +1554,8 @@ std::vector<pair<T,T>> result_output(AllTables<T> &alltables,string& rna_seq, ve
     outputfile << "Protein length: " << protein_length << std::endl;
     outputfile << "Lambda: " << std::fixed << std::setprecision(3) << lambda << std::endl;
 
-    if(ires_id != ""){
-        outputfile << "IRES ID" << ires_id << std::endl;
+    if (ires_id != "") {
+        outputfile << "IRES ID: " << ires_id << std::endl;
         outputfile << "IRES length: " << ires_len << std::endl;
         outputfile << "Crosspair Penalty: " << std::fixed << std::setprecision(3) << crosspair_penalty << std::endl;
     }
@@ -1498,56 +1565,92 @@ std::vector<pair<T,T>> result_output(AllTables<T> &alltables,string& rna_seq, ve
     std::cout << "=== LinearRNA ===" << std::endl;
 
     T maxscore = BackTrack<T>(rna_solution, structure_solution, rna_seq, alltables, con_seq);
-    T weighted_cai_score = GetCAIScore<T>(rna_solution,is_DN);
+    T weighted_cai_score = GetCAIScore<T>(rna_solution, is_DN);
     double cai_value = GetUnweghtedCAIScore(rna_solution);
-    cai_value = exp(cai_value/double(ami_seq.size()));
-    //output score and results
+    cai_value = exp(cai_value / double(ami_seq.size()));
+
+    // 1. 計算 Crosstalk 數量與懲罰分數
+    int cross_pair_count = getCrossPairNum(structure_solution, ires_len);
+    double cross_penalty_score = cross_pair_count * crosspair_penalty;
+
+    // 輸出序列與結構
     std::cout << "Coding sequence and its secondary structure:" << std::endl;
     outputfile << "Coding sequence and its secondary structure:" << std::endl;
     std::cout << rna_solution << std::endl;
     outputfile << rna_solution << std::endl;
     std::cout << structure_solution << std::endl;
     outputfile << structure_solution << std::endl;
-    
-    if (show_score){
-        std::cerr << "Score: " << maxscore << std::endl;
-        outputfile << "Score: " << maxscore << std::endl;
-    }
 
-    double mfe_value ;
-    if(is_DN){
-        mfe_value = -double(double(maxscore - weighted_cai_score)/(100.0*lambda));//*100
-        std::cout << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;
-        outputfile << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;
+    // 2. 還原真實的 MFE（排除 CAI 分數與 Crosspair 懲罰）
+    double mfe_value;
+    double mfe_score_component; // 記錄對應在 maxscore 中的 MFE 成分
+
+    if (is_DN) {
+        // maxscore = mfe_score_component + weighted_cai_score - cross_penalty_score
+        // 其中 mfe_score_component = -100.0 * lambda * mfe_value
+        mfe_score_component = double(maxscore) - double(weighted_cai_score) + cross_penalty_score;
+        mfe_value = -mfe_score_component / (100.0 * lambda);
     } else {
-        if(lambda){
-            mfe_value = -double(double(maxscore - weighted_cai_score)/(100.0));//*100
-            std::cout << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;
-            outputfile << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;  
-        } else {//only consider MFE
-            mfe_value = -(maxscore/(100.0));//*100
-            std::cout << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;
-            outputfile << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;  
+        if (lambda) {
+            mfe_score_component = double(maxscore) - double(weighted_cai_score) + cross_penalty_score;
+            mfe_value = -mfe_score_component / 100.0;
+        } else { // only consider MFE
+            mfe_score_component = double(maxscore) + cross_penalty_score;
+            mfe_value = -mfe_score_component / 100.0;
         }
     }
+
+    // 3. 輸出分數組成分解
+    if (show_score) {
+        std::cerr << "--- Score Breakdown ---" << std::endl;
+        std::cerr << "Total Score: " << maxscore << std::endl;
+        std::cerr << "  - MFE Score: " << mfe_score_component << std::endl;
+        std::cerr << "  - CAI Score (weighted): " << weighted_cai_score << std::endl;
+        std::cerr << "  - Crosspair Penalty Score: -" << cross_penalty_score 
+                  << " (count: " << cross_pair_count << ", penalty: " << crosspair_penalty << ")" << std::endl;
+
+        outputfile << "--- Score Breakdown ---" << std::endl;
+        outputfile << "Total Score: " << maxscore << std::endl;
+        outputfile << "  - MFE Score: " << mfe_score_component << std::endl;
+        outputfile << "  - CAI Score (weighted): " << weighted_cai_score << std::endl;
+        outputfile << "  - Crosspair Penalty Score: -" << cross_penalty_score 
+                   << " (count: " << cross_pair_count << ", penalty: " << crosspair_penalty << ")" << std::endl;
+    }
+
+    // 4. 輸出個別生理/物理指標
+    std::cout << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;
+    outputfile << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;
+
     std::cout << "CAI: " << cai_value << std::endl;
-    outputfile << "CAI: " <<  cai_value << std::endl;
+    outputfile << "CAI: " << cai_value << std::endl;
+
+    std::cout << "Crosspair count: " << cross_pair_count << std::endl;
+    outputfile << "Crosspair count: " << cross_pair_count << std::endl;
 
     std::cout << "Total runtime: " << TimeSpend << " s" << std::endl;
-    outputfile <<  "Total runtime: " << TimeSpend << " s" << std::endl;
+    outputfile << "Total runtime: " << TimeSpend << " s" << std::endl;
 
     check_ami_solution(ami_seq, rna_solution, ires_len);
 
     std::vector<pair<T,T>> result_container;
-    result_container.push_back({round_up(cai_value),round_up(mfe_value)});
-    // output csv
-    outputcsv<<std::endl<<PID<<","<<std::to_string(protein_length)<<","<<std::to_string(lambda)<<","<<std::to_string(mfe_value)<<","<<std::to_string(cai_value)<<","<<TimeSpend;
+    result_container.push_back({round_up(cai_value), round_up(mfe_value)});
+
+    // 5. CSV 加入 crosspair 欄位輸出
+    // 格式：PID, protein_length, lambda, MFE, CAI, Crosspair_count, Crosspair_penalty, Runtime
+    outputcsv << std::endl << PID << "," << std::to_string(protein_length) << "," << std::to_string(lambda) << "," ;
+    if(ires_len != 0) {
+        outputcsv << std::to_string(crosspair_penalty) << "," ;
+    }
+    outputcsv << std::to_string(mfe_value) << "," << std::to_string(cai_value) << "," ;
+     if(ires_len != 0) {
+        outputcsv << std::to_string(cross_pair_count) << "," ;
+    }
+    outputcsv << TimeSpend;
 
     outputcsv.close();
     outputfile.close();
-    
-    return result_container;
 
+    return result_container;
 }
 
 /** *************************************************************************************************************** */
@@ -1634,7 +1737,7 @@ void Pareto_solution(double threshold1, double threshold2, string& ires_seq, str
 
             gettimeofday(&start,0);
             initialize_Special_HP<double>(alltables, rna_seq, con_seq, ami_seq, ires_seq.length(), true);
-            LCDSfoldCAI_exact<double>(alltables, rna_seq, con_seq, ami_seq, true);
+            LCDSfoldCAI_exact<double>(alltables, rna_seq, con_seq, ami_seq, ires_seq.length(), true);
             gettimeofday(&end,0);
             double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
 
@@ -1667,7 +1770,7 @@ void Pareto_solution(double threshold1, double threshold2, string& ires_seq, str
 
             gettimeofday(&start,0);
             initialize_Special_HP<double>(alltables, rna_seq, con_seq, ami_seq, ires_seq.length(), true);
-            LCDSfoldCAI_exact<double>(alltables, rna_seq, con_seq, ami_seq, true);
+            LCDSfoldCAI_exact<double>(alltables, rna_seq, con_seq, ami_seq, ires_seq.length(), true);
             gettimeofday(&end,0);
             double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
 

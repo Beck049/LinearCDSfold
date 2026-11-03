@@ -41,6 +41,7 @@ struct CircularCandidate {
     std::string codon_i = "";
     std::string codon_j = "";
     Manner manner;
+    int cross_pair_num = 0;
 };
 
 /**
@@ -279,7 +280,7 @@ std::vector<pair<T,T>> circular_compose_v1(AllTables<T> &alltables,string& rna_s
     outputfile << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
     std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
     outputfile << "Circular RNA Reconstruction:" << std::endl;
-    std::cout << "=== CircularRNA ===" << std::endl;
+    std::cout << "=== CircularRNA (v1) ===" << std::endl;
 
     std::vector<std::unordered_map<int, State<T>>>& bestN = alltables.bestN;
     std::vector<std::vector<std::unordered_map<int, State<T>>>>& bestS = alltables.bestS;
@@ -479,7 +480,7 @@ std::vector<pair<T,T>> circular_compose_m1(AllTables<T> &alltables,string& rna_s
     outputfile << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
     std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
     outputfile << "Circular RNA Reconstruction:" << std::endl;
-    std::cout << "=== CircularRNA ===" << std::endl;
+    std::cout << "=== CircularRNA (m1) ===" << std::endl;
 
     std::vector<std::unordered_map<int, State<T>>>& bestC = alltables.bestC;
 
@@ -632,6 +633,271 @@ std::vector<pair<T,T>> circular_compose_m1(AllTables<T> &alltables,string& rna_s
     std::vector<pair<T,T>> result_container;
     result_container.push_back({round_up(cai_value), round_up(mfe_value)});
     outputcsv << "," << mfe_value << "," << cai_value << "," << c_TimeSpend;
+
+    return result_container;
+}
+
+// 包含 cross_pair_penalty 的環化重建函式
+template<typename T>
+std::vector<pair<T,T>> circular_compose_i1(
+    AllTables<T> &alltables,
+    string& rna_seq,
+    vector<int>& con_seq,
+    string& ami_seq,
+    string& output_txt,
+    string& output_csv,
+    string& PID,
+    int protein_length,
+    int ires_len,
+    double TimeSpend,
+    bool show_score,
+    bool is_beam,
+    bool is_DN
+) { // return {CAI, MFE}
+    std::ofstream outputfile(output_txt, std::ios::app);
+    std::ofstream outputcsv(output_csv, std::ios::app);
+
+    double c_TimeSpend = 0;
+    auto c_start_time = std::chrono::high_resolution_clock::now();
+
+    outputfile << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
+    std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
+    outputfile << "Circular RNA Reconstruction:" << std::endl;
+    std::cout << "=== CircularRNA (i1) ===" << std::endl;
+
+    std::vector<std::unordered_map<int, State<T>>>& bestM1 = alltables.bestM1;
+    int seq_length = rna_seq.size();
+
+    // 建立 BestAminoMap (含安全 fallback，防止特定胺基酸未配對成功)
+    std::unordered_map<char, std::pair<std::string, double>> BestAminoMap;
+    for (const auto& [label, codon_list] : Amino_to_nucs) {
+        std::string best_codon = "";
+        double min_cai = std::numeric_limits<double>::max();
+        for (const auto& codon : codon_list) {
+            auto it = unweighted_CAIMap.find(codon);
+            if (it != unweighted_CAIMap.end()) {
+                if (it->second == 0) {
+                    best_codon = codon;
+                    min_cai = 0;
+                    break;
+                } else if (it->second < min_cai) {
+                    min_cai = it->second;
+                    best_codon = codon;
+                }
+            }
+        }
+        if (!best_codon.empty()) {
+            BestAminoMap[label] = {best_codon, min_cai};
+        } else if (!codon_list.empty()) {
+            BestAminoMap[label] = {codon_list[0], 0.0};
+        }
+    }
+
+    // 安全取得 Best Codon 的 Lambda 函式，避免 out_of_range
+    auto safe_get_best_codon = [&](char aa) -> std::string {
+        auto it = BestAminoMap.find(aa);
+        if (it != BestAminoMap.end()) {
+            return it->second.first;
+        }
+        auto it_amino = Amino_to_nucs.find(aa);
+        if (it_amino != Amino_to_nucs.end() && !it_amino->second.empty()) {
+            return it_amino->second[0];
+        }
+        if (aa == '*') return "UAA";
+        return "NNN";
+    };
+
+    // 安全包裝 compute_extra_cai
+    auto safe_compute_extra_cai = [&](int nth, int nucn, const std::string& seq, bool is_dn, char type) -> std::pair<std::string, double> {
+        if (nth / 3 >= (int)seq.size()) {
+            return {"", INT_MIN};
+        }
+        char aa = seq[nth / 3];
+        if (Amino_to_nucs.find(aa) == Amino_to_nucs.end()) {
+            return {"", INT_MIN};
+        }
+        return compute_extra_cai(nth, nucn, seq, is_dn, type);
+    };
+
+    CircularCandidate<T> best_struct;
+
+    // 遍歷 bestM1 中所有狀態，搜尋分數最高的 circular 候選結構
+    for (size_t jth = 0; jth < bestM1.size(); ++jth) {
+        for (auto& [id, state] : bestM1[jth]) {
+            int ith, nuci, nucj;
+            Manner manner = state.MANNER;
+            std::tie(ith, nuci, nucj) = GetIndexTuple(id);
+
+            double cur_score = state.score;
+            std::string codon_i = "";
+            std::string codon_j = "";
+            int hairpin_len = seq_length - jth + ith;
+
+            if ((manner == MANNER_CtoM1 || manner == MANNER_M2toM1) && hairpin_len < MAXLOOP) {
+                auto [c_j, extra_cai] = safe_compute_extra_cai(jth, nucj, ami_seq, is_DN, 'j');
+                auto [c_i, extra_cai_dump] = safe_compute_extra_cai(ith, nuci, ami_seq, is_DN, 'i');
+                codon_j = c_j;
+                codon_i = c_i;
+
+                double extra_mfe = 0;
+                int cross_delta = 0;
+
+                if (manner == MANNER_CtoM1) { // 跨端 Hairpin
+                    extra_mfe += hairpin37[min(hairpin_len, 30)];
+                    extra_mfe += (hairpin_len > 30) ? (int)(lxc37 * log((hairpin_len) / 30.)) : 0;
+                    cross_delta = isCrossTalk(ith, jth, ires_len);
+                } else if (manner == MANNER_M2toM1) {
+                    if (state.index_3 > 2) { // Multi loop
+                        extra_mfe -= ML_intern37 + ML_closing37;
+                    } else { // Interior loop
+                        extra_mfe += calcInternalMFE<T>(alltables, rna_seq, ami_seq, BestAminoMap, state,
+                                                        id, ith, jth, codon_i, codon_j, seq_length, false);
+                    }
+                }
+
+                if (is_DN) extra_mfe *= lambda;
+
+                // 總分計算包含：原始 DP 分數 + 跨端閉合 MFE - CAI 補償 - 閉合產生的 Crosstalk 處罰
+                double candidate_score = cur_score + extra_mfe 
+                                       - ((extra_cai == INT_MIN) ? 0 : extra_cai)
+                                       - (cross_delta * crosspair_penalty);
+
+                if (best_struct.score < candidate_score && (hairpin_len > HAIRPIN_GAP || hairpin_len == 0)) {
+                    best_struct.score = candidate_score;
+                    best_struct.index = id;
+                    best_struct.i = ith;
+                    best_struct.j = jth;
+                    best_struct.codon_i = codon_i;
+                    best_struct.codon_j = codon_j;
+                    best_struct.state = state;
+                    best_struct.manner = manner;
+                    best_struct.cross_pair_num = state.cross_pair_num + cross_delta;
+                }
+            }
+        }
+    }
+
+    if (best_struct.index == -1) {
+        std::cout << "No circular structure found." << std::endl;
+        outputfile << "No circular structure found." << std::endl;
+        return {};
+    }
+
+    double c_final_score = best_struct.score;
+    std::string c_rna_solution(seq_length, 'X');
+    std::string c_structure_solution(seq_length, '.');
+
+    std::cout << "Coding sequence and its secondary structure (" << best_struct.i << "~" << best_struct.j
+              << ", " << mannerToString(best_struct.manner) << "):" << std::endl;
+    outputfile << "Coding sequence and its secondary structure :" << std::endl;
+
+    BacktrackStructure(c_rna_solution, c_structure_solution, seq_length, best_struct.index, best_struct.state, alltables, best_struct.j);
+
+    // 補齊 ith 與 jth 所屬 Codon
+    if (best_struct.codon_i != "") {
+        for (int k = 0; k < 3; ++k) {
+            if (best_struct.codon_i[k] == '.') continue;
+            int idx = ((best_struct.i / 3) * 3) + k;
+            if (idx < seq_length) c_rna_solution[idx] = best_struct.codon_i[k];
+        }
+    }
+    if (best_struct.codon_j != "") {
+        for (int k = 0; k < 3; ++k) {
+            int idx = ((best_struct.j / 3) * 3) + k;
+            if (idx < seq_length) c_rna_solution[idx] = best_struct.codon_j[k];
+        }
+    }
+
+    // 補齊前後序列
+    for (int ami = 0; ami < best_struct.i / 3 && ami < (int)ami_seq.size(); ++ami) {
+        std::string codon = safe_get_best_codon(ami_seq[ami]);
+        for (int k = 0; k < 3; ++k) {
+            int idx = ami * 3 + k;
+            if (idx < seq_length) c_rna_solution[idx] = codon[k];
+        }
+    }
+    for (int ami = (best_struct.j / 3) + 1; ami < (int)ami_seq.size(); ++ami) {
+        std::string codon = safe_get_best_codon(ami_seq[ami]);
+        for (int k = 0; k < 3; ++k) {
+            int idx = ami * 3 + k;
+            if (idx < seq_length) c_rna_solution[idx] = codon[k];
+        }
+    }
+
+    // 未配對部分回填原始 rna_seq
+    for (int pos = 0; pos < seq_length; ++pos) {
+        if (c_rna_solution[pos] == '.' || c_rna_solution[pos] == 'X') {
+            c_rna_solution[pos] = rna_seq[pos];
+        }
+    }
+
+    std::cout << c_rna_solution << std::endl;
+    outputfile << c_rna_solution << std::endl;
+    std::cout << c_structure_solution << std::endl;
+    outputfile << c_structure_solution << std::endl;
+
+    // 1. 計算 Crosstalk 配對數量與懲罰分數
+    int cross_pair_count = getCrossPairNum(c_structure_solution, ires_len);
+    double cross_penalty_score = cross_pair_count * crosspair_penalty;
+
+    // 2. MFE & CAI 分數分解
+    T weighted_cai_score = GetCAIScore<T>(c_rna_solution, is_DN);
+    double cai_value = GetUnweghtedCAIScore(c_rna_solution);
+    cai_value = exp(cai_value / double(ami_seq.size()));
+
+    double mfe_value;
+    double mfe_score_component;
+
+    if (is_DN) {
+        mfe_score_component = double(c_final_score) - double(weighted_cai_score) + cross_penalty_score;
+        mfe_value = -mfe_score_component / (100.0 * lambda);
+    } else {
+        if (lambda) {
+            mfe_score_component = double(c_final_score) - double(weighted_cai_score) + cross_penalty_score;
+            mfe_value = -mfe_score_component / 100.0;
+        } else {
+            mfe_score_component = double(c_final_score) + cross_penalty_score;
+            mfe_value = -mfe_score_component / 100.0;
+        }
+    }
+
+    // 3. 輸出分數細項 Breakdown
+    if (show_score) {
+        std::cerr << "--- Score Breakdown ---" << std::endl;
+        std::cerr << "Total Score: " << c_final_score << std::endl;
+        std::cerr << "  - MFE Score: " << mfe_score_component << std::endl;
+        std::cerr << "  - CAI Score (weighted): " << weighted_cai_score << std::endl;
+        std::cerr << "  - Crosspair Penalty Score: -" << cross_penalty_score 
+                  << " (count: " << cross_pair_count << ", penalty: " << crosspair_penalty << ")" << std::endl;
+
+        outputfile << "--- Score Breakdown ---" << std::endl;
+        outputfile << "Total Score: " << c_final_score << std::endl;
+        outputfile << "  - MFE Score: " << mfe_score_component << std::endl;
+        outputfile << "  - CAI Score (weighted): " << weighted_cai_score << std::endl;
+        outputfile << "  - Crosspair Penalty Score: -" << cross_penalty_score 
+                   << " (count: " << cross_pair_count << ", penalty: " << crosspair_penalty << ")" << std::endl;
+    }
+
+    std::cout << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;
+    outputfile << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;
+    std::cout << "CAI: " << std::round(cai_value * 1000.0) / 1000.0 << std::endl;
+    outputfile << "CAI: " << std::round(cai_value * 1000.0) / 1000.0 << std::endl;
+    std::cout << "Crosspair count: " << cross_pair_count << std::endl;
+    outputfile << "Crosspair count: " << cross_pair_count << std::endl;
+
+    auto c_end_time = std::chrono::high_resolution_clock::now();
+    c_TimeSpend = std::chrono::duration_cast<std::chrono::duration<double>>(c_end_time - c_start_time).count();
+    std::cout << "Total runtime: " << std::round(c_TimeSpend * 1000.0) / 1000.0 << " s" << std::endl;
+    outputfile << "Total runtime: " << std::round(c_TimeSpend * 1000.0) / 1000.0 << " s" << std::endl;
+
+    std::vector<pair<T,T>> result_container;
+    result_container.push_back({round_up(cai_value), round_up(mfe_value)});
+
+    // 格式保持與專案其他 CSV 輸出一致
+    outputcsv << "," << mfe_value << "," << cai_value << "," << cross_pair_count << "," << c_TimeSpend;
+
+    outputcsv.close();
+    outputfile.close();
 
     return result_container;
 }

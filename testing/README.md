@@ -68,10 +68,9 @@ Total runtime: 0.002 s
 
 ## ToDo
 1. 若 `-C IRES`，則
-   1. 需輸入 `-i <IRES_file>`
-   2. 需輸入 `-k <crosspair_penalty>`
-   3. 不輸出 Linear 結果！！
+   1. 不輸出 Linear 結果！！
 2. 實作 IRES Method
+   1. IRES no CAI
 3. Sparse
    1. 合併 output function
    2. sparse 加入 circular

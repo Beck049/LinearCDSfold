@@ -1267,7 +1267,7 @@ void Processing(int size_) {
        
 }
 
-inline void PrintInfo(std::string output_txt,std::string output_csv,std::string file, int beamsize, std::string cai_file_path, double lambda, std::string objective, bool pareto, bool is_circ, bool is_rna_file,bool output){
+inline void PrintInfo(std::string output_txt,std::string output_csv,std::string file, int beamsize, std::string cai_file_path, double lambda, std::string objective, bool pareto, std::string circ_objective, bool is_rna_file,bool output){
     // std out information
     std::ofstream outputfile(output_txt);
     std::ofstream outputcsv(output_csv);
@@ -1288,8 +1288,13 @@ inline void PrintInfo(std::string output_txt,std::string output_csv,std::string 
     // TODO
     /*initialize CVS file*/
     std::string csv_column = "UniPort ID, Protein length";
-    csv_column += ", Lambda, MFE, CAI, Run time";
-    if(is_circ) csv_column += ", cMFE, cCAI, cRun time";
+    if(circ_objective == "Non"){
+        csv_column += ", Lambda, MFE, CAI, Run time";
+    } else if(circ_objective == "vienna" || circ_objective == "mfold"){
+        csv_column += ", Lambda, MFE, CAI, Run time, cMFE, cCAI, cRun time";
+    } else if(circ_objective == "IRES"){
+        csv_column += ", Lambda, CT_Penalty, MFE, CAI, crossTalkCnt, Run time, cMFE, cCAI, cCrossTalkCnt, cRun time";
+    }
     outputcsv << csv_column;
 
     /*OJ function*/

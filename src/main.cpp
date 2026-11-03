@@ -66,7 +66,7 @@ int main(int argc, char** argv){
 
     // 新增：IRES 與 crosspair penalty 變數
     std::string ires_file_path = "";
-    double crosspair_penalty = 0.0;
+    crosspair_penalty = 0.0;
     std::string ires_id = "";
     std::string ires_seq = "";
     std::string ires_structure = "";
@@ -349,7 +349,7 @@ int main(int argc, char** argv){
         beamsize = 0;
     }
 
-    PrintInfo(output_txt, output_csv, file, beamsize, cai_file_path, lambda, objective, pareto, is_circ, is_rna_file, true);
+    PrintInfo(output_txt, output_csv, file, beamsize, cai_file_path, lambda, objective, pareto, circ_objective, is_rna_file, true);
     if(!is_rna_file){ // NORMAL MODE
         bool is_DN = (objective == "DN");
         std::cout << (is_DN? "====== DERNA =======" : "=== LinearDesign ===") << std::endl;
@@ -399,13 +399,13 @@ int main(int argc, char** argv){
                 if(mode_ == "sparse") {
                     update_scalar(is_DN);
                     initialize_Special_HP_sparse<double>(alltables, rna_seq, con_seq, ami_seq, ires_seq.length(), is_DN);
-                    SparseCDSfoldCAI<double>(alltables, rna_seq, con_seq, ami_seq, is_DN);
+                    SparseCDSfoldCAI<double>(alltables, rna_seq, con_seq, ami_seq, ires_seq.length(), is_DN);
                 } else {
                     initialize_Special_HP<double>(alltables, rna_seq, con_seq, ami_seq, ires_seq.length(), is_DN);
                     if(beamsize) {
-                        LCDSfoldCAI_beam<double>(alltables, rna_seq, con_seq, ami_seq, is_DN, is_beam_speedup);
+                        LCDSfoldCAI_beam<double>(alltables, rna_seq, con_seq, ami_seq, ires_seq.length(), is_DN, is_beam_speedup);
                     } else {
-                        LCDSfoldCAI_exact<double>(alltables, rna_seq, con_seq, ami_seq, is_DN);
+                        LCDSfoldCAI_exact<double>(alltables, rna_seq, con_seq, ami_seq, ires_seq.length(), is_DN);
                     }
                 }
                 gettimeofday(&end, 0);
@@ -449,6 +449,8 @@ int main(int argc, char** argv){
                         std::vector<pair<double,double>> result_c = circular_compose_v1<double>( alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, use_beam_pruning, is_DN);
                     } else if (circ_objective == "mfold") {
                         std::vector<pair<double,double>> result_c = circular_compose_m1<double>( alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, use_beam_pruning, is_DN);
+                    } else if (circ_objective == "IRES") {
+                        std::vector<pair<double,double>> result_c = circular_compose_i1<double>( alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, ires_seq.length(), TimeSpend, show_score, use_beam_pruning, is_DN);
                     }
                 }
             }
@@ -468,7 +470,7 @@ int main(int argc, char** argv){
             AllTables<double> alltables(rna_seq, rna_seq.size());
             gettimeofday(&start, 0);
             initialize_Special_HP<double>(alltables, rna_seq, con_seq, ami_seq, ires_seq.length(), false);
-            LCDSfoldCAI_exact<double>(alltables, rna_seq, con_seq, ami_seq, false);
+            LCDSfoldCAI_exact<double>(alltables, rna_seq, con_seq, ami_seq, ires_seq.length(), false);
             gettimeofday(&end, 0);
             
             double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);

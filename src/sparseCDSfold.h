@@ -455,7 +455,7 @@ void initialize_Special_HP_sparse(AllTables<T> &alltables, string &rna_seq, vect
 
 
 template <typename T>
-void SparseCDSfoldCAI(AllTables<T> &alltables, string &rna_seq, vector<int> &con_seq, string &ami_seq, bool is_DN)
+void SparseCDSfoldCAI(AllTables<T> &alltables, string &rna_seq, vector<int> &con_seq, string &ami_seq, int ires_len, bool is_DN)
 {
     int seq_length = rna_seq.size();
     double newscore, score_i1_p_1, score_q1_j_1;

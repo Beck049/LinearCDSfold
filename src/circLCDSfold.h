@@ -26,7 +26,7 @@
 #include "utility.h"
 #include "beamprune.h"
 #include "ac_matcher.h"
-#include "LCDSfold.h"
+#include "common.h"
 
 using namespace std;
 using namespace oligodesign;

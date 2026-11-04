@@ -99,129 +99,10 @@ inline int getCrossPairNum(const std::string& structure, int ires_len) {
 /** *************************************************************************************************************** */
 // Init Special HP
 template <typename T>
-void initialize_Special_HP(AllTables<T>& alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq, int ires_len, bool is_DN){
-    std::vector<std::unordered_map<int, State<T>>>& bestC = alltables.bestC;
-    ACMatcher<char,256> matcher;
-            
-    for(auto sp_loop : sp_loops_vec){
-        string s = sp_loop;
-        matcher.AddString(s.c_str(),s.length());
-    }
-            
-    if (!matcher.MakeTree()) {
-        std::cout << "Failed to build the Aho-Corasick tree" << std::endl;
-        return ;
-    }
-
-    unordered_map<int,unordered_set<string>> global_sp;//<index, all special hairpins could appear>
-    for(int i = ires_len; i < (int)ami_seq.length()-3; i++){
-        vector<string> &Amino_1 = Amino_to_nucs[ami_seq[i]];
-        vector<string> &Amino_2 = Amino_to_nucs[ami_seq[i+1]];
-        vector<string> &Amino_3 = Amino_to_nucs[ami_seq[i+2]];
-        vector<string> &Amino_4 = Amino_to_nucs[ami_seq[i+3]];
-        for(auto &A1 : Amino_1)
-            for(auto &A2 : Amino_2)
-                for(auto &A3 : Amino_3){
-                    for(auto &A4 : Amino_4){
-                        std::string sub_seq = A1 + A2 + A3 + A4;
-                        unordered_map<int,int> sp;
-                        matcher.SearchPositions(sub_seq.c_str(),i*3,0,sub_seq.length()-1,sp);
-                        for(auto ss:sp){
-                            string special_hp = sub_seq.substr(ss.first - i*3 - ss.second +1,ss.second);
-                            if(global_sp[ss.first].count(special_hp) == 0) {
-                                global_sp[ss.first].insert(special_hp);
-                            }
-                        }
-                    }
-                }
-    }
-    
-    for(auto g:global_sp){
-        for(auto h : g.second){
-            vector<int> last_nuc ,first_nuc;
-            int last_idx = g.first, first_idx = last_idx - h.length() + 1;
-            unordered_map<int,T> first_CAI;
-            
-            if(isLastNuc(last_idx)){//third place in a codon
-                string codon_ = h.substr(h.length()-3,3);
-                last_nuc.push_back(getLastExtendedNuc(re_Amino_label[codon_][0],codon_));
-            } else {
-                vector<int> &nuc_list = Base_table.at(rna_seq[last_idx]);
-                vector<int> &nuc_list2 = Base_table.at(rna_seq[last_idx-1]);
-                for(auto &nuc : nuc_list){
-                    if(reBASE(nuc) == h[h.length()-1]){
-                        for(auto &nuc2 : nuc_list2){
-                            if(reBASE(nuc2) == h[h.length()-2] && IsLegal(con_seq,nuc2,nuc,last_idx -1)) {
-                                last_nuc.push_back(nuc);
-                            }
-                        }
-                    }
-                }
-            }
-
-            if(first_idx % 3 == 1){//second place in a codon
-                vector<int> &nuc_list = Base_table.at(rna_seq[first_idx]);
-                vector<int> &nuc_list2 = Base_table.at(rna_seq[first_idx+1]);
-                for(auto &nuc : nuc_list){
-                    if(reBASE(nuc) == h[0]){
-                        for(auto &nuc2 : nuc_list2){
-                            if(reBASE(nuc2) == h[1] && IsLegal(con_seq,nuc,nuc2,first_idx)){
-                                first_nuc.push_back(nuc);
-                                first_CAI[nuc] = getCAI(ami_seq[(first_idx+1)/3], nuc2, is_DN);
-                            }
-                        }
-                    }
-                }
-            } else {
-                vector<int> &nuc_list = Base_table.at(rna_seq[first_idx]);
-                for(auto &nuc : nuc_list){
-                    if(reBASE(nuc) == h[0]){
-                        first_nuc.push_back(nuc);
-                    }
-                }
-            }
-            
-            int cross_num = isCrossTalk(first_idx, last_idx, ires_len);
-            std::unordered_map<int, State<T>>& bestC_j = bestC[last_idx];
-            for(auto &nuci : first_nuc){
-                for(auto &nucj : last_nuc){
-                    T newscore = is_DN ? (-lambda * sp_loops[h]) : -1 * sp_loops[h];
-                    for(int x = first_idx ; x <= last_idx ; x++){
-                        double param = is_DN ? (1-lambda) : lambda;
-                        if(isLastNuc(x) && param) {
-                            if(x - first_idx == 0) {//special case1
-                                newscore += getCAI(ami_seq[x/3], nuci, is_DN);
-                            } else if(x - first_idx == 1) {//special case2
-                                newscore += first_CAI[nuci];
-                            } else {
-                                string codon_ = h.substr(x-first_idx-2,3);
-                                int nucx = getLastExtendedNuc(re_Amino_label[codon_][0],codon_);
-                                newscore += getCAI(ami_seq[x/3], nucx, is_DN);
-                            } 
-                        }
-                    }
-                    newscore -= cross_num * crosspair_penalty;
-
-                    int index = GetIndex(first_idx, nuci, nucj);
-                    update(bestC_j, index, newscore, -1, MANNER_S_HP, cross_num);
-                    if(bestC_j[index].score == newscore) {
-                        sp_backtrack[index] = h;
-                    }
-                }
-            }
-        }        
-    }
-}
-
-
-template <typename T>
-void initialize_Special_HP_sparse(AllTables<T> &alltables, string &rna_seq, vector<int> &con_seq, string &ami_seq, int ires_len, bool is_DN) {
-    // std::vector<std::unordered_map<int, State>> &bestC = alltables.bestC;
-    std::vector<std::vector<std::unordered_map<int, State<T>>>> &bestSC = alltables.bestSC;
-
+void initialize_Special_HP(AllTables<T>& alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq, int ires_len, bool is_DN, bool is_sparse = false) {
     ACMatcher<char, 256> matcher;
 
-    for (auto sp_loop : sp_loops_vec) {
+    for (const auto& sp_loop : sp_loops_vec) {
         string s = sp_loop;
         matcher.AddString(s.c_str(), s.length());
     }
@@ -231,26 +112,24 @@ void initialize_Special_HP_sparse(AllTables<T> &alltables, string &rna_seq, vect
         return;
     }
 
-    unordered_map<int, unordered_set<string>> global_sp; //<index, all special hairpins could appear>
-    for (int i = ires_len; i < ami_seq.length() - 3; i++) {
-        vector<string> &Amino_1 = Amino_to_nucs[ami_seq[i]];
-        vector<string> &Amino_2 = Amino_to_nucs[ami_seq[i + 1]];
-        vector<string> &Amino_3 = Amino_to_nucs[ami_seq[i + 2]];
-        vector<string> &Amino_4 = Amino_to_nucs[ami_seq[i + 3]];
-        for (auto &A1 : Amino_1) {
-            for (auto &A2 : Amino_2) {
-                for (auto &A3 : Amino_3) {
-                    for (auto &A4 : Amino_4) {
+    // 收集所有可能出現 special hairpin 的 <結尾位置, hairpin字串集合>
+    unordered_map<int, unordered_set<string>> global_sp;
+    for (int i = ires_len; i < (int)ami_seq.length() - 3; i++) {
+        const auto& Amino_1 = Amino_to_nucs[ami_seq[i]];
+        const auto& Amino_2 = Amino_to_nucs[ami_seq[i + 1]];
+        const auto& Amino_3 = Amino_to_nucs[ami_seq[i + 2]];
+        const auto& Amino_4 = Amino_to_nucs[ami_seq[i + 3]];
+
+        for (const auto& A1 : Amino_1) {
+            for (const auto& A2 : Amino_2) {
+                for (const auto& A3 : Amino_3) {
+                    for (const auto& A4 : Amino_4) {
                         std::string sub_seq = A1 + A2 + A3 + A4;
-                        // cout<<sub_seq<<endl;
                         unordered_map<int, int> sp;
                         matcher.SearchPositions(sub_seq.c_str(), i * 3, 0, sub_seq.length() - 1, sp);
-                        for (auto ss : sp) {
+                        for (const auto& ss : sp) {
                             string special_hp = sub_seq.substr(ss.first - i * 3 - ss.second + 1, ss.second);
-                            if (global_sp[ss.first].count(special_hp) == 0) {
-                                global_sp[ss.first].insert(special_hp);
-                            }
-                            // cout<<"position "<<ss.first<<" have sp loop :"<<sub_seq.substr(ss.first - i*3 - ss.second +1,ss.second)<<endl;
+                            global_sp[ss.first].insert(special_hp);
                         }
                     }
                 }
@@ -258,23 +137,24 @@ void initialize_Special_HP_sparse(AllTables<T> &alltables, string &rna_seq, vect
         }
     }
 
-    for (auto g : global_sp) {
-        // cout<<"position "<<g.first<<" have sp loop(s) : ";
-        for (auto h : g.second) {
+    // 遍歷所有匹配到的 hairpin 並計算分數與更新狀態
+    for (const auto& g : global_sp) {
+        for (const auto& h : g.second) {
             vector<int> last_nuc, first_nuc;
-            int last_idx = g.first, first_idx = last_idx - h.length() + 1;
-            unordered_map<int, double> first_CAI;
-            // cout<<"{"<<h <<", "<<sp_loops[h]<< ", ";
-            if (isLastNuc(last_idx)) { // third place in a codon
+            int last_idx = g.first;
+            int first_idx = last_idx - h.length() + 1;
+            unordered_map<int, T> first_CAI;
+
+            // 1. 結尾核苷酸判定
+            if (isLastNuc(last_idx)) {
                 string codon_ = h.substr(h.length() - 3, 3);
                 last_nuc.push_back(getLastExtendedNuc(re_Amino_label[codon_][0], codon_));
-                // cout<<CheckReBASE(getLastExtendedNuc(re_Amino_label[codon_][0],codon_))<<endl;//Not finish
             } else {
-                vector<int> &nuc_list = Base_table.at(rna_seq[last_idx]);
-                vector<int> &nuc_list2 = Base_table.at(rna_seq[last_idx - 1]);
-                for (auto &nuc : nuc_list) {
+                const auto& nuc_list  = Base_table.at(rna_seq[last_idx]);
+                const auto& nuc_list2 = Base_table.at(rna_seq[last_idx - 1]);
+                for (auto nuc : nuc_list) {
                     if (reBASE(nuc) == h[h.length() - 1]) {
-                        for (auto &nuc2 : nuc_list2) {
+                        for (auto nuc2 : nuc_list2) {
                             if (reBASE(nuc2) == h[h.length() - 2] && IsLegal(con_seq, nuc2, nuc, last_idx - 1)) {
                                 last_nuc.push_back(nuc);
                             }
@@ -283,12 +163,13 @@ void initialize_Special_HP_sparse(AllTables<T> &alltables, string &rna_seq, vect
                 }
             }
 
-            if (first_idx % 3 == 1) { // second place in a codon
-                vector<int> &nuc_list = Base_table.at(rna_seq[first_idx]);
-                vector<int> &nuc_list2 = Base_table.at(rna_seq[first_idx + 1]);
-                for (auto &nuc : nuc_list) {
+            // 2. 開頭核苷酸判定
+            if (first_idx % 3 == 1) {
+                const auto& nuc_list  = Base_table.at(rna_seq[first_idx]);
+                const auto& nuc_list2 = Base_table.at(rna_seq[first_idx + 1]);
+                for (auto nuc : nuc_list) {
                     if (reBASE(nuc) == h[0]) {
-                        for (auto &nuc2 : nuc_list2) {
+                        for (auto nuc2 : nuc_list2) {
                             if (reBASE(nuc2) == h[1] && IsLegal(con_seq, nuc, nuc2, first_idx)) {
                                 first_nuc.push_back(nuc);
                                 first_CAI[nuc] = getCAI(ami_seq[(first_idx + 1) / 3], nuc2, is_DN);
@@ -297,22 +178,28 @@ void initialize_Special_HP_sparse(AllTables<T> &alltables, string &rna_seq, vect
                     }
                 }
             } else {
-                vector<int> &nuc_list = Base_table.at(rna_seq[first_idx]);
-                for (auto &nuc : nuc_list) {
+                const auto& nuc_list = Base_table.at(rna_seq[first_idx]);
+                for (auto nuc : nuc_list) {
                     if (reBASE(nuc) == h[0]) {
                         first_nuc.push_back(nuc);
                     }
                 }
             }
-            std::vector<std::unordered_map<int, State<T>>> &bestSC_j = bestSC[last_idx];
-            for (auto &nuci : first_nuc) {
-                for (auto &nucj : last_nuc) {
-                    double newscore = -MFE_scalar * sp_loops[h];
+
+            // 3. 基礎能量計算
+            T base_score = is_DN ? (-lambda * sp_loops[h]) : (-1 * sp_loops[h]);
+            double param = is_DN ? (1 - lambda) : lambda;
+            int cross_num = is_sparse ? 0 : isCrossTalk(first_idx, last_idx, ires_len);
+
+            // 4. 更新 DP 表格
+            for (auto nuci : first_nuc) {
+                for (auto nucj : last_nuc) {
+                    T newscore = base_score;
                     for (int x = first_idx; x <= last_idx; x++) {
-                        if (isLastNuc(x) && (CAI_scalar)) {
-                            if (x - first_idx == 0) { // special case1
+                        if (isLastNuc(x) && param) {
+                            if (x - first_idx == 0) {
                                 newscore += getCAI(ami_seq[x / 3], nuci, is_DN);
-                            } else if (x - first_idx == 1) { // special case2
+                            } else if (x - first_idx == 1) {
                                 newscore += first_CAI[nuci];
                             } else {
                                 string codon_ = h.substr(x - first_idx - 2, 3);
@@ -321,11 +208,23 @@ void initialize_Special_HP_sparse(AllTables<T> &alltables, string &rna_seq, vect
                             }
                         }
                     }
+
                     int index = GetIndex(first_idx, nuci, nucj);
-                    int l = last_idx - first_idx;
-                    update(bestSC_j[l + 1], index, newscore, -1, -1, -1, -1, MANNER_S_HP);
-                    if (bestSC_j[l + 1][index].score == newscore) {
-                        sp_backtrack[index] = h;
+
+                    if (is_sparse) {
+                        int l = last_idx - first_idx;
+                        auto& target_map = alltables.bestSC[last_idx][l + 1];
+                        update(target_map, index, newscore, -1, -1, -1, -1, MANNER_S_HP);
+                        if (target_map[index].score == newscore) {
+                            sp_backtrack[index] = h;
+                        }
+                    } else {
+                        newscore -= cross_num * crosspair_penalty;
+                        auto& target_map = alltables.bestC[last_idx];
+                        update(target_map, index, newscore, -1, MANNER_S_HP, cross_num);
+                        if (target_map[index].score == newscore) {
+                            sp_backtrack[index] = h;
+                        }
                     }
                 }
             }
@@ -333,11 +232,8 @@ void initialize_Special_HP_sparse(AllTables<T> &alltables, string &rna_seq, vect
     }
 }
 
-
-
 /** *************************************************************************************************************** */
 // Backtracking
-
 template <typename T>
 void BacktrackStructure(string& rna_solution, string& structure_solution, int seq_length, int maxindex, State<T> state, AllTables<T>& alltables, int start_j = -1){
     std::vector<std::unordered_map<int, State<T>>>& bestN = alltables.bestN;
@@ -744,46 +640,7 @@ void BacktrackStructure_sparse(string &rna_solution, string &structure_solution,
 }
 
 template <typename T>
-T BackTrack_sparse(string &rna_solution, string &structure_solution, string &rna_seq, AllTables<T> &alltables, vector<int> &con_seq) {
-    std::vector<std::unordered_map<int, State<T>>> &bestF = alltables.bestF;
-
-    int seq_length = rna_seq.size();
-    rna_solution.assign(seq_length, '.');
-    structure_solution.assign(seq_length, '.');
-
-    vector<int> first_nuclist = Base_table.at(rna_seq[0]);             // i list
-    vector<int> last_nuclist = Base_table.at(rna_seq[seq_length - 1]); // j list
-
-    State<T> state;
-    T maxscore = VALUE_MIN<T>();
-    int maxindex;
-
-    for (int ci = 0; ci < first_nuclist.size(); ci++) {
-        for (int cj = 0; cj < last_nuclist.size(); cj++) {
-            int nuci = first_nuclist[ci];
-            int nucj = last_nuclist[cj];
-            int index = GetIndex(0, nuci, nucj);
-
-            auto it = bestF[seq_length - 1].find(index);
-            if (it != bestF[seq_length - 1].end()) {
-                T newscore = it->second.score;
-                if (maxscore < newscore) {
-                    maxscore = newscore;
-                    maxindex = index;
-                    state = it->second;
-                }
-            }
-        }
-    }
-
-    BacktrackStructure_sparse(rna_solution, structure_solution, seq_length, maxindex, state, alltables);
-
-    return maxscore;
-}
-
-
-template <typename T>
-T BackTrack(string& rna_solution, string& structure_solution, string& rna_seq, AllTables<T>& alltables, vector<int>& con_seq){
+T BackTrack(string& rna_solution, string& structure_solution, string& rna_seq, AllTables<T>& alltables, vector<int>& con_seq, bool is_sparse){
     // cout<<"start back tracking"<<endl;
     std::vector<std::unordered_map<int, State<T>>>& bestF = alltables.bestF;
 
@@ -818,16 +675,19 @@ T BackTrack(string& rna_solution, string& structure_solution, string& rna_seq, A
         }
     }
 
-    BacktrackStructure(rna_solution, structure_solution, seq_length, maxindex, state, alltables);
+    if(is_sparse){
+        BacktrackStructure_sparse(rna_solution, structure_solution, seq_length, maxindex, state, alltables);
+    } else {
+        BacktrackStructure(rna_solution, structure_solution, seq_length, maxindex, state, alltables);
+    }
 
     return maxscore;
 }
 
 /** *************************************************************************************************************** */
 // Result Output
-
 template<typename T>
-std::vector<pair<T,T>> result_output(AllTables<T> &alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq, string& output_txt, string& output_csv, string& PID, int protein_length, string& ires_id, int ires_len, double TimeSpend, bool show_score, bool is_DN) { // return {CAI, MFE}
+std::vector<pair<T,T>> result_output(AllTables<T> &alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq, string& output_txt, string& output_csv, string& PID, int protein_length, string& ires_id, int ires_len, double TimeSpend, bool show_score, bool is_DN, bool is_sparse) { // return {CAI, MFE}
     std::ofstream outputfile(output_txt, std::ios::app);
     std::ofstream outputcsv(output_csv, std::ios::app);
 
@@ -848,9 +708,11 @@ std::vector<pair<T,T>> result_output(AllTables<T> &alltables, string& rna_seq, v
     outputfile << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
     std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
     outputfile << "Linear RNA Reconstruction:" << std::endl;
-    std::cout << "=== LinearRNA ===" << std::endl;
+    std::cout << "=== LinearRNA";
+    std::cout << (is_sparse?"(sparse)":"");
+    std::cout << " ===" << std::endl;
 
-    T maxscore = BackTrack<T>(rna_solution, structure_solution, rna_seq, alltables, con_seq);
+    T maxscore = BackTrack<T>(rna_solution, structure_solution, rna_seq, alltables, con_seq, is_sparse);
     T weighted_cai_score = GetCAIScore<T>(rna_solution, is_DN);
     double cai_value = GetUnweghtedCAIScore(rna_solution);
     cai_value = exp(cai_value / double(ami_seq.size()));
@@ -875,14 +737,14 @@ std::vector<pair<T,T>> result_output(AllTables<T> &alltables, string& rna_seq, v
         // maxscore = mfe_score_component + weighted_cai_score - cross_penalty_score
         // 其中 mfe_score_component = -100.0 * lambda * mfe_value
         mfe_score_component = double(maxscore) - double(weighted_cai_score) + cross_penalty_score;
-        mfe_value = -mfe_score_component / (100.0 * lambda);
+        mfe_value = -mfe_score_component / ((double)LDCONST * lambda);
     } else {
         if (lambda) {
             mfe_score_component = double(maxscore) - double(weighted_cai_score) + cross_penalty_score;
-            mfe_value = -mfe_score_component / 100.0;
+            mfe_value = -mfe_score_component / (double)LDCONST;
         } else { // only consider MFE
             mfe_score_component = double(maxscore) + cross_penalty_score;
-            mfe_value = -mfe_score_component / 100.0;
+            mfe_value = -mfe_score_component / (double)LDCONST;
         }
     }
 
@@ -910,8 +772,10 @@ std::vector<pair<T,T>> result_output(AllTables<T> &alltables, string& rna_seq, v
     std::cout << "CAI: " << cai_value << std::endl;
     outputfile << "CAI: " << cai_value << std::endl;
 
-    std::cout << "Crosspair count: " << cross_pair_count << std::endl;
-    outputfile << "Crosspair count: " << cross_pair_count << std::endl;
+    if(ires_len != 0) {
+        std::cout << "Crosspair count: " << cross_pair_count << std::endl;
+        outputfile << "Crosspair count: " << cross_pair_count << std::endl;
+    }
 
     std::cout << "Total runtime: " << TimeSpend << " s" << std::endl;
     outputfile << "Total runtime: " << TimeSpend << " s" << std::endl;
@@ -937,81 +801,4 @@ std::vector<pair<T,T>> result_output(AllTables<T> &alltables, string& rna_seq, v
     outputfile.close();
 
     return result_container;
-}
-
-template<typename T>
-std::vector<pair<T,T>> sparse_result_output(AllTables<T> &alltables,string& rna_seq, vector<int>& con_seq, string& ami_seq, string& output_txt, string& output_csv,  string& PID, int protein_length, string& ires_id, int ires_len, double TimeSpend, bool show_score,bool is_DN){//return {CAI,MFE}
-    std::ofstream outputfile(output_txt,std::ios::app);
-    std::ofstream outputcsv(output_csv,std::ios::app);
-
-    std::string rna_solution;
-    std::string structure_solution;
-
-    outputfile << "===================================================================================================================" << std::endl;
-
-    outputfile << "Protein ID: " << PID << std::endl;
-    outputfile << "Protein length: " << protein_length << std::endl;
-    outputfile << "Lambda: " << std::fixed << std::setprecision(3) << lambda << std::endl;
-    if(ires_id != ""){
-        outputfile << "IRES ID: " << ires_id << std::endl;
-        outputfile << "IRES length: " << ires_len << std::endl;
-        outputfile << "Crosspair Penalty: " << std::fixed << std::setprecision(3) << crosspair_penalty << std::endl;
-    }
-
-    outputfile << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
-    std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
-    outputfile << "Linear RNA Reconstruction:" << std::endl;
-    std::cout << "=== LinearRNA (Sparse) ===" << std::endl;
-
-    T maxscore = BackTrack_sparse<T>(rna_solution, structure_solution, rna_seq, alltables, con_seq);
-    T weighted_cai_score = GetCAIScore<T>(rna_solution,is_DN);
-    double cai_value = GetUnweghtedCAIScore(rna_solution);
-    cai_value = exp(cai_value/double(ami_seq.size()));
-    //output score and results
-    std::cout << "Coding sequence and its secondary structure:" << std::endl;
-    outputfile << "Coding sequence and its secondary structure:" << std::endl;
-    std::cout << rna_solution << std::endl;
-    outputfile << rna_solution << std::endl;
-    std::cout << structure_solution << std::endl;
-    outputfile << structure_solution << std::endl;
-    
-    if (show_score){
-        std::cerr << "Score: " << maxscore << std::endl;
-        outputfile << "Score: " << maxscore << std::endl;
-    }
-
-    double mfe_value ;
-    if(is_DN){
-        mfe_value = -double(double(maxscore - weighted_cai_score)/(100.0*lambda));//*100
-        std::cout << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;
-        outputfile << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;
-    } else {
-        if(lambda){
-            mfe_value = -double(double(maxscore - weighted_cai_score)/(100.0));//*100
-            std::cout << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;
-            outputfile << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;  
-        } else {//only consider MFE
-            mfe_value = -(maxscore/(100.0));//*100
-            std::cout << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;
-            outputfile << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;  
-        }
-    }
-    std::cout << "CAI: " << cai_value << std::endl;
-    outputfile << "CAI: " <<  cai_value << std::endl;
-
-    std::cout << "Total runtime: " << TimeSpend << " s" << std::endl;
-    outputfile <<  "Total runtime: " << TimeSpend << " s" << std::endl;
-
-    check_ami_solution(ami_seq, rna_solution, ires_len);
-
-    std::vector<pair<T,T>> result_container;
-    result_container.push_back({round_up(cai_value),round_up(mfe_value)});
-    // output csv
-    outputcsv<<std::endl<<PID<<","<<std::to_string(protein_length)<<","<<std::to_string(lambda)<<","<<std::to_string(mfe_value)<<","<<std::to_string(cai_value)<<","<<TimeSpend;
-
-    outputcsv.close();
-    outputfile.close();
-    
-    return result_container;
-
 }

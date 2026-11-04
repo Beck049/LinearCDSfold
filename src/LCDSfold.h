@@ -1177,7 +1177,7 @@ void Pareto_solution(double threshold1, double threshold2, string& ires_seq, str
             gettimeofday(&end,0);
             double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
 
-            std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq,output_txt,output_csv, PID, protein_len, ires_id, ires_len, TimeSpend, show_score,true);
+            std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq,output_txt,output_csv, PID, protein_len, ires_id, ires_len, TimeSpend, show_score, true, false);
             CAI_map[left_lambda] = result.front().first;
             MFE_map[left_lambda] = result.front().second;
             left_cai = CAI_map[left_lambda];
@@ -1210,7 +1210,7 @@ void Pareto_solution(double threshold1, double threshold2, string& ires_seq, str
             gettimeofday(&end,0);
             double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
 
-            std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq,output_txt,output_csv, PID, protein_len, ires_id, ires_len, TimeSpend, show_score, true);
+            std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq,output_txt,output_csv, PID, protein_len, ires_id, ires_len, TimeSpend, show_score, true, false);
             CAI_map[right_lambda] = result.front().first;
             MFE_map[right_lambda] = result.front().second;
             right_cai = CAI_map[right_lambda];

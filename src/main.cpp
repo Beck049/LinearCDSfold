@@ -61,6 +61,7 @@ int main(int argc, char** argv){
     objective = "LD";
     circ_objective = "Non";
     bool is_circ = false;
+    bool is_sparse = false;
     double threshold1 = 0.0025;
     double threshold2 = 0.00075;
 
@@ -274,6 +275,7 @@ int main(int argc, char** argv){
         std::cerr << "Error: SEARCH_MODE " << mode_ << " is not recognized." << std::endl;
         return 0;
     }
+    is_sparse = (mode_ == "sparse" || mode_ == "Sparse");
 
     /*beam search*/
     std::string beamsize_ = input.getCmdOption("-b");
@@ -396,12 +398,12 @@ int main(int argc, char** argv){
                 initialize_CAI_table(cai_vector,is_DN);
                 // 開始 Linear 計算
                 gettimeofday(&start, 0);
-                if(mode_ == "sparse") {
-                    update_scalar(is_DN);
-                    initialize_Special_HP_sparse<double>(alltables, rna_seq, con_seq, ami_seq, ires_seq.length(), is_DN);
+
+                update_scalar(is_DN);
+                initialize_Special_HP<double>(alltables, rna_seq, con_seq, ami_seq, ires_seq.length(), is_DN, is_sparse);
+                if(is_sparse) {
                     SparseCDSfoldCAI<double>(alltables, rna_seq, con_seq, ami_seq, ires_seq.length(), is_DN);
                 } else {
-                    initialize_Special_HP<double>(alltables, rna_seq, con_seq, ami_seq, ires_seq.length(), is_DN);
                     if(beamsize) {
                         LCDSfoldCAI_beam<double>(alltables, rna_seq, con_seq, ami_seq, ires_seq.length(), is_DN, is_beam_speedup);
                     } else {
@@ -428,23 +430,13 @@ int main(int argc, char** argv){
                     std::vector<int> single_con_seq(con_seq.begin(), con_seq.begin() + single_rna_len);
 
                     // 2. 輸出 Linear Result
-                    if(mode_ == "sparse") {
-                        // TODO: 看能不能合併
-                        std::vector<pair<double,double>> sparse_result = sparse_result_output<double>(alltables, single_rna_seq, single_con_seq, single_ami_seq, output_txt, output_csv, PID, protein_len, ires_id, ires_seq.length(), TimeSpend, show_score, is_DN);
-                    } else {
-                        std::vector<pair<double,double>> result = result_output<double>(alltables, single_rna_seq, single_con_seq, single_ami_seq, output_txt, output_csv, PID, protein_len, ires_id, ires_seq.length(), TimeSpend, show_score, is_DN);
-                    }
+                    std::vector<pair<double,double>> sparse_result = result_output<double>(alltables, single_rna_seq, single_con_seq, single_ami_seq, output_txt, output_csv, PID, protein_len, ires_id, ires_seq.length(), TimeSpend, show_score, is_DN, is_sparse);
                 } else {
-                    if(mode_ == "sparse") {
-                        // TODO: 看能不能合併
-                        std::vector<pair<double,double>> sparse_result = sparse_result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, ires_id, ires_seq.length(), TimeSpend, show_score, is_DN);
-                    } else {
-                        std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, ires_id, ires_seq.length(), TimeSpend, show_score, is_DN);
-                    }
+                    std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, ires_id, ires_seq.length(), TimeSpend, show_score, is_DN, is_sparse);
                 }
 
                 // Circular RNA Reconstruction
-                if(mode_ != "sparse") {
+                if(!is_sparse) {
                     if (circ_objective == "vienna"){
                         std::vector<pair<double,double>> result_c = circular_compose_v1<double>( alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, use_beam_pruning, is_DN);
                     } else if (circ_objective == "mfold") {
@@ -474,7 +466,7 @@ int main(int argc, char** argv){
             gettimeofday(&end, 0);
             
             double TimeSpend = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
-            std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, ires_id, ires_seq.length(), TimeSpend, show_score, true);
+            std::vector<pair<double,double>> result = result_output<double>(alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, ires_id, ires_seq.length(), TimeSpend, show_score, true, is_sparse);
 
         }
 

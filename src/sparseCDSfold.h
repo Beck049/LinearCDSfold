@@ -36,31 +36,33 @@ bool show_processing = true;
 bool F_speedup = false;
 
 template <typename T>
-bool update(std::unordered_map<int, State<T>> &stateMap, int index, double newscore, int index1, int index2, int index3, int q, Manner MANNER) {
+bool update(std::unordered_map<int, State<T>> &stateMap, int index, double newscore, int index1, int index2, int index3, int q, Manner MANNER, int cross_pair_num = 0) {
     auto it = stateMap.find(index);
 
     if (it == stateMap.end() || newscore > it->second.score) {
         stateMap[index] = State<T>(newscore, index1, index2, index3, q, MANNER);
+        stateMap[index].cross_pair_num = cross_pair_num;
         return true;
     }
     return false;
 }
 
 template <typename T>
-bool update(std::unordered_map<int, State<T>> &stateMap, int index, double newscore, int index1, int index2, int index3, int q, Manner MANNER, int first_pair_pos, int last_pair_pos) {
+bool update(std::unordered_map<int, State<T>> &stateMap, int index, double newscore, int index1, int index2, int index3, int q, Manner MANNER, int first_pair_pos, int last_pair_pos, int cross_pair_num = 0) {
     auto it = stateMap.find(index);
 
     if (it == stateMap.end() || newscore > it->second.score) {
-        stateMap[index] = State<T>(newscore, index1, index2, index3, q, MANNER, first_pair_pos, last_pair_pos);
+        stateMap[index] = State<T>(newscore, index1, index2, index3, q, MANNER, first_pair_pos, last_pair_pos, cross_pair_num);
         return true;
     }
     return false;
 }
 
 template <typename T>
-bool update(std::array<State<T>, 257> &stateMap, std::array<bool, 257> &checkMap, int index, double newscore, int index1, int index2, int index3, int q, Manner MANNER) {
+bool update(std::array<State<T>, 257> &stateMap, std::array<bool, 257> &checkMap, int index, double newscore, int index1, int index2, int index3, int q, Manner MANNER, int cross_pair_num = 0) {
     if (!checkMap[index] || newscore > stateMap[index].score) {
         stateMap[index] = State<T>(newscore, index1, index2, index3, q, MANNER);
+        stateMap[index].cross_pair_num = cross_pair_num;
         checkMap[index] = true;
         return true;
     }
@@ -145,9 +147,12 @@ inline void compute_hairpin(
     const vector<int> *nucj_1_list,
     vector<int> &con_seq,
     const std::vector<std::unordered_map<int, State<T>>> &bestN,
-    std::unordered_map<int, State<T>> &bestSC_j_l1)
+    std::unordered_map<int, State<T>> &bestSC_j_l1, int ires_len)
 {
     if ((j - i > HAIRPIN_GAP) && _allowed_pairs[nuci][nucj]) {
+        int is_cross = isCrossTalk(i, j, ires_len);
+        double cross_penalty = is_cross * crosspair_penalty;
+
         const std::unordered_map<int, State<T>> &bestN_j_1 = bestN[j - 1];
         for (auto &nuci1 : *nuci1_list) {
             if (!IsLegal(con_seq, nuci, nuci1, i)) {
@@ -163,8 +168,8 @@ inline void compute_hairpin(
                 auto it = bestN_j_1.find(index_i1_j_1);
                 if (it != bestN_j_1.end()) {
                     double newscore = -MFE_scalar * v_score_hairpin(i, j, EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucj_1), EnrBASE(nucj));
-                    newscore += it->second.score + nuci_score + nucj_score;
-                    update(bestSC_j_l1, index, newscore, index_i1_j_1, -1, -1, -1, MANNER_C_H);
+                    newscore += it->second.score + nuci_score + nucj_score - cross_penalty;
+                    update(bestSC_j_l1, index, newscore, index_i1_j_1, -1, -1, -1, MANNER_C_H, is_cross);
                 }
             }
         }
@@ -179,11 +184,13 @@ inline void compute_stacking(
     const string &rna_seq,
     vector<int> &con_seq,
     const std::vector<std::vector<std::unordered_map<int, State<T>>>> &bestSC,
-    std::unordered_map<int, State<T>> &bestSC_j_l1)
+    std::unordered_map<int, State<T>> &bestSC_j_l1, int ires_len)
 {
     if ((j - i > MIN_STACKPAIR_GAP) && _allowed_pairs[nuci][nucj]) {
         int p = i + 1;
         int q = j - 1;
+        int is_cross = isCrossTalk(i, j, ires_len);
+        double cross_penalty = is_cross * crosspair_penalty;
 
         vector<int> &nucp_list = Base_table.at(rna_seq[p]);
         vector<int> &nucq_list = Base_table.at(rna_seq[q]);
@@ -210,8 +217,9 @@ inline void compute_stacking(
                 }
 
                 double newscore = -MFE_scalar * v_score_single_stacking(EnrBASE(nuci), EnrBASE(nucj), EnrBASE(nucp), EnrBASE(nucq));
-                newscore += it->second.score + nuci_score + nucj_score;
-                update(bestSC_j_l1, index, newscore, -1, index_p_q, -1, q, MANNER_C_I);
+                newscore += it->second.score + nuci_score + nucj_score - cross_penalty;
+                int total_cross = it->second.cross_pair_num + is_cross;
+                update(bestSC_j_l1, index, newscore, -1, index_p_q, -1, q, MANNER_C_I, total_cross);
             }
         }
     }
@@ -228,7 +236,7 @@ inline void compute_left_bulge(
     const std::vector<std::vector<std::array<State<T>, 257>>> &bestSS,
     const std::vector<std::vector<std::array<bool, 257>>> &bestSS_check,
     const std::vector<std::vector<std::unordered_map<int, State<T>>>> &bestSC,
-    std::unordered_map<int, State<T>> &bestSC_j_l1)
+    std::unordered_map<int, State<T>> &bestSC_j_l1, int ires_len)
 {
     if ((j - i > MIN_STACKPAIR_GAP) && _allowed_pairs[nuci][nucj]) {
         int p = i + 1;
@@ -298,9 +306,12 @@ inline void compute_left_bulge(
 
                             double newscore = -MFE_scalar * v_score_single_bulge(i, j, p, q, EnrBASE(nuci), EnrBASE(nucp), EnrBASE(nucj_1), EnrBASE(nucj), EnrBASE(nuci), EnrBASE(nucp), EnrBASE(nucq), EnrBASE(nucq1));
 
-                            newscore += score_i1_p_1 + it->second.score + score_q1_j_1;
-                            newscore += nuci_score + nucj_score;
-                            update(bestSC_j_l1, index, newscore, -1, index_p_q, index_q1_j_1, q, MANNER_C_I);
+                            int is_cross = isCrossTalk(i, j, ires_len);
+                            double cross_penalty = is_cross * crosspair_penalty;
+
+                            newscore += score_i1_p_1 + it->second.score + score_q1_j_1 + nuci_score + nucj_score - cross_penalty;
+                            int total_cross = it->second.cross_pair_num + is_cross;
+                            update(bestSC_j_l1, index, newscore, -1, index_p_q, index_q1_j_1, q, MANNER_C_I, total_cross);
                         }
                     }
                 }
@@ -320,7 +331,7 @@ inline void compute_right_bulge(
     const std::vector<std::vector<std::array<State<T>, 257>>> &bestSS,
     const std::vector<std::vector<std::array<bool, 257>>> &bestSS_check,
     const std::vector<std::vector<std::unordered_map<int, State<T>>>> &bestSC,
-    std::unordered_map<int, State<T>> &bestSC_j_l1)
+    std::unordered_map<int, State<T>> &bestSC_j_l1, int ires_len)
 {
     if ((j - i > MIN_STACKPAIR_GAP) && _allowed_pairs[nuci][nucj]) {
         int q = j - 1;
@@ -388,9 +399,12 @@ inline void compute_right_bulge(
 
                             double newscore = -MFE_scalar * v_score_single_bulge(i, j, p, q, EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucq), EnrBASE(nucj), EnrBASE(nucp_1), EnrBASE(nucp), EnrBASE(nucq), EnrBASE(nucj));
 
-                            newscore += score_i1_p_1 + it->second.score + score_q1_j_1;
-                            newscore += nuci_score + nucj_score;
-                            update(bestSC_j_l1, index, newscore, index_i1_p_1, index_p_q, -1, q, MANNER_C_I);
+                            int is_cross = isCrossTalk(i, j, ires_len);
+                            double cross_penalty = is_cross * crosspair_penalty;
+
+                            newscore += score_i1_p_1 + it->second.score + score_q1_j_1 + nuci_score + nucj_score - cross_penalty;
+                            int total_cross = it->second.cross_pair_num + is_cross;
+                            update(bestSC_j_l1, index, newscore, index_i1_p_1, index_p_q, -1, q, MANNER_C_I, total_cross);
                         }
                     }
                 }
@@ -411,7 +425,7 @@ inline void compute_internal(
     const std::vector<std::vector<std::array<State<T>, 257>>> &bestSS,
     const std::vector<std::vector<std::array<bool, 257>>> &bestSS_check,
     const std::vector<std::vector<std::unordered_map<int, State<T>>>> &bestSC,
-    std::unordered_map<int, State<T>> &bestSC_j_l1)
+    std::unordered_map<int, State<T>> &bestSC_j_l1, int ires_len)
 {
     if ((j - i > MIN_STACKPAIR_GAP) && _allowed_pairs[nuci][nucj]) {
         int maxp = MIN2(j - 2 - HAIRPIN_GAP, i + SINGLE_MAX_LEN + 1);
@@ -495,9 +509,12 @@ inline void compute_internal(
 
                                         double newscore = -MFE_scalar * v_score_single_internal(i, j, p, q, EnrBASE(nuci), EnrBASE(nuci1), EnrBASE(nucj_1), EnrBASE(nucj), EnrBASE(nucp_1), EnrBASE(nucp), EnrBASE(nucq), EnrBASE(nucq1));
 
-                                        newscore += score_i1_p_1 + it->second.score + score_q1_j_1;
-                                        newscore += nuci_score + nucj_score;
-                                        update(bestSC_j_l1, index, newscore, index_i1_p_1, index_p_q, index_q1_j_1, q, MANNER_C_I);
+                                        int is_cross = isCrossTalk(i, j, ires_len);
+                                        double cross_penalty = is_cross * crosspair_penalty;
+
+                                        newscore += score_i1_p_1 + it->second.score + score_q1_j_1 + nuci_score + nucj_score - cross_penalty;
+                                        int total_cross = it->second.cross_pair_num + is_cross;
+                                        update(bestSC_j_l1, index, newscore, index_i1_p_1, index_p_q, index_q1_j_1, q, MANNER_C_I, total_cross);
                                     }
                                 }
                             }
@@ -518,9 +535,11 @@ inline void compute_multiloop_closed(
     const vector<int> *nucj_1_list,
     vector<int> &con_seq,
     const std::vector<std::unordered_map<int, State<T>>> &bestM2,
-    std::unordered_map<int, State<T>> &bestSC_j_l1)
+    std::unordered_map<int, State<T>> &bestSC_j_l1, int ires_len)
 {
     if ((j - i > MIN_STACKPAIR_GAP * 2) && _allowed_pairs[nuci][nucj]) {
+        int is_cross = isCrossTalk(i, j, ires_len);
+        double cross_penalty = is_cross * crosspair_penalty;
         const std::unordered_map<int, State<T>> &bestM2_j_1 = bestM2[j - 1];
         for (auto &nuci1 : *nuci1_list) {
             for (auto &nucj_1 : *nucj_1_list) {
@@ -529,8 +548,9 @@ inline void compute_multiloop_closed(
                     auto it = bestM2_j_1.find(index_i1_j_1);
                     if (it != bestM2_j_1.end()) {
                         double newscore = -MFE_scalar * v_score_multi(EnrBASE(nuci), EnrBASE(nucj));
-                        newscore += it->second.score + nuci_score + nucj_score;
-                        update(bestSC_j_l1, index, newscore, index_i1_j_1, -1, -1, -1, MANNER_C_M2);
+                        newscore += it->second.score + nuci_score + nucj_score - cross_penalty;
+                        int total_cross = it->second.cross_pair_num + is_cross;
+                        update(bestSC_j_l1, index, newscore, index_i1_j_1, -1, -1, -1, MANNER_C_M2, total_cross);
                     }
                 }
             }
@@ -562,7 +582,7 @@ inline void compute_M2_unpaired(
 
                     if (j - last_pair_pos <= SINGLE_MAX_LEN) {
                         double newscore = it->second.score + nucj_score;
-                        update(bestM2_j, index, newscore, index_j_1, -1, -1, -1, MANNER_M2_M2_F, first_pair_pos, last_pair_pos);
+                        update(bestM2_j, index, newscore, index_j_1, -1, -1, -1, MANNER_M2_M2_F, first_pair_pos, last_pair_pos, it->second.cross_pair_num);
                     }
                 }
             }
@@ -578,7 +598,7 @@ inline void compute_M2_unpaired(
                     int last_pair_pos = it->second.last_pair_pos;
                     if (first_pair_pos - i <= SINGLE_MAX_LEN) {
                         double newscore = it->second.score + nuci_score;
-                        update(bestM2_j, index, newscore, index_j, -1, -1, -1, MANNER_M2_F_M2, first_pair_pos, last_pair_pos);
+                        update(bestM2_j, index, newscore, index_j, -1, -1, -1, MANNER_M2_F_M2, first_pair_pos, last_pair_pos, it->second.cross_pair_num);
                     }
                 }
             }
@@ -609,7 +629,7 @@ inline void compute_M1(
             int first_pair_pos = it->second.first_pair_pos;
             int last_pair_pos = it->second.last_pair_pos;
             double newscore = it->second.score;
-            update(bestM1_j, index, newscore, -1, -1, -1, -1, MANNER_M1_M2, first_pair_pos, last_pair_pos);
+            update(bestM1_j, index, newscore, -1, -1, -1, -1, MANNER_M1_M2, first_pair_pos, last_pair_pos, it->second.cross_pair_num);
         }
     }
 
@@ -625,7 +645,7 @@ inline void compute_M1(
                     int last_pair_pos = it->second.last_pair_pos;
                     if (j - last_pair_pos <= SINGLE_MAX_LEN) {
                         double newscore = it->second.score + nucj_score;
-                        update(bestM1_j, index, newscore, index_j_1, -1, -1, -1, MANNER_M1_M1_F, first_pair_pos, last_pair_pos);
+                        update(bestM1_j, index, newscore, index_j_1, -1, -1, -1, MANNER_M1_M1_F, first_pair_pos, last_pair_pos, it->second.cross_pair_num);
                     }
                 }
             }
@@ -645,7 +665,7 @@ inline void compute_M1(
                         double newscore = it->second.score + nuci_score;
                         auto it1 = bestM1_j.find(index);
                         if ((it1 == bestM1_j.end()) || (it1->second.score <= newscore)) {
-                            update(bestM1_j, index, newscore, index_j, -1, -1, -1, MANNER_M1_F_M1, first_pair_pos, last_pair_pos);
+                            update(bestM1_j, index, newscore, index_j, -1, -1, -1, MANNER_M1_F_M1, first_pair_pos, last_pair_pos, it->second.cross_pair_num);
                             is_M1_STEP = false;
                         }
                     }
@@ -660,7 +680,7 @@ inline void compute_M1(
         if (it != bestSC_j_l1.end()) {
             m1_coterminus_score = it->second.score - MFE_scalar * v_score_M1(EnrBASE(nuci), EnrBASE(nucj));
             if (m1_coterminus_score > bestM1_j[index].score) {
-                update(bestM1_j, index, m1_coterminus_score, -1, -1, -1, -1, MANNER_M1_C, i, j);
+                update(bestM1_j, index, m1_coterminus_score, -1, -1, -1, -1, MANNER_M1_C, i, j, it->second.cross_pair_num);
                 is_M1_OCT = true;
                 is_M1_STEP = true;
             }
@@ -686,8 +706,10 @@ inline void forward_update_M2(
     std::unordered_map<int, State<T>> &bestM2_j)
 {
     if (is_M1_OCT && (i > MIN_STACKPAIR_GAP - 1)) {
-        // M2(k,j) = M1(k,i-1) + M1(i,j) (STEP + OCT) Forward Update
         const std::unordered_map<int, State<T>> &bestM1_i_1 = bestM1[i - 1];
+        // 取得當前 M1(i, j) 的 cross_pair_num
+        int m1_cross = bestM1[j].at(index).cross_pair_num;
+
         for (auto &state_k : bestM1_i_1) {
             if (!state_k.second.is_M1_STEP) {
                 continue;
@@ -701,7 +723,8 @@ inline void forward_update_M2(
             int first_pair_pos = state_k.second.first_pair_pos;
             int index_k_j = GetIndex(k, nuck, nucj);
             double newscore = state_k.second.score + m1_coterminus_score;
-            update(bestM2_j, index_k_j, newscore, state_k.first, index, -1, i - 1, MANNER_M2_M1_M1, first_pair_pos, j);
+            int total_cross = state_k.second.cross_pair_num + m1_cross;
+            update(bestM2_j, index_k_j, newscore, state_k.first, index, -1, i - 1, MANNER_M2_M1_M1, first_pair_pos, j, total_cross);
         }
     }
 }
@@ -716,106 +739,107 @@ inline void compute_F(
     std::unordered_map<int, State<T>> &bestF_j,
     const std::unordered_map<int, State<T>> &bestSC_j_l1)
 {
-        bool is_F_OCT = false;
-        bool is_F_STEP = true;
-        double f_coterminus_score = 0.0;
-        double newscore;
+    bool is_F_OCT = false;
+    bool is_F_STEP = true;
+    double f_coterminus_score = 0.0;
+    double newscore;
 
-        // F(i,j) = F(i,i) + F(i+1, j), the non-STEP case
-        if (j > i + 1) {
-            int index_i_i = GetIndex(i, nuci, nuci);
-            for (auto &nuci1 : *nuci1_list) {
-                if (IsLegal(con_seq, nuci, nuci1, i)) {
-                    int index_i1 = GetIndex(i + 1, nuci1, nucj);
+    // F(i,j) = F(i,i) + F(i+1, j)
+    if (j > i + 1) {
+        int index_i_i = GetIndex(i, nuci, nuci);
+        for (auto &nuci1 : *nuci1_list) {
+            if (IsLegal(con_seq, nuci, nuci1, i)) {
+                int index_i1 = GetIndex(i + 1, nuci1, nucj);
 
-                    auto it = bestF_j.find(index_i1);
-                    if (it != bestF_j.end()) {
-                        newscore = bestF[i].at(index_i_i).score + it->second.score;
+                auto it = bestF_j.find(index_i1);
+                if (it != bestF_j.end()) {
+                    newscore = bestF[i].at(index_i_i).score + it->second.score;
 
-                        auto it1 = bestF_j.find(index);
-                        if ((it1 == bestF_j.end()) || (it1->second.score <= newscore)) {
-                            bool res = update(bestF_j, index, newscore, index_i_i, index_i1, -1, i, MANNER_F_F_F);
-                            is_F_STEP = false;
+                    auto it1 = bestF_j.find(index);
+                    if ((it1 == bestF_j.end()) || (it1->second.score <= newscore)) {
+                        bool res = update(bestF_j, index, newscore, index_i_i, index_i1, -1, i, MANNER_F_F_F, it->second.cross_pair_num);
+                        is_F_STEP = false;
 
-                            if (res) {
-                                bestF_j[index].outer_pairs = it->second.outer_pairs;
-                            }
+                        if (res) {
+                            bestF_j[index].outer_pairs = it->second.outer_pairs;
                         }
                     }
                 }
             }
-        } else if (j == i + 1) {
-            if (IsLegal(con_seq, nuci, nucj, i)) {
-                int index_i_i = GetIndex(i, nuci, nuci);
-                int index_i1 = GetIndex(i + 1, nucj, nucj);
-                newscore = bestF[i].at(index_i_i).score + bestF_j[index_i1].score;
+        }
+    } else if (j == i + 1) {
+        if (IsLegal(con_seq, nuci, nucj, i)) {
+            int index_i_i = GetIndex(i, nuci, nuci);
+            int index_i1 = GetIndex(i + 1, nucj, nucj);
+            newscore = bestF[i].at(index_i_i).score + bestF_j[index_i1].score;
 
-                auto it1 = bestF_j.find(index);
-                if ((it1 == bestF_j.end()) || (it1->second.score <= newscore)) {
-                    update(bestF_j, index, newscore, index_i_i, index_i1, -1, i, MANNER_F_F_F);
-                    is_F_STEP = false;
-                }
+            auto it1 = bestF_j.find(index);
+            if ((it1 == bestF_j.end()) || (it1->second.score <= newscore)) {
+                update(bestF_j, index, newscore, index_i_i, index_i1, -1, i, MANNER_F_F_F, bestF_j[index_i1].cross_pair_num);
+                is_F_STEP = false;
             }
         }
+    }
 
-        // F(i,j) = max( F(i,j), C(i,j) )
-        if (i == j) {
-            f_coterminus_score = nucj_score;
-            update(bestF_j, index, f_coterminus_score, -1, -1, -1, -1, NONE);
-            is_F_OCT = true;
-            is_F_STEP = false;
-        } else {
-            auto it = bestSC_j_l1.find(index);
-            if (it != bestSC_j_l1.end()) {
-                f_coterminus_score = it->second.score + (-MFE_scalar * v_score_external_paired(EnrBASE(nuci), EnrBASE(nucj)));
+    // F(i,j) = max( F(i,j), C(i,j) )
+    if (i == j) {
+        f_coterminus_score = nucj_score;
+        update(bestF_j, index, f_coterminus_score, -1, -1, -1, -1, NONE, 0);
+        is_F_OCT = true;
+        is_F_STEP = false;
+    } else {
+        auto it = bestSC_j_l1.find(index);
+        if (it != bestSC_j_l1.end()) {
+            f_coterminus_score = it->second.score + (-MFE_scalar * v_score_external_paired(EnrBASE(nuci), EnrBASE(nucj)));
 
-                if (f_coterminus_score > bestF_j[index].score) {
-                    bool res = update(bestF_j, index, f_coterminus_score, -1, -1, -1, -1, MANNER_F_C);
-                    is_F_OCT = true;
-                    is_F_STEP = true;
-                    if (res) {
-                        bestF_j[index].outer_pairs.push_back(index);
-                    }
-                }
-            }
-        }
-
-        if (is_F_STEP) {
-            auto it = bestF_j.find(index);
-            if (it != bestF_j.end()) {
-                it->second.is_F_STEP = true;
-            }
-        }
-
-        // Forward Update F(k,j), 0 <= k <= i-1
-        if (is_F_OCT && (i != 0)) {
-            const std::unordered_map<int, State<T>> &bestF_i_1 = bestF[i - 1];
-            for (auto &state_k : bestF_i_1) {
-                if (!state_k.second.is_F_STEP) {
-                    continue;
-                }
-                int k, nuck, nuci_1;
-                std::tie(k, nuck, nuci_1) = GetIndexTuple(state_k.first);
-
-                if (!IsLegal(con_seq, nuci_1, nuci, i - 1)) {
-                    continue;
-                }
-
-                int index_k_j = GetIndex(k, nuck, nucj);
-                newscore = state_k.second.score + f_coterminus_score;
-
-                bool res = update(bestF_j, index_k_j, newscore, state_k.first, index, -1, i - 1, MANNER_F_F_F);
+            if (f_coterminus_score > bestF_j[index].score) {
+                bool res = update(bestF_j, index, f_coterminus_score, -1, -1, -1, -1, MANNER_F_C, it->second.cross_pair_num);
+                is_F_OCT = true;
+                is_F_STEP = true;
                 if (res) {
-                    bestF_j[index_k_j].outer_pairs = state_k.second.outer_pairs;
-                    if (i != j) {
-                        bestF_j[index_k_j].outer_pairs.push_back(index);
-                    }
+                    bestF_j[index].outer_pairs.push_back(index);
                 }
             }
         }
     }
 
-    // 13. Calculate the F (speedup mode: i == 0)
+    if (is_F_STEP) {
+        auto it = bestF_j.find(index);
+        if (it != bestF_j.end()) {
+            it->second.is_F_STEP = true;
+        }
+    }
+
+    // Forward Update F(k,j), 0 <= k <= i-1
+    if (is_F_OCT && (i != 0)) {
+        const std::unordered_map<int, State<T>> &bestF_i_1 = bestF[i - 1];
+        for (auto &state_k : bestF_i_1) {
+            if (!state_k.second.is_F_STEP) {
+                continue;
+            }
+            int k, nuck, nuci_1;
+            std::tie(k, nuck, nuci_1) = GetIndexTuple(state_k.first);
+
+            if (!IsLegal(con_seq, nuci_1, nuci, i - 1)) {
+                continue;
+            }
+
+            int index_k_j = GetIndex(k, nuck, nucj);
+            newscore = state_k.second.score + f_coterminus_score;
+            int total_cross = state_k.second.cross_pair_num + bestF_j[index].cross_pair_num;
+
+            bool res = update(bestF_j, index_k_j, newscore, state_k.first, index, -1, i - 1, MANNER_F_F_F, total_cross);
+            if (res) {
+                bestF_j[index_k_j].outer_pairs = state_k.second.outer_pairs;
+                if (i != j) {
+                    bestF_j[index_k_j].outer_pairs.push_back(index);
+                }
+            }
+        }
+    }
+}
+
+// 13. Calculate the F (speedup mode: i == 0)
 template <typename T>
 inline void compute_F_speedup(
     int i, int j,
@@ -827,73 +851,73 @@ inline void compute_F_speedup(
     std::unordered_map<int, State<T>> &bestF_j,
     const std::vector<std::unordered_map<int, State<T>>> &bestSC_j)
 {
-        if (i == j) { // F(0, 0)
-            for (auto &nucj : nucj_list) {
-                int index = GetIndex(i, nucj, nucj);
-                update(bestF_j, index, 0.0, -1, -1, -1, -1, NONE);
-            }
-        } else {
-            const std::unordered_map<int, State<T>> &bestF_j_1 = bestF[j - 1];
+    if (i == j) { // F(0, 0)
+        for (auto &nucj : nucj_list) {
+            int index = GetIndex(i, nucj, nucj);
+            update(bestF_j, index, 0.0, -1, -1, -1, -1, NONE, 0);
+        }
+    } else {
+        const std::unordered_map<int, State<T>> &bestF_j_1 = bestF[j - 1];
 
-            // F(0, j) = F(0, j-1) + F(j, j)
-            for (auto &nucj : nucj_list) {
-                double nucj_score = isLastNuc(j) ? getCAI(ami_seq[j / 3], nucj, is_DN) : 0.0;
+        // F(0, j) = F(0, j-1) + F(j, j)
+        for (auto &nucj : nucj_list) {
+            double nucj_score = isLastNuc(j) ? getCAI(ami_seq[j / 3], nucj, is_DN) : 0.0;
 
-                for (auto &itemF_j_1 : bestF_j_1) {
-                    const State<T> &stateF = itemF_j_1.second;
-                    int i_, nuci_, nucj_1;
-                    std::tie(i_, nuci_, nucj_1) = GetIndexTuple(itemF_j_1.first);
+            for (auto &itemF_j_1 : bestF_j_1) {
+                const State<T> &stateF = itemF_j_1.second;
+                int i_, nuci_, nucj_1;
+                std::tie(i_, nuci_, nucj_1) = GetIndexTuple(itemF_j_1.first);
 
-                    if (IsLegal(con_seq, nucj_1, nucj, j - 1)) {
-                        double newscore = stateF.score + nucj_score;
-                        int index = GetIndex(i_, nuci_, nucj);
-                        int index_j_j = GetIndex(j, nucj, nucj);
-                        update(bestF_j, index, newscore, itemF_j_1.first, index_j_j, -1, j - 1, MANNER_F_F_F);
-                    }
+                if (IsLegal(con_seq, nucj_1, nucj, j - 1)) {
+                    double newscore = stateF.score + nucj_score;
+                    int index = GetIndex(i_, nuci_, nucj);
+                    int index_j_j = GetIndex(j, nucj, nucj);
+                    update(bestF_j, index, newscore, itemF_j_1.first, index_j_j, -1, j - 1, MANNER_F_F_F, stateF.cross_pair_num);
                 }
             }
+        }
 
-            // F(0, j) = C(0, j)
-            if (j - i > HAIRPIN_GAP) {
-                int k = 0;
-                for (auto &itemC_k : bestSC_j[j - k + 1]) {
-                    const State<T> &stateC = itemC_k.second;
-                    int k_, nuck, nucj_;
-                    std::tie(k_, nuck, nucj_) = GetIndexTuple(itemC_k.first);
+        // F(0, j) = C(0, j)
+        if (j - i > HAIRPIN_GAP) {
+            int k = 0;
+            for (auto &itemC_k : bestSC_j[j - k + 1]) {
+                const State<T> &stateC = itemC_k.second;
+                int k_, nuck, nucj_;
+                std::tie(k_, nuck, nucj_) = GetIndexTuple(itemC_k.first);
 
-                    int index = itemC_k.first;
-                    double newscore = stateC.score + (-MFE_scalar * v_score_external_paired(EnrBASE(nuck), EnrBASE(nucj_)));
-                    update(bestF_j, index, newscore, -1, -1, -1, -1, MANNER_F_C);
-                }
+                int index = itemC_k.first;
+                double newscore = stateC.score + (-MFE_scalar * v_score_external_paired(EnrBASE(nuck), EnrBASE(nucj_)));
+                update(bestF_j, index, newscore, -1, -1, -1, -1, MANNER_F_C, stateC.cross_pair_num);
             }
+        }
 
-            // F(0, j) = F(0, k-1) + C(k, j)
-            for (int k = 1; j - k > HAIRPIN_GAP; k++) {
-                const std::unordered_map<int, State<T>> &bestF_k_1 = bestF[k - 1];
+        // F(0, j) = F(0, k-1) + C(k, j)
+        for (int k = 1; j - k > HAIRPIN_GAP; k++) {
+            const std::unordered_map<int, State<T>> &bestF_k_1 = bestF[k - 1];
 
-                for (auto &itemC_k : bestSC_j[j - k + 1]) {
-                    const State<T> &stateC = itemC_k.second;
-                    int k_, nuck, nucj_;
-                    std::tie(k_, nuck, nucj_) = GetIndexTuple(itemC_k.first);
+            for (auto &itemC_k : bestSC_j[j - k + 1]) {
+                const State<T> &stateC = itemC_k.second;
+                int k_, nuck, nucj_;
+                std::tie(k_, nuck, nucj_) = GetIndexTuple(itemC_k.first);
 
-                    for (auto &itemF_k_1 : bestF_k_1) {
-                        const State<T> &stateF = itemF_k_1.second;
-                        int i_, nuci_, nuck_1;
-                        std::tie(i_, nuci_, nuck_1) = GetIndexTuple(itemF_k_1.first);
+                for (auto &itemF_k_1 : bestF_k_1) {
+                    const State<T> &stateF = itemF_k_1.second;
+                    int i_, nuci_, nuck_1;
+                    std::tie(i_, nuci_, nuck_1) = GetIndexTuple(itemF_k_1.first);
 
-                        if (!IsLegal(con_seq, nuck_1, nuck, k - 1)) {
-                            continue;
-                        }
-
-                        int index = GetIndex(i_, nuci_, nucj_);
-                        double newscore = stateF.score + stateC.score + (-MFE_scalar * v_score_external_paired(EnrBASE(nuck), EnrBASE(nucj_)));
-
-                        update(bestF_j, index, newscore, itemF_k_1.first, itemC_k.first, -1, k - 1, MANNER_F_F_C);
+                    if (!IsLegal(con_seq, nuck_1, nuck, k - 1)) {
+                        continue;
                     }
+
+                    int index = GetIndex(i_, nuci_, nucj_);
+                    double newscore = stateF.score + stateC.score + (-MFE_scalar * v_score_external_paired(EnrBASE(nuck), EnrBASE(nucj_)));
+                    int total_cross = stateF.cross_pair_num + stateC.cross_pair_num;
+                    update(bestF_j, index, newscore, itemF_k_1.first, itemC_k.first, -1, k - 1, MANNER_F_F_C, total_cross);
                 }
             }
         }
     }
+}
 /** *************************************************************************************************************** */
 
 template <typename T>
@@ -907,7 +931,7 @@ void SparseCDSfoldCAI(AllTables<T> &alltables, string &rna_seq, vector<int> &con
     int index_k_j, k, nuck, nuci_1;
 
     bool is_F_OCT, is_M1_OCT, is_F_STEP, is_M1_STEP;
-
+    
     struct timespec start, end;
     struct timespec start1, end1;
     // double internal_time = 0.0;
@@ -973,28 +997,28 @@ void SparseCDSfoldCAI(AllTables<T> &alltables, string &rna_seq, vector<int> &con
                     compute_S(i, j, l, nuci, nucj, index1, nuci_score, nucj_score, nucj_1_list, con_seq, bestSS_j, bestSS_check_j, bestSS, bestSS_check);
 
                     // 3. hairpin
-                    compute_hairpin(i, j, l, nuci, nucj, index, nuci_score, nucj_score, nuci1_list, nucj_1_list, con_seq, bestN, bestSC_j[l + 1]);
+                    compute_hairpin(i, j, l, nuci, nucj, index, nuci_score, nucj_score, nuci1_list, nucj_1_list, con_seq, bestN, bestSC_j[l + 1], ires_len);
 
                     clock_gettime(CLOCK_MONOTONIC, &start);
 
                     // 4. stacking
-                    compute_stacking(i, j, l, nuci, nucj, index, nuci_score, nucj_score, rna_seq, con_seq, bestSC, bestSC_j[l + 1]);
+                    compute_stacking(i, j, l, nuci, nucj, index, nuci_score, nucj_score, rna_seq, con_seq, bestSC, bestSC_j[l + 1], ires_len);
 
                     // 5. left bulge
-                    compute_left_bulge(i, j, l, nuci, nucj, index, nuci_score, nucj_score, nucj_1_list, rna_seq, con_seq, bestSS, bestSS_check, bestSC, bestSC_j[l + 1]);
+                    compute_left_bulge(i, j, l, nuci, nucj, index, nuci_score, nucj_score, nucj_1_list, rna_seq, con_seq, bestSS, bestSS_check, bestSC, bestSC_j[l + 1], ires_len);
 
                     // 6. right bulge
-                    compute_right_bulge(i, j, l, nuci, nucj, index, nuci_score, nucj_score, nuci1_list, rna_seq, con_seq, bestSS, bestSS_check, bestSC, bestSC_j[l + 1]);
+                    compute_right_bulge(i, j, l, nuci, nucj, index, nuci_score, nucj_score, nuci1_list, rna_seq, con_seq, bestSS, bestSS_check, bestSC, bestSC_j[l + 1], ires_len);
 
                     // 7. internal
-                    compute_internal(i, j, l, nuci, nucj, index, nuci_score, nucj_score, nuci1_list, nucj_1_list, rna_seq, con_seq, bestSS, bestSS_check, bestSC, bestSC_j[l + 1]);
+                    compute_internal(i, j, l, nuci, nucj, index, nuci_score, nucj_score, nuci1_list, nucj_1_list, rna_seq, con_seq, bestSS, bestSS_check, bestSC, bestSC_j[l + 1], ires_len);
 
                     clock_gettime(CLOCK_MONOTONIC, &end);
                     internal_time += calTime(start, end);
 
                     // 8. multi-loop closing
-                    compute_multiloop_closed(i, j, l, nuci, nucj, index, nuci_score, nucj_score, nuci1_list, nucj_1_list, con_seq, bestM2, bestSC_j[l + 1]);
-
+                    compute_multiloop_closed(i, j, l, nuci, nucj, index, nuci_score, nucj_score, nuci1_list, nucj_1_list, con_seq, bestM2, bestSC_j[l + 1], ires_len);
+                    
                     // 9. calculate the M2 which i is unpair and j is unpair
                     compute_M2_unpaired(i, j, nuci, nucj, index, nuci_score, nucj_score, nuci1_list, nucj_1_list, con_seq, bestM2, bestM2_j);
 

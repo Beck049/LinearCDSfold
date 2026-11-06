@@ -71,6 +71,4 @@ Total runtime: 0.002 s
    1. 不輸出 Linear 結果！！
 2. 實作 IRES Method
    1. IRES no CAI
-3. Sparse
-   1. 合併 output function
-   2. sparse 加入 circular
+3. Sparse Circular (IRES)

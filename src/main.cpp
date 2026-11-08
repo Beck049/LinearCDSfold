@@ -436,7 +436,15 @@ int main(int argc, char** argv){
                 }
 
                 // Circular RNA Reconstruction
-                if(!is_sparse) {
+                if(is_sparse) {
+                    if (circ_objective == "vienna"){
+                        // do nothing
+                    } else if(circ_objective == "mfold") {
+                        std::vector<pair<double,double>> result_c = circular_compose_m1_sparse<double>( alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, use_beam_pruning, is_DN);
+                    } else if (circ_objective == "IRES") {
+                        // do nothing
+                    }
+                } else {
                     if (circ_objective == "vienna"){
                         std::vector<pair<double,double>> result_c = circular_compose_v1<double>( alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, use_beam_pruning, is_DN);
                     } else if (circ_objective == "mfold") {

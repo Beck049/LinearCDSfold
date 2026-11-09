@@ -558,23 +558,24 @@ struct State
     int first_pair_pos = -1;
     int last_pair_pos = -1;
     int cross_pair_num = 0;
+    int pair_num = 0;
     std::vector<int> outer_pairs;
 
     State() 
         : score(VALUE_MIN<T>()), index_1(-1), index_2(-1), index_3(-1), index_q(-1), 
           MANNER(NONE), is_F_STEP(false), is_M1_STEP(false), 
-          first_pair_pos(-1), last_pair_pos(-1), cross_pair_num(0) {}
+          first_pair_pos(-1), last_pair_pos(-1), cross_pair_num(0), pair_num(0) {}
 
-    State(double score_, int index_1_, int index_2_, int index_3_, int index_q_, Manner MANNER_)
+    State(double score_, int index_1_, int index_2_, int index_3_, int index_q_, Manner MANNER_, int pair_num_ = 0)
         : score(score_), index_1(index_1_), index_2(index_2_), index_3(index_3_), index_q(index_q_), 
           MANNER(MANNER_), is_F_STEP(false), is_M1_STEP(false), 
-          first_pair_pos(-1), last_pair_pos(-1), cross_pair_num(0) {}
+          first_pair_pos(-1), last_pair_pos(-1), cross_pair_num(0), pair_num(pair_num_) {}
 
     State(double score_, int index_1_, int index_2_, int index_3_, int index_q_, Manner MANNER_, 
-          int first_pair_pos_, int last_pair_pos_, int cross_pair_num_ = 0)
+          int first_pair_pos_, int last_pair_pos_, int cross_pair_num_ = 0, int pair_num_ = 0)
         : score(score_), index_1(index_1_), index_2(index_2_), index_3(index_3_), index_q(index_q_), 
           MANNER(MANNER_), is_F_STEP(false), is_M1_STEP(false), 
-          first_pair_pos(first_pair_pos_), last_pair_pos(last_pair_pos_), cross_pair_num(cross_pair_num_) {}
+          first_pair_pos(first_pair_pos_), last_pair_pos(last_pair_pos_), cross_pair_num(cross_pair_num_), pair_num(pair_num_) {}
 };
 
 template<typename T>

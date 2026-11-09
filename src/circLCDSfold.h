@@ -51,13 +51,7 @@ struct CircularCandidate {
  * 當 type == 'i' 時，僅回傳 codon 前 2 char
  * 僅 type == 'j' 時，extra_cai 才有效
  */
-std::pair<std::string, double> compute_extra_cai(
-    int nth, 
-    int nucn, 
-    const std::string& ami_seq, 
-    bool is_DN,
-    char type // ['i', 'j']
-) {
+std::pair<std::string, double> compute_extra_cai(int nth, int nucn, const std::string& ami_seq, bool is_DN, char type) {  // ['i', 'j']
     std::string codon_n = "";
     double extra_cai = INT_MIN;
     
@@ -153,24 +147,16 @@ std::pair<std::string, double> compute_extra_cai(
  * @return double 計算得到的額外能量補償 (extra_mfe)
  */
 template<typename T>
-double calcInternalMFE(
-    AllTables<T>& alltables,
-    const std::string& rna_seq,
-    const std::string& ami_seq,
-    const std::unordered_map<char, std::pair<std::string, double>>& BestAminoMap,
-    const State<T>& state,
-    int id,
-    int ith,
-    int jth,
-    const std::string& codon_i,
-    const std::string& codon_j,
-    int seq_length,
-    bool debug = true
-) {
+double calcInternalMFE(  AllTables<T>& alltables, const std::string& rna_seq, const std::string& ami_seq, const std::unordered_map<char, std::pair<std::string, double>>& BestAminoMap, const State<T>& state, 
+    int id, int ith, int jth, const std::string& codon_i, const std::string& codon_j, int seq_length, bool is_sparse = false, bool debug = true) {
     // 1. 回溯取得當前局部解的二級結構與序列
     std::string tmp_rna(seq_length, '.');
     std::string tmp_structure(seq_length, '.');
-    BacktrackStructure(tmp_rna, tmp_structure, seq_length, id, state, alltables, jth);
+    if(is_sparse){
+        BacktrackStructure_sparse(tmp_rna, tmp_structure, seq_length, id, state, alltables, jth);
+    } else {
+        BacktrackStructure(tmp_rna, tmp_structure, seq_length, id, state, alltables, jth);
+    }
 
     // 2. 找出在 [ith, jth] 範圍內 exterior loop 的所有 base pairs
     std::vector<std::pair<int, int>> exterior_pairs;
@@ -1049,6 +1035,224 @@ std::vector<pair<T,T>> circular_compose_m1_sparse(AllTables<T> &alltables, strin
             mfe_value = -double(double(best_score - weighted_cai_score) / 100.0);
         } else {
             mfe_value = -(best_score / 100.0);
+        }
+    }
+
+    std::cout << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;
+    outputfile << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;
+    std::cout << "CAI: " << std::round(cai_value * 1000.0) / 1000.0 << std::endl;
+    outputfile << "CAI: " << std::round(cai_value * 1000.0) / 1000.0 << std::endl;
+
+    auto c_end_time = std::chrono::high_resolution_clock::now();
+    c_TimeSpend = std::chrono::duration_cast<std::chrono::duration<double>>(c_end_time - c_start_time).count();
+    std::cout << "Total runtime: " << std::round(c_TimeSpend * 1000.0) / 1000.0 << " s" << std::endl;
+    outputfile << "Total runtime: " << std::round(c_TimeSpend * 1000.0) / 1000.0 << " s" << std::endl;
+
+    std::vector<pair<T,T>> result_container;
+    result_container.push_back({round_up(cai_value), round_up(mfe_value)});
+    outputcsv << "," << mfe_value << "," << cai_value << "," << c_TimeSpend;
+
+    return result_container;
+}
+
+// 直接環化（用 Vienna 環化方式 - Sparse 結構版本）
+template<typename T>
+std::vector<pair<T,T>> circular_compose_v1_sparse(AllTables<T> &alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq, string& output_txt, string& output_csv, string& PID, int protein_length, double TimeSpend, bool show_score, bool is_beam, bool is_DN) { // return {CAI, MFE}
+    std::ofstream outputfile(output_txt, std::ios::app);
+    std::ofstream outputcsv(output_csv, std::ios::app);
+
+    double c_TimeSpend = 0;
+    auto c_start_time = std::chrono::high_resolution_clock::now();
+
+    outputfile << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
+    std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
+    outputfile << "Circular RNA Reconstruction:" << std::endl;
+    std::cout << "=== CircularRNA (v1 - Sparse) ===" << std::endl;
+
+    std::vector<std::unordered_map<int, State<T>>> &bestN = alltables.bestN;
+    std::vector<std::vector<std::array<State<T>, 257>>> &bestSS = alltables.bestSS;
+    std::vector<std::vector<std::array<bool, 257>>> &bestSS_check = alltables.bestSS_check;
+    std::vector<std::unordered_map<int, State<T>>> &bestF = alltables.bestF;
+    std::vector<std::vector<std::unordered_map<int, State<T>>>> &bestSC = alltables.bestSC;
+    std::vector<std::unordered_map<int, State<T>>> &bestM1 = alltables.bestM1;
+    std::vector<std::unordered_map<int, State<T>>> &bestM2 = alltables.bestM2;
+
+    int seq_length = rna_seq.size();
+
+    // 建立 BestAminoMap
+    std::unordered_map<char, std::pair<std::string, double>> BestAminoMap;
+    for (const auto& [label, codon_list] : Amino_to_nucs) {
+        for (const auto& codon : codon_list) {
+            if (unweighted_CAIMap.at(codon) == 0) {
+                BestAminoMap.insert({label, {codon, 0}});
+            }
+        }
+    }
+
+    CircularCandidate<T> best_struct;
+
+    // ==========================================
+    // 1. 遍歷 bestSC(i, j) 尋找外側閉合為 Hairpin 的環化結構
+    //    bestSC[jth][span_len]，其中起點 ith = jth - span_len
+    // ==========================================
+    for (size_t jth = 0; jth < bestSC.size(); ++jth) {
+        for (size_t span_len = 0; span_len < bestSC[jth].size(); ++span_len) {
+            if (bestSC[jth][span_len].empty()) continue;
+
+            int ith = (int)jth - (int)span_len;
+            if (ith < 0) continue;
+
+            int hairpin_len = seq_length - jth + ith;
+            if (hairpin_len <= MAXLOOP && (hairpin_len > HAIRPIN_GAP || hairpin_len == 0)) {
+                for (const auto& [id, state] : bestSC[jth][span_len]) {
+                    int ith_id, nuci, nucj;
+                    std::tie(ith_id, nuci, nucj) = GetIndexTuple(id);
+
+                    double cur_score = state.score;
+
+                    // CAI 修正
+                    auto [codon_j, extra_cai_j] = compute_extra_cai(jth, nucj, ami_seq, is_DN, 'j');
+                    auto [codon_i, extra_cai_i] = compute_extra_cai(ith, nuci, ami_seq, is_DN, 'i');
+                    double total_extra_cai = ((extra_cai_j == INT_MIN) ? 0 : extra_cai_j);
+
+                    // MFE: 計算外側 Hairpin Loop 能量
+                    double extra_mfe = hairpin37[std::min(hairpin_len, 30)];
+                    extra_mfe += (hairpin_len > 30) ? (int)(lxc37 * log((hairpin_len) / 30.0)) : 0;
+                    if (is_DN) extra_mfe *= lambda;
+
+                    double total_score = cur_score + extra_mfe - total_extra_cai;
+                    if (best_struct.score < total_score) {
+                        best_struct.score = total_score;
+                        best_struct.index = id;
+                        best_struct.i = ith;
+                        best_struct.j = jth;
+                        best_struct.codon_i = codon_i;
+                        best_struct.codon_j = codon_j;
+                        best_struct.state = state;
+                        best_struct.manner = state.MANNER;
+                    }
+                }
+            }
+        }
+    }
+
+    // ==========================================
+    // 2. 遍歷 bestM2 尋找閉合為 Internal Loop 或 Multiloop 的環化結構
+    //    if M2.pair_num == 2 => Internal loop
+    //    if M2.pair_num > 2  => Multiloop
+    // ==========================================
+    for (size_t jth = 0; jth < bestM2.size(); ++jth) {
+        for (const auto& [id, state] : bestM2[jth]) {
+            int ith, nuci, nucj;
+            std::tie(ith, nuci, nucj) = GetIndexTuple(id);
+
+            int loop_len = seq_length - jth + ith;
+            if (loop_len > MAXLOOP) continue;
+
+            double cur_score = state.score;
+
+            // CAI 修正
+            auto [codon_j, extra_cai_j] = compute_extra_cai(jth, nucj, ami_seq, is_DN, 'j');
+            auto [codon_i, extra_cai_i] = compute_extra_cai(ith, nuci, ami_seq, is_DN, 'i');
+            double total_extra_cai = ((extra_cai_j == INT_MIN) ? 0 : extra_cai_j);
+
+            double extra_mfe = 0;
+
+            if (state.pair_num == 2) {
+                // Internal Loop
+                // 若內部需要利用 Backtrack 找出 non_pair_nuc 數量，calcInternalMFE 通常內部會做對應回溯與能量查找
+                extra_mfe += calcInternalMFE<T>(alltables, rna_seq, ami_seq, BestAminoMap, state,
+                                                id, ith, jth, codon_i, codon_j, seq_length, true, false);
+            } else if (state.pair_num > 2) {
+                // Multiloop 閉合
+                extra_mfe -= (ML_intern37 + ML_closing37);
+            } else {
+                continue;
+            }
+
+            if (is_DN) extra_mfe *= lambda;
+
+            double total_score = cur_score + extra_mfe - total_extra_cai;
+            if (best_struct.score < total_score) {
+                best_struct.score = total_score;
+                best_struct.index = id;
+                best_struct.i = ith;
+                best_struct.j = jth;
+                best_struct.codon_i = codon_i;
+                best_struct.codon_j = codon_j;
+                best_struct.state = state;
+                best_struct.manner = state.MANNER;
+            }
+        }
+    }
+
+    if (best_struct.index == -1) {
+        std::cout << "No circular structure found." << std::endl;
+        outputfile << "No circular structure found." << std::endl;
+        return {};
+    }
+
+    // 建構 Output
+    double c_final_score = best_struct.score;
+    std::string c_rna_solution(seq_length, 'X');
+    std::string c_structure_solution(seq_length, '.');
+
+    std::cout << "Coding sequence and its secondary structure (" << best_struct.i << "~" << best_struct.j
+              << ", " << mannerToString(best_struct.manner) << "):" << std::endl;
+    outputfile << "Coding sequence and its secondary structure :" << std::endl;
+
+    // 回溯結構與序列
+    BacktrackStructure_sparse(c_rna_solution, c_structure_solution, seq_length, best_struct.index, best_struct.state, alltables, best_struct.j);
+
+    // 補齊邊界 codon
+    if (best_struct.codon_i != "") {
+        for (int k = 0; k < 3; ++k) {
+            if (best_struct.codon_i[k] == '.') continue;
+            c_rna_solution[((best_struct.i / 3) * 3) + k] = best_struct.codon_i[k];
+        }
+    }
+    if (best_struct.codon_j != "") {
+        for (int k = 0; k < 3; ++k) {
+            c_rna_solution[((best_struct.j / 3) * 3) + k] = best_struct.codon_j[k];
+        }
+    }
+
+    // 補齊前後未折疊的 sequence
+    for (int ami = 0; ami < best_struct.i / 3; ++ami) {
+        for (int k = 0; k < 3; ++k) {
+            c_rna_solution[((ami) * 3) + k] = BestAminoMap.at(ami_seq[ami]).first[k];
+        }
+    }
+    for (int ami = (best_struct.j / 3) + 1; ami < (int)ami_seq.size(); ++ami) {
+        for (int k = 0; k < 3; ++k) {
+            c_rna_solution[((ami) * 3) + k] = BestAminoMap.at(ami_seq[ami]).first[k];
+        }
+    }
+
+    for (int pos = 0; pos < seq_length; ++pos) {
+        if (c_rna_solution[pos] == '.') {
+            c_rna_solution[pos] = rna_seq[pos];
+        }
+    }
+
+    std::cout << c_rna_solution << std::endl;
+    outputfile << c_rna_solution << std::endl;
+    std::cout << c_structure_solution << std::endl;
+    outputfile << c_structure_solution << std::endl;
+
+    // MFE & CAI 計算
+    T weighted_cai_score = GetCAIScore<T>(c_rna_solution, is_DN);
+    double cai_value = GetUnweghtedCAIScore(c_rna_solution);
+    cai_value = exp(cai_value / double(ami_seq.size()));
+
+    double mfe_value;
+    if (is_DN) {
+        mfe_value = -double(double(c_final_score - weighted_cai_score) / (100.0 * lambda));
+    } else {
+        if (lambda) {
+            mfe_value = -double(double(c_final_score - weighted_cai_score) / (100.0));
+        } else {
+            mfe_value = -(c_final_score / (100.0));
         }
     }
 

@@ -36,11 +36,11 @@ bool show_processing = true;
 bool F_speedup = false;
 
 template <typename T>
-bool update(std::unordered_map<int, State<T>> &stateMap, int index, double newscore, int index1, int index2, int index3, int q, Manner MANNER, int cross_pair_num = 0) {
+bool update(std::unordered_map<int, State<T>> &stateMap, int index, double newscore, int index1, int index2, int index3, int q, Manner MANNER, int cross_pair_num = 0, int pair_num = 0) {
     auto it = stateMap.find(index);
 
     if (it == stateMap.end() || newscore > it->second.score) {
-        stateMap[index] = State<T>(newscore, index1, index2, index3, q, MANNER);
+        stateMap[index] = State<T>(newscore, index1, index2, index3, q, MANNER, pair_num);
         stateMap[index].cross_pair_num = cross_pair_num;
         return true;
     }
@@ -48,20 +48,20 @@ bool update(std::unordered_map<int, State<T>> &stateMap, int index, double newsc
 }
 
 template <typename T>
-bool update(std::unordered_map<int, State<T>> &stateMap, int index, double newscore, int index1, int index2, int index3, int q, Manner MANNER, int first_pair_pos, int last_pair_pos, int cross_pair_num = 0) {
+bool update(std::unordered_map<int, State<T>> &stateMap, int index, double newscore, int index1, int index2, int index3, int q, Manner MANNER, int first_pair_pos, int last_pair_pos, int cross_pair_num = 0, int pair_num = 0) {
     auto it = stateMap.find(index);
 
     if (it == stateMap.end() || newscore > it->second.score) {
-        stateMap[index] = State<T>(newscore, index1, index2, index3, q, MANNER, first_pair_pos, last_pair_pos, cross_pair_num);
+        stateMap[index] = State<T>(newscore, index1, index2, index3, q, MANNER, first_pair_pos, last_pair_pos, cross_pair_num, pair_num);
         return true;
     }
     return false;
 }
 
 template <typename T>
-bool update(std::array<State<T>, 257> &stateMap, std::array<bool, 257> &checkMap, int index, double newscore, int index1, int index2, int index3, int q, Manner MANNER, int cross_pair_num = 0) {
+bool update(std::array<State<T>, 257> &stateMap, std::array<bool, 257> &checkMap, int index, double newscore, int index1, int index2, int index3, int q, Manner MANNER, int cross_pair_num = 0, int pair_num = 0) {
     if (!checkMap[index] || newscore > stateMap[index].score) {
-        stateMap[index] = State<T>(newscore, index1, index2, index3, q, MANNER);
+        stateMap[index] = State<T>(newscore, index1, index2, index3, q, MANNER, pair_num);
         stateMap[index].cross_pair_num = cross_pair_num;
         checkMap[index] = true;
         return true;
@@ -582,7 +582,7 @@ inline void compute_M2_unpaired(
 
                     if (j - last_pair_pos <= SINGLE_MAX_LEN) {
                         double newscore = it->second.score + nucj_score;
-                        update(bestM2_j, index, newscore, index_j_1, -1, -1, -1, MANNER_M2_M2_F, first_pair_pos, last_pair_pos, it->second.cross_pair_num);
+                        update(bestM2_j, index, newscore, index_j_1, -1, -1, -1, MANNER_M2_M2_F, first_pair_pos, last_pair_pos, it->second.cross_pair_num, it->second.pair_num);
                     }
                 }
             }
@@ -598,7 +598,7 @@ inline void compute_M2_unpaired(
                     int last_pair_pos = it->second.last_pair_pos;
                     if (first_pair_pos - i <= SINGLE_MAX_LEN) {
                         double newscore = it->second.score + nuci_score;
-                        update(bestM2_j, index, newscore, index_j, -1, -1, -1, MANNER_M2_F_M2, first_pair_pos, last_pair_pos, it->second.cross_pair_num);
+                        update(bestM2_j, index, newscore, index_j, -1, -1, -1, MANNER_M2_F_M2, first_pair_pos, last_pair_pos, it->second.cross_pair_num, it->second.pair_num);
                     }
                 }
             }
@@ -629,7 +629,7 @@ inline void compute_M1(
             int first_pair_pos = it->second.first_pair_pos;
             int last_pair_pos = it->second.last_pair_pos;
             double newscore = it->second.score;
-            update(bestM1_j, index, newscore, -1, -1, -1, -1, MANNER_M1_M2, first_pair_pos, last_pair_pos, it->second.cross_pair_num);
+            update(bestM1_j, index, newscore, -1, -1, -1, -1, MANNER_M1_M2, first_pair_pos, last_pair_pos, it->second.cross_pair_num, it->second.pair_num);
         }
     }
 
@@ -645,7 +645,7 @@ inline void compute_M1(
                     int last_pair_pos = it->second.last_pair_pos;
                     if (j - last_pair_pos <= SINGLE_MAX_LEN) {
                         double newscore = it->second.score + nucj_score;
-                        update(bestM1_j, index, newscore, index_j_1, -1, -1, -1, MANNER_M1_M1_F, first_pair_pos, last_pair_pos, it->second.cross_pair_num);
+                        update(bestM1_j, index, newscore, index_j_1, -1, -1, -1, MANNER_M1_M1_F, first_pair_pos, last_pair_pos, it->second.cross_pair_num, it->second.pair_num);
                     }
                 }
             }
@@ -665,7 +665,7 @@ inline void compute_M1(
                         double newscore = it->second.score + nuci_score;
                         auto it1 = bestM1_j.find(index);
                         if ((it1 == bestM1_j.end()) || (it1->second.score <= newscore)) {
-                            update(bestM1_j, index, newscore, index_j, -1, -1, -1, MANNER_M1_F_M1, first_pair_pos, last_pair_pos, it->second.cross_pair_num);
+                            update(bestM1_j, index, newscore, index_j, -1, -1, -1, MANNER_M1_F_M1, first_pair_pos, last_pair_pos, it->second.cross_pair_num, it->second.pair_num);
                             is_M1_STEP = false;
                         }
                     }
@@ -680,7 +680,7 @@ inline void compute_M1(
         if (it != bestSC_j_l1.end()) {
             m1_coterminus_score = it->second.score - MFE_scalar * v_score_M1(EnrBASE(nuci), EnrBASE(nucj));
             if (m1_coterminus_score > bestM1_j[index].score) {
-                update(bestM1_j, index, m1_coterminus_score, -1, -1, -1, -1, MANNER_M1_C, i, j, it->second.cross_pair_num);
+                update(bestM1_j, index, m1_coterminus_score, -1, -1, -1, -1, MANNER_M1_C, i, j, it->second.cross_pair_num, 1);
                 is_M1_OCT = true;
                 is_M1_STEP = true;
             }
@@ -709,6 +709,7 @@ inline void forward_update_M2(
         const std::unordered_map<int, State<T>> &bestM1_i_1 = bestM1[i - 1];
         // 取得當前 M1(i, j) 的 cross_pair_num
         int m1_cross = bestM1[j].at(index).cross_pair_num;
+        int m1_pair  = bestM1[j].at(index).pair_num;
 
         for (auto &state_k : bestM1_i_1) {
             if (!state_k.second.is_M1_STEP) {
@@ -724,7 +725,8 @@ inline void forward_update_M2(
             int index_k_j = GetIndex(k, nuck, nucj);
             double newscore = state_k.second.score + m1_coterminus_score;
             int total_cross = state_k.second.cross_pair_num + m1_cross;
-            update(bestM2_j, index_k_j, newscore, state_k.first, index, -1, i - 1, MANNER_M2_M1_M1, first_pair_pos, j, total_cross);
+            int total_pair  = state_k.second.pair_num + m1_pair;
+            update(bestM2_j, index_k_j, newscore, state_k.first, index, -1, i - 1, MANNER_M2_M1_M1, first_pair_pos, j, total_cross, total_pair);
         }
     }
 }

@@ -446,11 +446,11 @@ int main(int argc, char** argv){
                     }
                 } else {
                     if (circ_objective == "vienna"){
-                        std::vector<pair<double,double>> result_c = circular_compose_v1<double>( alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, use_beam_pruning, is_DN);
+                        std::vector<pair<double,double>> result_c = circular_compose_v2<double>( alltables, rna_seq, con_seq, ami_seq, ires_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, use_beam_pruning, is_DN);
                     } else if (circ_objective == "mfold") {
                         std::vector<pair<double,double>> result_c = circular_compose_m1<double>( alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, use_beam_pruning, is_DN);
                     } else if (circ_objective == "IRES") {
-                        std::vector<pair<double,double>> result_c = circular_compose_i1<double>( alltables, rna_seq, con_seq, ami_seq, output_txt, output_csv, PID, protein_len, ires_seq.length(), TimeSpend, show_score, use_beam_pruning, is_DN);
+                        std::vector<pair<double,double>> result_c = circular_compose_v2<double>( alltables, rna_seq, con_seq, ami_seq, ires_seq, output_txt, output_csv, PID, protein_len, TimeSpend, show_score, use_beam_pruning, is_DN);
                     }
                 }
             }

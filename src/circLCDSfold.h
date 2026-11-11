@@ -812,19 +812,35 @@ std::vector<pair<T,T>> circular_compose_m1(AllTables<T> &alltables,string& rna_s
     return result_container;
 }
 
-// 直接環化（用 Vienna 環化方式 - Sparse 結構版本）
+// 直接環化（用 Vienna 環化方式 - Sparse 結構版本，支援 IRES 計算）
 template<typename T>
-std::vector<pair<T,T>> circular_compose_v1_sparse(AllTables<T> &alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq, string& output_txt, string& output_csv, string& PID, int protein_length, double TimeSpend, bool show_score, bool is_beam, bool is_DN) { // return {CAI, MFE}
+std::vector<pair<T,T>> circular_compose_v2_sparse(AllTables<T> &alltables, string& rna_seq, vector<int>& con_seq, string& ami_seq, string& ires_seq, string& output_txt, string& output_csv, string& PID, int protein_length, double TimeSpend, bool show_score, bool is_beam, bool is_DN) { // return {CAI, MFE}
     std::ofstream outputfile(output_txt, std::ios::app);
     std::ofstream outputcsv(output_csv, std::ios::app);
 
     double c_TimeSpend = 0;
     auto c_start_time = std::chrono::high_resolution_clock::now();
 
+    // 將 ires_seq 中的 T/t 轉換為 U，並確保大小寫統一
+    for (char &base : ires_seq) {
+        if (base == 'T' || base == 't') {
+            base = 'U';
+        } else if (base == 'u') {
+            base = 'U';
+        }
+    }
+
+    int seq_length = rna_seq.size();
+    int ires_len = ires_seq.length();
+
     outputfile << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
     std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
     outputfile << "Circular RNA Reconstruction:" << std::endl;
-    std::cout << "=== CircularRNA (v1 - Sparse) ===" << std::endl;
+    if (ires_len == 0) {
+        std::cout << "=== CircularRNA (v1 - Sparse) ===" << std::endl;
+    } else {
+        std::cout << "=== CircularRNA (v1 - Sparse IRES) ===" << std::endl;
+    }
 
     std::vector<std::unordered_map<int, State<T>>> &bestN = alltables.bestN;
     std::vector<std::vector<std::array<State<T>, 257>>> &bestSS = alltables.bestSS;
@@ -834,17 +850,60 @@ std::vector<pair<T,T>> circular_compose_v1_sparse(AllTables<T> &alltables, strin
     std::vector<std::unordered_map<int, State<T>>> &bestM1 = alltables.bestM1;
     std::vector<std::unordered_map<int, State<T>>> &bestM2 = alltables.bestM2;
 
-    int seq_length = rna_seq.size();
-
-    // 建立 BestAminoMap
+    // 建立 BestAminoMap (含安全 fallback，防止特定胺基酸未找到對應密碼子)
     std::unordered_map<char, std::pair<std::string, double>> BestAminoMap;
     for (const auto& [label, codon_list] : Amino_to_nucs) {
+        std::string best_codon = "";
+        double min_cai = std::numeric_limits<double>::max();
         for (const auto& codon : codon_list) {
-            if (unweighted_CAIMap.at(codon) == 0) {
-                BestAminoMap.insert({label, {codon, 0}});
+            auto it = unweighted_CAIMap.find(codon);
+            if (it != unweighted_CAIMap.end()) {
+                if (it->second == 0) {
+                    best_codon = codon;
+                    min_cai = 0;
+                    break;
+                } else if (it->second < min_cai) {
+                    min_cai = it->second;
+                    best_codon = codon;
+                }
             }
         }
+        if (!best_codon.empty()) {
+            BestAminoMap[label] = {best_codon, min_cai};
+        } else if (!codon_list.empty()) {
+            BestAminoMap[label] = {codon_list[0], 0.0};
+        }
     }
+
+    // 安全取得 Best Codon 的 Lambda 函式
+    auto safe_get_best_codon = [&](char aa) -> std::string {
+        auto it = BestAminoMap.find(aa);
+        if (it != BestAminoMap.end()) {
+            return it->second.first;
+        }
+        auto it_amino = Amino_to_nucs.find(aa);
+        if (it_amino != Amino_to_nucs.end() && !it_amino->second.empty()) {
+            return it_amino->second[0];
+        }
+        if (aa == '*') return "UAA";
+        return "NNN";
+    };
+
+    // 安全包裝 compute_extra_cai (考慮 ires_len 造成的座標平移)
+    auto safe_compute_extra_cai = [&](int nth, int nucn, const std::string& seq, bool is_dn, char type) -> std::pair<std::string, double> {
+        if (nth < ires_len) {
+            return {"", INT_MIN}; // 位於 IRES 區段，不參與 CDS CAI 計算
+        }
+        int cds_nth = nth - ires_len;
+        if (cds_nth / 3 >= (int)seq.size()) {
+            return {"", INT_MIN};
+        }
+        char aa = seq[cds_nth / 3];
+        if (Amino_to_nucs.find(aa) == Amino_to_nucs.end()) {
+            return {"", INT_MIN};
+        }
+        return compute_extra_cai(cds_nth, nucn, seq, is_dn, type);
+    };
 
     CircularCandidate<T> best_struct;
 
@@ -868,16 +927,26 @@ std::vector<pair<T,T>> circular_compose_v1_sparse(AllTables<T> &alltables, strin
                     double cur_score = state.score;
 
                     // CAI 修正
-                    auto [codon_j, extra_cai_j] = compute_extra_cai(jth, nucj, ami_seq, is_DN, 'j');
-                    auto [codon_i, extra_cai_i] = compute_extra_cai(ith, nuci, ami_seq, is_DN, 'i');
+                    auto [codon_j, extra_cai_j] = safe_compute_extra_cai(jth, nucj, ami_seq, is_DN, 'j');
+                    auto [codon_i, extra_cai_i] = safe_compute_extra_cai(ith, nuci, ami_seq, is_DN, 'i');
                     double total_extra_cai = ((extra_cai_j == INT_MIN) ? 0 : extra_cai_j);
 
                     // MFE: 計算外側 Hairpin Loop 能量
                     double extra_mfe = hairpin37[std::min(hairpin_len, 30)];
                     extra_mfe += (hairpin_len > 30) ? (int)(lxc37 * log((hairpin_len) / 30.0)) : 0;
+                    
+                    int cross_delta = 0;
+                    if (ires_len > 0) {
+                        cross_delta = isCrossTalk(ith, jth, ires_len);
+                    }
+
                     if (is_DN) extra_mfe *= lambda;
 
                     double total_score = cur_score + extra_mfe - total_extra_cai;
+                    if (ires_len > 0) {
+                        total_score -= (cross_delta * crosspair_penalty);
+                    }
+
                     if (best_struct.score < total_score) {
                         best_struct.score = total_score;
                         best_struct.index = id;
@@ -887,6 +956,9 @@ std::vector<pair<T,T>> circular_compose_v1_sparse(AllTables<T> &alltables, strin
                         best_struct.codon_j = codon_j;
                         best_struct.state = state;
                         best_struct.manner = state.MANNER;
+                        if (ires_len > 0) {
+                            best_struct.cross_pair_num = state.cross_pair_num + cross_delta;
+                        }
                     }
                 }
             }
@@ -909,17 +981,16 @@ std::vector<pair<T,T>> circular_compose_v1_sparse(AllTables<T> &alltables, strin
             double cur_score = state.score;
 
             // CAI 修正
-            auto [codon_j, extra_cai_j] = compute_extra_cai(jth, nucj, ami_seq, is_DN, 'j');
-            auto [codon_i, extra_cai_i] = compute_extra_cai(ith, nuci, ami_seq, is_DN, 'i');
+            auto [codon_j, extra_cai_j] = safe_compute_extra_cai(jth, nucj, ami_seq, is_DN, 'j');
+            auto [codon_i, extra_cai_i] = safe_compute_extra_cai(ith, nuci, ami_seq, is_DN, 'i');
             double total_extra_cai = ((extra_cai_j == INT_MIN) ? 0 : extra_cai_j);
 
             double extra_mfe = 0;
 
             if (state.pair_num == 2) {
                 // Internal Loop
-                // 若內部需要利用 Backtrack 找出 non_pair_nuc 數量，calcInternalMFE 通常內部會做對應回溯與能量查找
                 extra_mfe += calcInternalMFE<T>(alltables, rna_seq, ami_seq, BestAminoMap, state,
-                                                id, ith, jth, codon_i, codon_j, seq_length, true, false, 0);
+                                                id, ith, jth, codon_i, codon_j, seq_length, true, false, ires_len);
             } else if (state.pair_num > 2) {
                 // Multiloop 閉合
                 extra_mfe -= (ML_intern37 + ML_closing37);
@@ -930,6 +1001,7 @@ std::vector<pair<T,T>> circular_compose_v1_sparse(AllTables<T> &alltables, strin
             if (is_DN) extra_mfe *= lambda;
 
             double total_score = cur_score + extra_mfe - total_extra_cai;
+            // 注意：M2 狀態下的 cross_pair_num 已在 DP 過程中累加，若閉合處無額外 crosstalk 判定則直接繼承
             if (best_struct.score < total_score) {
                 best_struct.score = total_score;
                 best_struct.index = id;
@@ -939,6 +1011,9 @@ std::vector<pair<T,T>> circular_compose_v1_sparse(AllTables<T> &alltables, strin
                 best_struct.codon_j = codon_j;
                 best_struct.state = state;
                 best_struct.manner = state.MANNER;
+                if (ires_len > 0) {
+                    best_struct.cross_pair_num = state.cross_pair_num;
+                }
             }
         }
     }
@@ -961,34 +1036,69 @@ std::vector<pair<T,T>> circular_compose_v1_sparse(AllTables<T> &alltables, strin
     // 回溯結構與序列
     BacktrackStructure_sparse(c_rna_solution, c_structure_solution, seq_length, best_struct.index, best_struct.state, alltables, best_struct.j);
 
-    // 補齊邊界 codon
-    if (best_struct.codon_i != "") {
+    // 補齊 ith 與 jth 所屬 Codon (注意加上 ires_len 偏移量)
+    if (best_struct.codon_i != "" && best_struct.i >= ires_len) {
+        int cds_offset = best_struct.i - ires_len;
+        int codon_start = ires_len + (cds_offset / 3) * 3;
         for (int k = 0; k < 3; ++k) {
             if (best_struct.codon_i[k] == '.') continue;
-            c_rna_solution[((best_struct.i / 3) * 3) + k] = best_struct.codon_i[k];
+            int idx = codon_start + k;
+            if (idx < seq_length) c_rna_solution[idx] = best_struct.codon_i[k];
         }
     }
-    if (best_struct.codon_j != "") {
+    if (best_struct.codon_j != "" && best_struct.j >= ires_len) {
+        int cds_offset = best_struct.j - ires_len;
+        int codon_start = ires_len + (cds_offset / 3) * 3;
         for (int k = 0; k < 3; ++k) {
-            c_rna_solution[((best_struct.j / 3) * 3) + k] = best_struct.codon_j[k];
+            if (best_struct.codon_j[k] == '.') continue;
+            int idx = codon_start + k;
+            if (idx < seq_length) c_rna_solution[idx] = best_struct.codon_j[k];
         }
     }
 
-    // 補齊前後未折疊的 sequence
-    for (int ami = 0; ami < best_struct.i / 3; ++ami) {
-        for (int k = 0; k < 3; ++k) {
-            c_rna_solution[((ami) * 3) + k] = BestAminoMap.at(ami_seq[ami]).first[k];
-        }
-    }
-    for (int ami = (best_struct.j / 3) + 1; ami < (int)ami_seq.size(); ++ami) {
-        for (int k = 0; k < 3; ++k) {
-            c_rna_solution[((ami) * 3) + k] = BestAminoMap.at(ami_seq[ami]).first[k];
+    // 1. 若有 IRES，前 ires_len 個鹼基直接填入 ires_seq
+    if (ires_len > 0) {
+        for (int pos = 0; pos < ires_len && pos < seq_length; ++pos) {
+            c_rna_solution[pos] = ires_seq[pos];
         }
     }
 
+    // 2. 補齊結構前段 CDS: 從 ires_len 到 best_struct.i 之前
+    int cds_start_ami = 0;
+    int cds_end_ami_front = (best_struct.i > ires_len) ? (best_struct.i - ires_len) / 3 : 0;
+
+    for (int ami = cds_start_ami; ami < cds_end_ami_front && ami < (int)ami_seq.size(); ++ami) {
+        std::string codon = safe_get_best_codon(ami_seq[ami]);
+        int base_idx = ires_len + ami * 3;
+        for (int k = 0; k < 3; ++k) {
+            int idx = base_idx + k;
+            if (idx < seq_length) c_rna_solution[idx] = codon[k];
+        }
+    }
+
+    // 3. 補齊結構後段 CDS: 從 best_struct.j 之後到 CDS 結尾
+    int cds_start_ami_back = 0;
+    if (best_struct.j >= ires_len) {
+        cds_start_ami_back = ((best_struct.j - ires_len) / 3) + 1;
+    }
+
+    for (int ami = cds_start_ami_back; ami < (int)ami_seq.size(); ++ami) {
+        std::string codon = safe_get_best_codon(ami_seq[ami]);
+        int base_idx = ires_len + ami * 3;
+        for (int k = 0; k < 3; ++k) {
+            int idx = base_idx + k;
+            if (idx < seq_length) c_rna_solution[idx] = codon[k];
+        }
+    }
+
+    // 4. 未配對部分回填原始 rna_seq (再次確保前 ires_len 鎖定為 ires_seq)
     for (int pos = 0; pos < seq_length; ++pos) {
-        if (c_rna_solution[pos] == '.') {
-            c_rna_solution[pos] = rna_seq[pos];
+        if (c_rna_solution[pos] == '.' || c_rna_solution[pos] == 'X') {
+            if (ires_len > 0 && pos < ires_len) {
+                c_rna_solution[pos] = ires_seq[pos];
+            } else {
+                c_rna_solution[pos] = rna_seq[pos];
+            }
         }
     }
 
@@ -997,19 +1107,58 @@ std::vector<pair<T,T>> circular_compose_v1_sparse(AllTables<T> &alltables, strin
     std::cout << c_structure_solution << std::endl;
     outputfile << c_structure_solution << std::endl;
 
-    // MFE & CAI 計算
-    T weighted_cai_score = GetCAIScore<T>(c_rna_solution, is_DN);
-    double cai_value = GetUnweghtedCAIScore(c_rna_solution);
+    // 計算 CDS 的 CAI（截取 pos >= ires_len 的序列）
+    std::string cds_rna = (ires_len > 0 && seq_length >= ires_len) ? c_rna_solution.substr(ires_len) : c_rna_solution;
+    T weighted_cai_score = GetCAIScore<T>(cds_rna, is_DN);
+    double cai_value = GetUnweghtedCAIScore(cds_rna);
     cai_value = exp(cai_value / double(ami_seq.size()));
 
     double mfe_value;
-    if (is_DN) {
-        mfe_value = -double(double(c_final_score - weighted_cai_score) / (100.0 * lambda));
-    } else {
-        if (lambda) {
-            mfe_value = -double(double(c_final_score - weighted_cai_score) / (100.0));
+    int cross_pair_count = 0;
+    double cross_penalty_score = 0;
+    double mfe_score_component = 0;
+
+    if (ires_len == 0) { // 完全遵循無 IRES 的 MFE 計算方式
+        if (is_DN) {
+            mfe_value = -double(double(c_final_score - weighted_cai_score) / (100.0 * lambda));
         } else {
-            mfe_value = -(c_final_score / (100.0));
+            if (lambda) {
+                mfe_value = -double(double(c_final_score - weighted_cai_score) / 100.0);
+            } else {
+                mfe_value = -(c_final_score / 100.0);
+            }
+        }
+    } else { // 遵循含 IRES 的 Crosspair 扣除計算方式
+        cross_pair_count = getCrossPairNum(c_structure_solution, ires_len);
+        cross_penalty_score = cross_pair_count * crosspair_penalty;
+
+        if (is_DN) {
+            mfe_score_component = double(c_final_score) - double(weighted_cai_score) + cross_penalty_score;
+            mfe_value = -mfe_score_component / (100.0 * lambda);
+        } else {
+            if (lambda) {
+                mfe_score_component = double(c_final_score) - double(weighted_cai_score) + cross_penalty_score;
+                mfe_value = -mfe_score_component / 100.0;
+            } else {
+                mfe_score_component = double(c_final_score) + cross_penalty_score;
+                mfe_value = -mfe_score_component / 100.0;
+            }
+        }
+
+        if (show_score) {
+            std::cerr << "--- Score Breakdown ---" << std::endl;
+            std::cerr << "Total Score: " << c_final_score << std::endl;
+            std::cerr << "  - MFE Score: " << mfe_score_component << std::endl;
+            std::cerr << "  - CAI Score (weighted): " << weighted_cai_score << std::endl;
+            std::cerr << "  - Crosspair Penalty Score: -" << cross_penalty_score 
+                      << " (count: " << cross_pair_count << ", penalty: " << crosspair_penalty << ")" << std::endl;
+
+            outputfile << "--- Score Breakdown ---" << std::endl;
+            outputfile << "Total Score: " << c_final_score << std::endl;
+            outputfile << "  - MFE Score: " << mfe_score_component << std::endl;
+            outputfile << "  - CAI Score (weighted): " << weighted_cai_score << std::endl;
+            outputfile << "  - Crosspair Penalty Score: -" << cross_penalty_score 
+                       << " (count: " << cross_pair_count << ", penalty: " << crosspair_penalty << ")" << std::endl;
         }
     }
 
@@ -1018,6 +1167,11 @@ std::vector<pair<T,T>> circular_compose_v1_sparse(AllTables<T> &alltables, strin
     std::cout << "CAI: " << std::round(cai_value * 1000.0) / 1000.0 << std::endl;
     outputfile << "CAI: " << std::round(cai_value * 1000.0) / 1000.0 << std::endl;
 
+    if (ires_len > 0) {
+        std::cout << "Crosspair count: " << cross_pair_count << std::endl;
+        outputfile << "Crosspair count: " << cross_pair_count << std::endl;
+    }
+
     auto c_end_time = std::chrono::high_resolution_clock::now();
     c_TimeSpend = std::chrono::duration_cast<std::chrono::duration<double>>(c_end_time - c_start_time).count();
     std::cout << "Total runtime: " << std::round(c_TimeSpend * 1000.0) / 1000.0 << " s" << std::endl;
@@ -1025,7 +1179,16 @@ std::vector<pair<T,T>> circular_compose_v1_sparse(AllTables<T> &alltables, strin
 
     std::vector<pair<T,T>> result_container;
     result_container.push_back({round_up(cai_value), round_up(mfe_value)});
-    outputcsv << "," << mfe_value << "," << cai_value << "," << c_TimeSpend;
+
+    // 格式保持與對應分支一致
+    if (ires_len == 0) {
+        outputcsv << "," << mfe_value << "," << cai_value << "," << c_TimeSpend;
+    } else {
+        outputcsv << "," << mfe_value << "," << cai_value << "," << cross_pair_count << "," << c_TimeSpend;
+    }
+
+    outputcsv.close();
+    outputfile.close();
 
     return result_container;
 }

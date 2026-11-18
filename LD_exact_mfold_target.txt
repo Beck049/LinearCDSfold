@@ -1,0 +1,979 @@
+Amino acid file: dataset/test_target_long.fasta
+Codon usage table: codon_usage_freq_table_human.csv
+Objective function: LinearDesign
+Search mode: Exact search
+===================================================================================================================
+Protein ID: P19325
+Protein length: 72
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGGGUCAGAGCAAGAGCAAGGAGGAGAAGGGCAUCAGCGGGACUAGCAGGGCAGAGAUCCUCCCAGAUACCACGUAUCUGGGACCUCUGAACUGCAAGUCCUGCUGGCAGAAGUUCGACUCCUUCUCUAAGUGCCAUGACCACUACUUGUGCAGGCACUGCCUGAAUCUGCUGCUGACAAGCAGCGACAGGUGCCCCCUGUGCAAGUACCCCCUG
+...(((((..(((((((.((((((..(((.....(((((((((((.((((..(((((....((((((((((...)))))))))).)))))..)))).)))))))))))......)))..))))))))))...)))..)))))..((((((((((((....(((((..((.((((((....)))))))))))))....)))))))))))).......
+--- Score Breakdown ---
+Total Score: 9693.294
+  - MFE Score: 11190.000
+  - CAI Score (weighted): -1496.706
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -111.900 kcal/mol
+CAI: 0.901
+Total runtime: 19.735 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGGGGCAGUCCAAGAGCAAGGAGGAGAAGGGCAUCAGCGGGACUAGCAGGGCAGAGAUCCUCCCAGAUACCACGUAUCUGGGACCUCUGAACUGCAAGUCCUGCUGGCAGAAGUUCGACUCCUUCUCUAAGUGCCACGAUCACUACUUGUGCAGGCACUGCCUGAAUCUGCUGCUGACAAGCAGCGACAGGUGCCCCCUGUGCAAGUACCCCCUG
+((.(((((.(...((((.((((((..(((.....(((((((((((.((((..(((((....((((((((.(...).)))))))).)))))..)))).)))))))))))......)))..)))))))))).).)))).).))((.((((((((((((....(((((..((.((((((....)))))))))))))....)))))))))))).....))
+Folding free energy: -108.3 kcal/mol
+CAI: 0.908
+Total runtime: 0.571 s
+===================================================================================================================
+Protein ID: P08105
+Protein length: 79
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGUCCAGCAGCCUGGAGAUCACCAGCUUCUACAGCUUCAUCUGGACGCCUCACAUCGGUCCCCUGCUGUUCGGGAUCGGGCUGUGGUUCAGCAUGUUCAAGGAGCCCAGCCACUUCUGCCCGUGCCAGCACCCGCACUUCGUGGAGGUGGUGAUUCCUUGCGACAGCCUGAGCCGCAGCCUGAGGCUCCGGGUGAUCGUGCUGUUCCUGGCGAUCUUCUUCCCGCUGCUGAACAUC
+((((.(((((((..(((((((.((((.....(((((.(((((((((.((((((...(((((((.........)))))))(((((((((((((..(((((((((((....(((((((((((..((((........))))...)))))))))))..))))))).))))..))))))))))))))))))))))))))))....)))))..)))).))))))).....))))))).)))).
+--- Score Breakdown ---
+Total Score: 10635.162
+  - MFE Score: 12360.000
+  - CAI Score (weighted): -1724.838
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -123.600 kcal/mol
+CAI: 0.897
+Total runtime: 31.531 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGAGCAGCAGCCUGGAGAUCACCAGCUUCUACAGCUUCAUCUGGACGCCUCACAUCGGUCCCCUGCUGUUCGGGAUCGGGCUGUGGUUCAGCAUGUUCAAGGAGCCCAGCCACUUCUGCCCGUGCCAGCACCCGCACUUCGUGGAGGUGGUGAUUCCUUGCGACAGCCUGAGCCGCAGCCUGAGGCUCCGGGUGAUCGUGCUGUUCCUGGCGAUCUUCUUCCCGCUGCUCAACAUC
+.((((((.(.....(((((((.((((.....(((((.(((((((((.((((((...(((((((.........)))))))(((((((((((((..(((((((((((....(((((((((((..((((........))))...)))))))))))..))))))).))))..))))))))))))))))))))))))))))....)))))..)))).))))))).....).)))))).....
+Folding free energy: -118.6 kcal/mol
+CAI: 0.889
+Total runtime: 0.856 s
+===================================================================================================================
+Protein ID: Q6IUF9
+Protein length: 94
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGGGCAACUGUAAUAAGCCCCCCAAGAGGCCCCCCAACACCCAGACUAGCGCAGCCCAGCCGUCCGCCGAGUUUCGGCGGACGGCGCUGCCUAGUCUGUACGGCCGCUAUAACUGCAAGUGUUGCUGGUUCGCAGACACAAAUCUGAUCACCUGCAAUGAUCACUAUUUGUGUCUGCGGUGCCACCAGACAAUGCUGCGGAAUAGCGAGCUGUGCCACAUCUGUUGGAAGCCUCUGCCCACCAGUAUUACAGUGCCCGUGGAGCCCAGCGCUCCACCCCCC
+..(((((.((((((((.........((((((...((((((...(((((((.(((((...((((((((((((...))))))))))))))))))))))))(((((((((((((..(((((.(((((((((((((((((((((((((.((((((.......))))))..))))))))))))))....))))).))))))))))).)))))).)))))))......))))))..)))))).........)))))))))))))(((((((.....))))))).....
+--- Score Breakdown ---
+Total Score: 12840.917
+  - MFE Score: 15180.000
+  - CAI Score (weighted): -2339.083
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -151.800 kcal/mol
+CAI: 0.883
+Total runtime: 26.372 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGGGCAACUGUAAUAAGCCCCCCAAGAGGCCCCCCAACACCCAGACUAGCGCAGCCCAGCCGUCCGCCGAGUUUCGGCGGACGGCGCUGCCUAGUCUGUACGGCCGCUAUAACUGCAAGUGUUGCUGGUUCGCAGACACAAAUCUGAUCACCUGCAAUGAUCACUAUUUGUGUCUGCGGUGCCACCAGACAAUGCUGCGGAAUAGCGAGCUGUGCCACAUCUGUUGGAAGCCUCUGCCCACCAGUAUUACAGUGCCCGUGGAGCCGAGCGCCCCUCCGCCC
+(((((((.((((((((.........((((((...((((((...(((((((.(((((...((((((((((.(...).))))))))))))))))))))))(((((((((((((..(((((.(((((((((((((((((((((((((.((((((.......))))))..))))))))))))))....))))).))))))))))).)))))).)))))))......))))))..)))))).........)))))))))))))))((.((.(((.....))).))))
+Folding free energy: -151 kcal/mol
+CAI: 0.867
+Total runtime: 1.388 s
+===================================================================================================================
+Protein ID: B2MW50
+Protein length: 95
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGGGCCUGCGGUACAGCAAGGCGGUCAAGGACAAGUACGGGGACAGGGAGAUCGAGGGGCGGGCGACCAUGACCCUGAACCUGCCCCAGGGCCUCUACGGCAGGUUCAACUGCAAGAGGUGCUGGUUCGCAACCAAGGGUCUGAUCGCCUGCUCCGAUCACUACCUGUGCCUGAACUGCCUGACCAUCAUGCUGUCCGACGGGAACUUUUGUGAGGUGUGCGGAAAGACUCUCCCGAAGAAGAUCGUCUUCGAGGAGAGUCCUUCCGCACCACCUUACGACGGC
+..(..(((((((.((((((.((.(((((.((.((.((.((((.(((((..((((..(((((((((((.((.((((((.....(((.((((.((((((...((((......)))).)))))).))))...)))....)))))))).)))))))))))))))....))))).)))).))))))))))).)).))))))))).))))..)..(((((((((((((((((.((((((((((((((......)))))).)))))))).)))))))).)))))))))....
+--- Score Breakdown ---
+Total Score: 14205.047
+  - MFE Score: 16590.000
+  - CAI Score (weighted): -2384.953
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -165.900 kcal/mol
+CAI: 0.882
+Total runtime: 25.467 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGGGACUGCGUUAUAGUAAGGCAGUGAAGGACAAGUACGGUGAUCGGGAGAUUGAGGGUCGUGCCACCAUGACCCUCAAUCUCCCCCAGGGCCUGUACGGCAGGUUCAACUGCAAGCGGUGCUGGUUCGCCACCAAGGGCCUCAUCGCUUGCAGUGAUCACUACUUGUGCCUGAACUGCCUUACUAUAAUGCUGUCCGAUGGCAACUUUUGUGAGGUGUGCGGAAAGACUCUCCCGAAGAAGAUCGUCUUCGAGGAGAGUCCUUCCGCACCACCUUACGAUGGC
+((.((((.((((((((((((((((((..(((((((.(..(((((((((((((((((((((((((....))))))))))))))))))...((((((((...)))))))).(((((((((((((..(((((........))))).))))))))))))))))))))).)))).)))..)))))))))))))))))).)))).))(.((....(((((((((((((((((.((((((((((((((......)))))).)))))))).)))))))).))))))))))).)
+Folding free energy: -180.3 kcal/mol
+CAI: 0.824
+Total runtime: 1.548 s
+===================================================================================================================
+Protein ID: Q6RSS3
+Protein length: 95
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGGGGCUCCGGUACAGUAAGGAGGUGCGGGAGCGGCACGGCGAUAAGGAUCUGGAGGGCAGGGUGCCCAUGACCCUGAACCUGCCUCAGGGUCUGUAUGGGCGCUUCAACUGCAAGUCCUGCUGGUUCGCCAACCGCGGCCUGAUCGCAUGUUCAGACCACUACCUGUGUCUGAACUGCCUGACCAGGCUGCGGUCCCAGAGCCAGUUCUGCGGGAUUUGCGGGAAGCCCCUGCCCACCAAGAUCCGGUUCGAGGAGAGCCCUUCCGCACCUCCUUACGAGCCC
+...((((((.......(((((((((((((((((.(((.(..(((...((((((((.((((((((.((((((((((((((.......))))))))...))))))(((((..(((((((((((((((((((....(((((((((((.(((((.((((((((.((.....)))))))))))))..)).)))))))))))....)))))).....)))))))))))))))))))))))))).))).)))))...)))..)...))))))))))))))))))))))))))
+--- Score Breakdown ---
+Total Score: 16118.824
+  - MFE Score: 17570.000
+  - CAI Score (weighted): -1451.176
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -175.700 kcal/mol
+CAI: 0.926
+Total runtime: 36.571 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGGGGCUCCGGUACAGUAAGGAGGUGCGGGAGCGGCACGGCGAUAAGGAUCUGGAGGGCAGGGUGCCCAUGACCCUGAACCUGCCUCAGGGUCUGUAUGGGCGCUUCAACUGCAAGUCCUGCUGGUUCGCCAACCGCGGCCUGAUCGCAUGUUCAGACCACUACCUGUGUCUGAACUGCCUGACCAGGCUGCGGUCCCAGAGCCAGUUCUGCGGGAUUUGCGGGAAGCCCCUGCCCACCAAGAUCCGGUUCGAGGAGAGCCCUUCCGCACCUCCUUACGAGCCC
+...((((((.......(((((((((((((((((.(((.(..(((...((((((((.((((((((.(((.((((((((((.......))))))))...)).)))(((((..(((((((((((((((((((....(((((((((((.(((((.((((((((.((.....)))))))))))))..)).)))))))))))....)))))).....)))))))))))))))))))))))))).))).)))))...)))..)...))))))))))))))))))))))))))
+Folding free energy: -170.3 kcal/mol
+CAI: 0.926
+Total runtime: 2.471 s
+===================================================================================================================
+Protein ID: Q88470
+Protein length: 95
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGGGGAACUGCAAUAGGACUCAGAAGCCUAGCAGUUCCUCAAACAAUCUGGAGAAGCCUCCACAGGCAGCCGAGUUCCGGAGGACGGCAGAGCCUUCCCUGUACGGCAGAUACAAUUGCAAGUGCUGCUGGUUCGCAGACAAGAAUCUGAUCACAUGCUCAGACCACUACCUGUGUCUGAGAUGUCAUCAGAUUAUGCUGCGGAACAGCGAGCUUUGCAAUAUCUGCUGGAAGCCUCUGCCGACCUCCAUUCGGGUGCCUCUGGAGGCUUCUGCCCCAGAUCUG
+.(((((((((((..((((.((....)))))))))))))))))....(((((((((((((((((.(((((.((((((...(((((.((((((((.(((((......((((((((...(((((((.(((((((.(((((((.((..((((((((.((((.((((((.(((.....))))))))))))).)))))))).))))))))).)))).))))))))))))))))))))))).)))))))).))))))))))).))))).)))))))))))...))))))...
+--- Score Breakdown ---
+Total Score: 14133.896
+  - MFE Score: 16550.000
+  - CAI Score (weighted): -2416.104
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -165.500 kcal/mol
+CAI: 0.881
+Total runtime: 32.004 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGGGGAACUGCAAUAGGACUCAGAAGCCUAGCAGUUCCUCCAACAAUCUGGAGAAGCCUCCACAGGCAGCCGAGUUCCGGAGGACGGCAGAGCCUUCCCUGUACGGCAGAUACAAUUGCAAGUGCUGCUGGUUCGCAGACAAGAAUCUGAUCACAUGCUCAGACCACUACCUGUGUCUGAGAUGUCAUCAGAUUAUGCUGCGGAACAGCGAGCUUUGCAAUAUCUGCUGGAAGCCUCUGCCGACCUCCAUUCGGGUGCCUCUGGAGGCUUCUGCCCCAGAUCUG
+..((((((((((..((((.((....)))))))))))))).))..(((((((((((((((((((.(((((.((((((...(((((.((((((((.(((((......((((((((...(((((((.(((((((.(((((((.((..((((((((.((((.((((((.(((.....))))))))))))).)))))))).))))))))).)))).))))))))))))))))))))))).)))))))).))))))))))).))))).)))))))))))...)))))).))
+Folding free energy: -163.7 kcal/mol
+CAI: 0.884
+Total runtime: 1.836 s
+===================================================================================================================
+Protein ID: A9JR22
+Protein length: 95
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGGGGCUGCGGUACAGCAAGGAGGUGAGGGAUCGUCAUGGGGAUAAGGAUCCUGAGGGCAGGAUCCCUAUCACCCAGACGAUGCCUCAGACACUGUACGGCAGAUAUAAUUGUAAGAGCUGUUGGUUCGCCAACAAGGGGCUGAUCAAGUGCUCUAACCAUUAUAUCUGCCUGCGGUGUCUGACCUCCAUGCUGAACCGCACUGACUACUGUGAGAUCUGUGGGGAGGUGCUGCCCAAGCGGCUCACCUUUGAGACCACUCCCACAGCACCUCCCUACACCCCA
+.(((((.((((((.(((((.((((((((((.((((((.((((((((.((((((((....)))))))).)))).)))))))))).))))((((((((((.((((((((((((.((.(((((..((((((.(((.......))).))))))..))))).)).)))))))))))))))))))))).)))))).))))).))))))((.((....)).))...(((((((((((((((....((.((((((....)))).)).))....))))))))))))))))))))
+--- Score Breakdown ---
+Total Score: 14411.105
+  - MFE Score: 16510.000
+  - CAI Score (weighted): -2098.895
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -165.100 kcal/mol
+CAI: 0.895
+Total runtime: 25.570 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGGGCCUGCGGUACAGCAAGGAGGUGAGGGAUCGUCAUGGGGAUAAGGAUCCUGAGGGCAGGAUCCCUAUCACCCAGACGAUGCCUCAGACACUGUACGGCAGAUAUAAUUGUAAGAGCUGUUGGUUCGCCAACAAGGGGCUGAUCAAGUGCUCUAACCAUUAUAUCUGCCUGCGGUGUCUGACCUCCAUGCUGAACCGCACGGACUAUUGCGAGAUCUGUGGGGAGGUGCUGCCCAAGCGGCUCACCUUUGAGACCACUCCCACAGCACCUCCCUACACUCCA
+((((.((((((((.(((((.((((((((((.((((((.((((((((.(((((((......))))))).)))).)))))))))).))))((((((((((.((((((((((((.((.(((((..((((((.(((.......))).))))))..))))).)).)))))))))))))))))))))).)))))).))))).)))))).)).))))((.(((...(((((((((((((((....((.((((((....)))).)).))....))))))))))))))))))))
+Folding free energy: -167.4 kcal/mol
+CAI: 0.887
+Total runtime: 1.481 s
+===================================================================================================================
+Protein ID: Q27YE6
+Protein length: 99
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGGGGCAGAAGCCUUCGAAGCCGAAGGCUCCCCCCACCACUUAUGAGUCCCCCCGCUCGAGCCUGACACCGGACGCUACAGGAUUCGGCCCCGAGUUCUGUAAGUCCUGUUGGUUCGAGCGGAAGGGACUCAUCAAGUGCCAGAACCACUACUUGUGCAUGACCUGUUUGACACUGCUGCUGACAGUGUCAAACAGGUGCCCCGUGUGCAAGUACCCUCUGCCCACAAAGCUGAGGCUGGAGAAGUCGCCCACGGCCCCCCCGCCGGAGGCGACUAACCCUCCACCCUACAGCCCC
+.(((((((((((((((((....))))))))........((((((((((((((.(((((((((((.((((..((((..(((((((((((....))))))))))).)))))))))))))))))))..))))))))).)))))..........((((((((((((((((((((((((((((....).)))))))))))))))....))))))))))))...))))))).))..(((((((.(((((.(((((((..((((......))))..)))))))....))))).))).))))...
+--- Score Breakdown ---
+Total Score: 12404.266
+  - MFE Score: 16450.000
+  - CAI Score (weighted): -4045.734
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -164.500 kcal/mol
+CAI: 0.815
+Total runtime: 33.970 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGGGGCAGAAGCCUUCGAAGCCGAAGGCUCCCCCCACCACUUAUGAGUCCCCCCGCUCGAGCCUGACACCGGACGCUACAGGAUUCGGCCCCGAGUUCUGUAAGUCCUGUUGGUUCGAGCGGAAGGGACUCAUCAAGUGCCAGAACCACUACUUGUGCAUGACCUGUUUGACACUGCUGCUGACAGUGUCAAACAGGUGCCCCGUGUGCAAGUACCCUCUGCCCACCAAGCUGAGGCUGGAGAAGUCGCCCACGGCCCCCCCGCCGGAGGCGACUAACCCUCCACCCUACAGCCCC
+...((((((((((((.((....)).)))))........((((((((((((((.(((((((((((.((((..((((..(((((((((((....))))))))))).)))))))))))))))))))..))))))))).)))))..........((((((((((((((((((((((((((((....).)))))))))))))))....))))))))))))...))))))).....(((((((.(((((.(((((((..((((......))))..)))))))....))))).))).))))...
+Folding free energy: -161 kcal/mol
+CAI: 0.817
+Total runtime: 2.202 s
+===================================================================================================================
+Protein ID: B0BLK7
+Protein length: 99
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGGGCUCCAAGAGCAGUAAGAGCAGUGGUUUCGAGAACGUGCCCAGCCUGGGGCUGAGCCACACUAAUCAGCCACGGGUGAGCCUGAUCAGAGAGGCUCGGCCAAGUCUGUACGGGCGGUACAACUGCAAGUGCUGCUGGUUCCAGAACAAGAACUUGGUCGAGUGCUCUGAUCAUUACCUGUGCCUGAAGUGUAUCAGCUCCAUGCUGCGGCGCGGGCAGAACUGCGAGAUCUGUGGGAAGCCCAUUCCCACACACAUCGCAGUGACCACUGCUCCUACUGCUCCCCCGGAGCCC
+..(((((((..((((((((.(((((((((((((..(..((((((((((.(((((((((...(((((..((((.(((((((((...(((((((((..(((((((((((((((.((.((((((((........)))))))).))..)))).......))))))))))).)))))))))))))))))).))))))))).))))))))).)))).))))))..).))(((((((....((((((((.....))))))))....)))))))))))))))))).))))))))....)))))))
+--- Score Breakdown ---
+Total Score: 15334.722
+  - MFE Score: 17770.000
+  - CAI Score (weighted): -2435.278
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -177.700 kcal/mol
+CAI: 0.884
+Total runtime: 39.483 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGGGCUCCAAGAGCUCAAAGAGCUCCGGGUUCGAGAAUGUGCCUUCCCUGGGCCUGAGCCACACGAAUCAGCCUCGGGUGAGCCUGAUUCGUGAGGCCAGGCCCAGCCUGUACGGAAGGUACAACUGCAAGUGCUGCUGGUUUCAGAACAAGAACCUGGUCGAGUGCUCCGACCACUAUCUGUGUCUGAAGUGCAUCAGCAGCAUGCUGCGGCGGGGGCAGAACUGCGAGAUCUGUGGGAAGCCCAUUCCCACACACAUCGCAGUGACCACUGCCCCCACCGCACCCCCGGAGCCU
+.(((((((...))))))).((.((((((((........(((((((((((((((((((.(((.((((((((((.(((....))).)))))))))).)))))))))))).......))))))))))...(((..((((((((((((((((...(((...((((((.......))))))...)))...))))))....)))))))))))))(((((.((((((((.((((((.....((((((((.....)))))))).....)))))).....)))))))).)))))..))))))))))
+Folding free energy: -166.8 kcal/mol
+CAI: 0.904
+Total runtime: 2.433 s
+===================================================================================================================
+Protein ID: Q6UY62
+Protein length: 100
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGGGCAACAGCAAGAGUAAGAGUAAGCUGUCUGCUAAUCAGUACGAGCAGCAGACAGUGAACUCUACUAAGCAGGUUGCCAUCCUCAAGCGGCAGGCGGAGCCUAGCCUCUAUGGGCGCCACAACUGCAGGUGCUGUUGGUUCGCCAACACCAACCUGAUCAAGUGUUCAGACCACUACAUCUGCCUGAAGUGUCUGAACAUUAUGCUGGGGAAGAGCUCCUUCUGCGACAUUUGCGGCGAGGAGCUCCCCACCAGCAUUGUGGUGCCCAUAGAGCCUAGCGCUCCGCCUCCUGAGGAU
+...((((((.((...((((.((((..((((((((((..((.....))..))))))))))..))))))))..))..))))))(((((((...((.(((((((((((((.((((((((((((((((....((((((.((((((....)))))).)).))))....(((((((((((.(((.((......)).))))))))))))))(((((((((..(((((((((((((((...)))))).))))))))).)).))))))))))))))))))))))).)))).))))))))))))))))))
+--- Score Breakdown ---
+Total Score: 14123.823
+  - MFE Score: 16860.000
+  - CAI Score (weighted): -2736.177
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -168.600 kcal/mol
+CAI: 0.872
+Total runtime: 27.043 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGGGCAACAGCAAGAGUAAGAGUAAGCUGUCUGCUAAUCAGUACGAGCAGCAGACAGUGAACUCUACUAAGCAGGUUGCCAUCCUCAAGCGGCAGGCGGAGCCUAGCCUCUAUGGGCGCCACAACUGCAGGUGCUGUUGGUUCGCCAACACCAACCUGAUCAAGUGUUCAGACCACUACAUCUGCCUGAAGUGUCUGAACAUUAUGCUGGGGAAGAGCUCCUUCUGCGACAUUUGCGGCGAGGAGCUCCCCACCAGCAUUGUGGUGCCCAUAGAGCCUAGCGCUCCGCCUCCUGAGGAU
+...((((((.((...((((.((((..((((((((((..(.......)..))))))))))..))))))))..))..))))))(((((((...((.(((((((((((((.((((((((((((((((....((((((.((((((....)))))).)).))))....(((((((((((.(((.((......)).))))))))))))))(((((((((..(((((((((((((((...)))))).))))))))).)).))))))))))))))))))))))).)))).))))))))))))))))))
+Folding free energy: -165.4 kcal/mol
+CAI: 0.872
+Total runtime: 1.729 s
+===================================================================================================================
+Protein ID: Q27YE2
+Protein length: 101
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGGGGCAGAACCAGAGUAGGGACAAGCAGAAGGCGAUCCAGAACCAGCCCAAGGACACCGGGAACCGGGCCGACAUCAUCCCCGACGCCACGGGGAUGGGGCCCGAGUUCUGCAAGUCCUGCUGGUUCGAGCGGCGGAGUCUGGUGGCAUGCAACAACCACUACCUGUGCAUGAACUGCCUGACUCUGCUGCUCAGCGUGAGCGAGCGCUGCCCUAUUUGUAAGCUUCCGCUUCCCCAGAAGCUGAAGCUUACAAGUAGCCCCAGCGCUCCUCCAUCGCCUUCUCCUCCUCCCUACUCCCCC
+..((((........(((((((((..((.((((((((((...((((((((...(((((....(((((((((((....(((((((((......))))))))))))))).)))))....)))))))))))))(((((((((((((.((((((((((.(((.........))))))))..))))).))))))))))))).....(((.((((((((..(((((((((((((((.(((((....))))).)))))))))))))))...))))))))))).)))))))))).))..)))))))))))))
+--- Score Breakdown ---
+Total Score: 14451.955
+  - MFE Score: 17540.000
+  - CAI Score (weighted): -3088.045
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -175.400 kcal/mol
+CAI: 0.858
+Total runtime: 39.712 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGGGCCAGAACCAGAGUAGGGACAAGCAGAAGGCGAUCCAGAACCAGCCCAAGGACACCGGGAACCGGGCCGACAUCAUCCCCGACGCCACGGGGAUGGGGCCCGAGUUCUGCAAGUCCUGCUGGUUCGAGCGGCGGAGUCUGGUGGCAUGCAACAACCACUACCUGUGCAUGAACUGCCUGACUCUGCUGCUCAGCGUGAGCGAGCGCUGCCCUAUUUGUAAGCUUCCGCUUCCCCAGAAGCUGAAGCUUACAAGUAGCCCCAGCGCUCCUCCAUCGCCUUCUCCUCCUCCCUACUCCCCC
+.((.........))(((((((((..((.((((((((((...((((((((...(((((....(((((((((((....(((((((((......))))))))))))))).)))))....)))))))))))))(((((((((((((.((((((((((.(((.........))))))))..))))).))))))))))))).....(((.((((((((..(((((((((((((((.(((((....))))).)))))))))))))))...))))))))))).)))))))))).))..)))))))))....
+Folding free energy: -167.6 kcal/mol
+CAI: 0.861
+Total runtime: 2.469 s
+===================================================================================================================
+Protein ID: P9WN84
+Protein length: 130
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGAGCGCCGCCGGCGUCCGGAGUACCCGGCAGCGUGCUGCCAUCAGCACGCUGCUGGAGACUCUGGACGAUUUUCGCUCCGCCCAGGAGCUCCACGACGAGCUCCGGCGGCGGGGCGAGAAUAUUGGACUGACCACCGUGUAUCGGACCCUGCAGAGUAUGGCCAGCUCCGGGCUGGUCGAUACUCUGCACACCGAUACCGGUGAGUCAGUCUACCGGCGGUGCUCCGAGCACCACCACCACCACCUGGUGUGCCGGAGCUGCGGCAGCACUAUAGAGGUCGGAGAUCACGAGGUGGAGGCUUGGGCCGCUGAGGUCGCCACCAAGCACGGCUUCAGCGACGUGAGCCACACCAUCGAGAUCUUCGGCACCUGUAGUGACUGCCGCAGC
+....((((((((((((((((((((..((((((((((((((....))))))))))))))..))))))))))(((((((((((((((.(((((((......))))))).).))))))))))))))..((((((((((((((.(((((((....((((((((((((((((((...)))))))).))))))))))..)))))))))))).)))))))))))))))))))((((.((((.((((........))))))))))))((((((((((((((((((..((((((((((.(((((((..((((((.(.(((((((((((..........))))))))))).).)))))).)))).))).))))))))))..)))))))).))))))))))
+--- Score Breakdown ---
+Total Score: 23928.555
+  - MFE Score: 27180.000
+  - CAI Score (weighted): -3251.445
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -271.800 kcal/mol
+CAI: 0.882
+Total runtime: 82.468 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGAGCGCUGCGGGCGUCCGGAGUACCCGGCAGCGUGCUGCCAUCAGCACGCUGCUGGAGACUCUGGACGACUUCCGCAGCGCUCAGGAGCUGCAUGAUGAGCUGCGGAGGCGCGGCGAGAACAUCGGACUCACCACCGUGUAUCGGACCCUGCAGAGUAUGGCCAGCUCCGGGCUGGUCGAUACUCUGCACACCGAUACAGGUGAGUCCGUGUAUCGCCGCUGCUCCGAGCAUCAUCACCACCACCUGGUGUGCAGGUCCUGUGGAUCUACGAUCGAGGUGGGAGACCACGAGGUCGAGGCUUGGGCCGCCGAGGUGGCCACCAAGCACGGCUUCAGUGACGUCUCCCACACGAUCGAGAUCUUCGGGACCUGCAGCGACUGCAGGUCC
+.(((((((((.(((((((((((((..((((((((((((((....))))))))))))))..))))))))))...))).)))))))))(((.((((((((((((((.(((((..(((((((..(((.((((((((((....((((((((....((((((((((((((((((...)))))))).))))))))))..))))))))))))))))))))).)))))))..)))))))).)))))).((((....))))(((((((((((.((((((.((((((..(((((((((((((((((((..(((((((((((....))))))..))))).))))))).)))..))))))))).)))))))))))).))))))))))).....))))).)))
+Folding free energy: -271.6 kcal/mol
+CAI: 0.863
+Total runtime: 8.915 s
+===================================================================================================================
+Protein ID: P9WN85
+Protein length: 130
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGAGCGCCGCCGGCGUCCGGAGUACCCGGCAGCGUGCUGCCAUCAGCACGCUGCUGGAGACUCUGGACGAUUUUCGCUCCGCCCAGGAGCUCCACGACGAGCUCCGGCGGCGGGGCGAGAAUAUUGGACUGACCACCGUGUAUCGGACCCUGCAGAGUAUGGCCAGCUCCGGGCUGGUCGAUACUCUGCACACCGAUACCGGUGAGUCAGUCUACCGGCGGUGCUCCGAGCACCACCACCACCACCUGGUGUGCCGGAGCUGCGGCAGCACUAUAGAGGUCGGAGAUCACGAGGUGGAGGCUUGGGCCGCUGAGGUCGCCACCAAGCACGGCUUCAGCGACGUGAGCCACACCAUCGAGAUCUUCGGCACCUGUAGUGACUGCCGCAGC
+....((((((((((((((((((((..((((((((((((((....))))))))))))))..))))))))))(((((((((((((((.(((((((......))))))).).))))))))))))))..((((((((((((((.(((((((....((((((((((((((((((...)))))))).))))))))))..)))))))))))).)))))))))))))))))))((((.((((.((((........))))))))))))((((((((((((((((((..((((((((((.(((((((..((((((.(.(((((((((((..........))))))))))).).)))))).)))).))).))))))))))..)))))))).))))))))))
+--- Score Breakdown ---
+Total Score: 23928.555
+  - MFE Score: 27180.000
+  - CAI Score (weighted): -3251.445
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -271.800 kcal/mol
+CAI: 0.882
+Total runtime: 82.707 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGAGCGCUGCGGGCGUCCGGAGUACCCGGCAGCGUGCUGCCAUCAGCACGCUGCUGGAGACUCUGGACGACUUCCGCAGCGCUCAGGAGCUGCAUGAUGAGCUGCGGAGGCGCGGCGAGAACAUCGGACUCACCACCGUGUAUCGGACCCUGCAGAGUAUGGCCAGCUCCGGGCUGGUCGAUACUCUGCACACCGAUACAGGUGAGUCCGUGUAUCGCCGCUGCUCCGAGCAUCAUCACCACCACCUGGUGUGCAGGUCCUGUGGAUCUACGAUCGAGGUGGGAGACCACGAGGUCGAGGCUUGGGCCGCCGAGGUGGCCACCAAGCACGGCUUCAGUGACGUCUCCCACACGAUCGAGAUCUUCGGGACCUGCAGCGACUGCAGGUCC
+.(((((((((.(((((((((((((..((((((((((((((....))))))))))))))..))))))))))...))).)))))))))(((.((((((((((((((.(((((..(((((((..(((.((((((((((....((((((((....((((((((((((((((((...)))))))).))))))))))..))))))))))))))))))))).)))))))..)))))))).)))))).((((....))))(((((((((((.((((((.((((((..(((((((((((((((((((..(((((((((((....))))))..))))).))))))).)))..))))))))).)))))))))))).))))))))))).....))))).)))
+Folding free energy: -271.6 kcal/mol
+CAI: 0.863
+Total runtime: 9.029 s
+===================================================================================================================
+Protein ID: P0AC51
+Protein length: 171
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGGAGAAGACAACAACCCAGGAGCUCCUGGCCCAGGCUGAGAAGAUCUGCGCACAGCGGAAUGUGCGCCUGACUCCUCAGCGGCUGGAGGUCCUGCGGUUGAUGUCUCUCCAGGACGGGGCCAUCAGCGCCUAUGAUCUGCUGGAUCUGCUCAGGGAGGCCGAGCCCCAGGCCAAGCCACCUACCGUGUACAGAGCCCUGGACUUCCUGCUGGAGCAGGGCUUUGUGCACAAGGUGGAGUCCACCAACUCCUACGUCCUCUGCCACCUCUUUGACCAGCCCACGCACACGAGCGCAAUGUUCAUUUGCGAUCGGUGCGGGGCUGUCAAGGAGGAGUGCGCAGAGGGCGUGGAGGACAUCAUGCACACACUGGCCGCCAAGAUGGGCUUCGCUCUGCGGCACAACGUGAUCGAGGCCCACGGCCUGUGUGCUGCAUGUGUGGAGGUGGAGGCCUGUCGGCACCCUGAGCAGUGCCAGCACGAUCAUAGCGUGCAGGUGAAGAAGAAGCCCCGG
+.((((((.((((.((((((((((.((((.((((...((((((.((.((.(((((((......)))))))..)))).)))))))))))))).))))).))))).))))))))))...((((((((((.((((((((((((((((((..((((((((((..(((((....((((((...((((((.(((((((((((((((((...((((....)))))))))))))))))))..(((((...)))))..((((.((((((((((((((((((((((.((((((.(((((.(((.(((((.......))))).)))))))))))))))))))))))..)).))))))))))))))).(((.(((((((((((.(((((......(((((((((.((.(((......))))).)))))))))))))).))))).))))))))))))))))).))))))))))).))))))))))..)))))).)))))))).)))).))))........)))))).
+--- Score Breakdown ---
+Total Score: 28589.221
+  - MFE Score: 32340.000
+  - CAI Score (weighted): -3750.779
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -323.400 kcal/mol
+CAI: 0.896
+Total runtime: 104.178 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGGAGAAGACAACAACCCAGGAGCUCCUGGCCCAGGCUGAGAAGAUCUGCGCACAGCGGAAUGUGCGCCUGACUCCUCAGCGGCUGGAGGUCCUGCGGUUGAUGUCUCUCCAGGACGGGGCCAUCAGCGCCUAUGAUCUGCUGGAUCUGCUCAGGGAGGCCGAGCCCCAGGCCAAGCCACCUACCGUGUACAGAGCCCUGGACUUCCUGCUGGAGCAGGGCUUUGUGCACAAGGUGGAGUCCACCAACUCCUACGUCCUCUGCCACCUCUUUGACCAGCCCACGCACACGAGCGCAAUGUUCAUUUGCGAUCGGUGCGGGGCUGUCAAGGAGGAGUGCGCAGAGGGCGUGGAGGACAUCAUGCACACACUGGCCGCCAAGAUGGGCUUCGCUCUGCGGCACAACGUGAUCGAGGCCCACGGCCUGUGUGCUGCAUGUGUGGAGGUGGAGGCCUGUCGGCACCCUGAGCAGUGCCAGCACGAUCAUAGCGUGCAGGUGAAGAAGAAGCCCCGG
+.((((((.((((.((((((((((.((((.((((...((((((.((.((.(((((((......)))))))..)))).)))))))))))))).))))).))))).))))))))))...((((((((((.((((((((((((((((((..((((((((((..(((((....((((((...((((((.(((((((((((((((((...(((......))))))))))))))))))..(((((...)))))..((((.((((((((((((((((((((((.((((((.(((((.(((.(((((.......))))).)))))))))))))))))))))))..)).))))))))))))))).(((.(((((((((((.(((((......(((((((((.((.(((......))))).)))))))))))))).))))).))))))))))))))))).))))))))))).))))))))))..)))))).)))))))).)))).))))........)))))).
+Folding free energy: -322.9 kcal/mol
+CAI: 0.896
+Total runtime: 16.684 s
+===================================================================================================================
+Protein ID: Q9SLV1
+Protein length: 225
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGCCCAUCACCUCCAGCUCUGAGACCUUCGCCAGCUUCUUCAACGACUGGCUGUGCCGGCACAGGCAGUUCGUGCAGCAGCUGGCCCACCUUGCCGACGAGACCACCAUCGUGACUCCUAUCGAGGAGGAGUCGCUGGUCAGCAAUUUUCUGAGCCAUUAUCUCCAGUACUACGAGGAGAAGUCCGUGGCCAUGAGCGUGGCCGGGGACGACAUCUACGACUUCUUCAGCCCUCCAUGGCUGUCCUCCUACGAGAAGCUGAUCCUGUGGAUCGGCGGGUUCAAGCCCGGCAUGGUCUUCAAGCUGAUCACUACCAGCGUGAACGAUCUGACCAGCCAUCAGAUCGAUCAGCUGGAGUCGAUCAGGUUGGAGACCAAGCGGCGGGAGCGGGACCUGAUGCGGAGGUUCGCCCUGCUCCAGCAGAGCGUGGGCGAUCCUCUGCUCAUGGUCCCCUUCCGCCGCAUCGGGGUGCUCCGCCUGGGCGAGGGGGAGCAGCCCGAGAUGGAGGACGCCAUGGAGGUGCUGAAGGUGGAGAUGAUCAAGGCUAUGAAGAAUGCUGACCAGCUGCGGUGCGUGACCGUCGGCAAGGUGGUGGAGGUGCUGAACCCCCGGCAGUCCAUCAAGCUGCUGAGGGCUGCCGGGGAGUUCUACCUCCGGCUCAGAGACCUGGGGGUG
+........((((((((((((((((.((...(((((((.((...(((((((.(((((....))))).)))).)))..)).)))))))((((((((((((((.(..((((((((((((((((.......)))))))(((((((((((.(((((..((((((((((((((......(((((.(..((((.(((((((....))))))).))))..).))).))...((((((((((((((((((.(((((((........((((((((...))))))))((((....))))....((((((((((.(((((((((.(((((.(((.((((((((.......)))))))).))))))))))).)))))).)))))))))).((((((((((.(((((((((.(((((((.(((((((((((.....))))).)))))).)))))))))).)))))))))))))))).(((((.((((((.(((.....))).)))))).)))))...))))))))))))))))).))))))))))))))))))...))))..))))).))))))))))).)))))).))).))))))))))))))).(((((((..((((((((((((((((.(((......))))))))))))))).))))))))))))))))))))..)))))))))
+--- Score Breakdown ---
+Total Score: 38392.776
+  - MFE Score: 42390.000
+  - CAI Score (weighted): -3997.224
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -423.900 kcal/mol
+CAI: 0.915
+Total runtime: 255.187 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGCCAAUCACCUCCAGCUCUGAGACCUUCGCCAGCUUCUUCAACGACUGGCUGUGCCGGCACAGGCAGUUCGUGCAGCAGCUGGCCCACCUUGCCGACGAGACCACCAUCGUGACUCCUAUCGAGGAGGAGUCGCUGGUCAGCAAUUUUCUGAGCCAUUAUCUCCAGUACUACGAGGAGAAGUCCGUGGCCAUGAGCGUGGCCGGGGACGACAUCUACGACUUCUUCAGCCCUCCAUGGCUGUCCUCCUACGAGAAGCUGAUCCUGUGGAUCGGCGGGUUCAAGCCCGGCAUGGUCUUCAAGCUGAUCACUACCAGCGUGAACGAUCUGACCAGCCAUCAGAUCGAUCAGCUGGAGUCGAUCAGGUUGGAGACCAAGCGGCGGGAGCGGGACCUGAUGCGGAGGUUCGCCCUGCUCCAGCAGAGCGUGGGCGAUCCUCUGCUCAUGGUCCCCUUCCGCCGCAUCGGGGUGCUCCGCCUGGGCGAGGGGGAGCAGCCCGAGAUGGAGGACGCCAUGGAGGUGCUGAAGGUGGAGAUGAUCAAGGCUAUGAAGAAUGCUGACCAGCUGCGGUGCGUGACCGUCGGCAAGGUGGUGGAGGUGCUGAACCCCCGGCAGUCCAUCAAGCUGCUGAGGGCUGCCGGGGAGUUCUACCUCCGGCUCAGAGACCUGGGGGUG
+((....))((((((((((((((((.((...(((((((.((...(((((((.(((((....))))).)))).)))..)).)))))))((((((((((((((.(..((((((((((((((((.......)))))))(((((((((((.(((((..((((((((((((((......(((((.(..((((.(((((((....))))))).))))..).))).))...((((((((((((((((((.(((((((........((((((((...))))))))((((....))))....(((((((((..(((((((((.(((((.(((.((((((((.......)))))))).))))))))))).))))))..))))))))).((((((((((.(((((((((.(((((((.(((((((((((.....))))).)))))).)))))))))).)))))))))))))))).(((((.((((((.(((.....))).)))))).)))))...))))))))))))))))).))))))))))))))))))...))))..))))).))))))))))).)))))).))).))))))))))))))).(((((((..((((((((((((((((.(((......))))))))))))))).))))))))))))))))))))..)))))))))
+Folding free energy: -423.3 kcal/mol
+CAI: 0.914
+Total runtime: 50.877 s
+===================================================================================================================
+Protein ID: Q9CQU5
+Protein length: 252
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGGCCGACGCCGAGAAGAAUGCCGUGGCGGAGAAGAACAACGCCGUGGCAACCAAGGAGGUGUUGGCCGAGGCUGCCGCCAUCCUGGAGCCAGUGGGUCUGCAGGAGGAGGCCGAGCUGCCAGCUAAGAUUAUGGAGGAGUUUAUGCGGAACUCCCGCAAGAAGGAUAAGCUCCUCUGUAGUCAGCUGCAGGUGGUCAACUUCCUGCAGACCUUCCUGGCCCAGGAGGACACCGAGCAGUCUCCUGACGCGCUGGCGUCCGAGGACGCCAGCCGUCAGAAGGCCACCGAGACCAAGGAGCAGUGGAAGGACAUGAAGGCCACUUACAUGGAUCACGUGGACGUGAUCAAGUGCGCCUUGUCCGAGGCACUGCCCCAGGUCAAGGAGGCCCAUCGGAAGUACACCGAGCUGCAGAAGGCAUUCGAGCAGCUGGAGGCUAAGAAGAGGGUGCUGGAGGAGAAGCUGCAGCUGGCCCAGAAGCAGUGGGUCCUGCAGCAGAAGCGUCUCCAGAACCUGACCAAGAUCUCCGCCGAGGUGAAGCGGCGGAGAAAGAGAGCCCUCGAGAAGCUCGACGGCUCUCAUCAGGAGCUGGAGACGCUGAAGCAGCAGGCCGGCCAGGAGCAGGAGAAGCUCCAGCGCAAUCAGUCUUACCUCCAGCUGCUCUGCUCUCUGCAGAACAAGCUGGUGAUUUCCGAGGGGAAGGCUGAGGACAAGGAUGUCAAGGGCCGGGCCCUGACAGCCAAGUCCAAGUCCCCC
+..((((((((((........((((((((((...........))))))))))........))))))))))((((((((((((.((((((.(((((.((((((((((((((.((((.(.(((.(((((..((((((((((((((((((((((.....))))).......))))))))))))))))))))))))).)))))..))))))))))))))..)))))))))))))....)).))))))))((((((.(((((((((....)))))))))))))))..((((.((..((((..((.((((((...(((((...(((((((((.....(((((((....)))))))))))).)))))))))....))))))))..))))..)).))))..((((((((.((((.(((((((((.((((...(((((((((((((.(((((.((..(((((((((......((((..((((((...........((.(((((.((...(((((((((((..(((((......(((((((((........)))))))))..(((((((.(((((...))))).))))))).)))))..)))))))))))...)).)))))))))))))..))))......)))))))))..))..)))))))))))))))))))))).))))))......)))))))))))))))((((..((((..((((..((.(((((.((((...))))))))).))..)))).))))))))
+--- Score Breakdown ---
+Total Score: 38694.054
+  - MFE Score: 44370.000
+  - CAI Score (weighted): -5675.946
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -443.700 kcal/mol
+CAI: 0.893
+Total runtime: 229.380 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGGCCGAUGCCGAGAAGAACGCCGUGGCGGAGAAGAACAACGCCGUGGCCACCAAGGAGGUGCUGGCGGAGGCUGCCGCCAUCCUGGAGCCAGUGGGUCUGCAGGAGGAGGCCGAGCUGCCAGCUAAGAUUAUGGAGGAGUUUAUGCGGAACUCCCGCAAGAAGGAUAAGCUCCUCUGUAGUCAGCUGCAGGUGGUCAACUUCCUGCAGACCUUCCUGGCCCAGGAGGACACCGAGCAGUCUCCCGACGCCCUCGCCUCCGAGGAUGCUUCUCGGCAGAAGGCCACGGAGACUAAGGAGCAGUGGAAGGACAUGAAGGCCACUUACAUGGAUCACGUGGACGUGAUCAAGUGCGCCCUGUCAGAGGCCCUGCCCCAGGUCAAGGAGGCCCAUCGGAAGUACACCGAGCUGCAGAAGGCAUUCGAGCAGCUGGAGGCUAAGAAGAGGGUGCUGGAGGAGAAGCUGCAGCUGGCCCAGAAGCAGUGGGUCCUGCAGCAGAAGCGUCUCCAGAACCUGACCAAGAUCUCCGCCGAGGUGAAGCGGCGGAGAAAGAGAGCCCUCGAGAAGCUCGACGGCUCUCAUCAGGAGCUGGAGACGCUGAAGCAGCAGGCCGGCCAGGAGCAGGAGAAGCUCCAGCGCAAUCAGUCUUACCUCCAGCUGCUCUGCUCUCUGCAGAACAAGCUGGUGAUUUCCGAGGGCAAGGCCGAGGACAAGGACGUGAAGGGCAGGGCCCUGACAGCCAAGUCCAAGUCUCCG
+.(((((..((((((((((...(((((((((...........)))))))))((((..(((((((..((((((((((((((((.((((((.(((((.((((((((((((((.((((.(.((((.((((..((((((((((((((((((((((.....))))).......))))))))))))))))))))))))).)))))..))))))))))))))..)))))))))))))....)).)))))))))....)))..)))))))..)).))))))))))))...)))))((((((((..(((....(((...........(((((.((.....(((((((....))))))))).)).)))(((((((.((((((((((((.(((..((..((((.((((((((.((((.(((((((((.((((...(((((((((((((.(((((.((..(((((((((......((((..((((((...........((.(((((.((...(((((((((((..(((((......(((((((((........)))))))))..(((((((.(((((...))))).))))))).)))))..)))))))))))...)).)))))))))))))..))))......)))))))))..))..)))))))))))))))))))))).))))))......)))))))))))))))))))....)).........))).))..))))))))))))))))))))..))).))))))))
+Folding free energy: -436.3 kcal/mol
+CAI: 0.903
+Total runtime: 55.61 s
+===================================================================================================================
+Protein ID: Q8VIL3
+Protein length: 266
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGGCCGACGCCGAGAAGAACGCCGUGGCGGAGAAGAACGCCGUGGCCGAGGAGAACGCCGUGGCCGAGGAGAAUGCUGUGGCCGACAAGAACGCCACCAAGGAGGUCUUGGCCGAGGCAGCCAGCGUCCUGGAGCCCGUGGGGCUCCCCGAGGAGGCUGAGCUGCCUGCCAAGAUCAUGGAGGAGUUCAUGCGGAACAGCAGAAAGAAGGACAAGCUGCUCUGUAGCCAGCUGCAGGUGGUGAACUUCCUGCAGACCUUUCUGGCCCAGGAGGACAACACUGACCAGAACCCCGACGCUCUGGCCAGUGAGGACACCUCCCGCCAGAAGGCCACCGAGACCAAGGAGCAGUGGAAGGAGCUCAAGGCCACUUACAUGGAUCACGUGGACGUGAUCAAGUGCGCCUUGAGCGAGGCCCUGCCCCAGGUCAAGGAGGCCCACAGGAAGUACACCGAGCUGCAGAAGGCUUUUGAGCAGCUUGAGGCCAAGAAGCGGGUUCUGGAGGAGAAGCUGCAGCUGGCCCAGAAGCAGUGGGUGCUGCAGCAGAAGCGCCUCCAGAACCUGACUAAGAUCUCCGCCGAGGUGAAGCGGCGUCGGAAGAGGGCUCUGGAGAAGCUGGACGGGUCCCAUCAGGAGCUGGAGACUCUGAAACAGCAGGCUGGGCAGGAGCAGGAGAAGCUGCAGAGGAACCAGUCCUACCUGCAGCUUCUCUGCUCCCUGCAGAACAAGCUUGUGAUUUCAGAGUCUAAGGCUGACGACAAGGACGUGAAGGGACCCGCCCUGCCUCCCAAGAGCCCU
+.(..(((((((((.......((((.(((((((((....(.((.((((((.((......)).)))))).)).)..((((((..(((.((.((((.((.(((....(((((((((..(((((((((((.(((((((((((...)))))))...)))).)))).)))))))))))))))).))).)).)))).))))).)))))).......((.((((((((((...((((..((((((.(((((.((((((((.......(((((((...(((((.(..(((((.(((((.(......).))))).)))))..)...))))).)))))))((((.((..((((..((.((((.((.....((((((((((((((.....(((((((....)))))))))))).)))))))))....))))))))..))))..)).))))..)))))))).)))).).))))))..))))...))))))))))...))....(((((((((((((((.(..((((((((..(((((.......))))))))))))).....).))))))))))))).))....))))))))).))))...)))))))))..)((((((((((.((.((.((.((((((((.(((.(((((..(((((((((((..(((((((..(((((((((.((((((((((((((((.....))))..)))))))))))))))))).)))......)))))))..)))))))))))..))))...........).))).)))))))).)).)).))))).)))))))
+--- Score Breakdown ---
+Total Score: 40133.360
+  - MFE Score: 45220.000
+  - CAI Score (weighted): -5086.640
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -452.200 kcal/mol
+CAI: 0.909
+Total runtime: 248.318 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGGCCGACGCGGAGAAGAAUGCCGUGGCCGAGAAGAACGCGGUGGCAGAGGAGAAUGCCGUGGCGGAGGAGAACGCCGUGGCAGACAAGAAUGCCACCAAGGAGGUCUUGGCCGAGGCAGCCUCCGUGUUGGAGCCCGUGGGGCUCCCCGAGGAGGCAGAGCUGCCCGCUAAGAUCAUGGAGGAGUUCAUGCGGAACUCCCGCAAGAAGGACAAGCUUCUGUGUAGCCAGCUCCAGGUGGUGAACUUCCUGCAGACCUUCCUGGCUCAGGAGGACAAUACCGACCAGAAUCCAGACGCCCUCGCCUCCGAGGACACAUCUCGGCAGAAGGCCACCGAGACCAAGGAGCAGUGGAAGGAGCUCAAGGCCACUUACAUGGAUCACGUGGACGUGAUCAAGUGCGCCUUGAGCGAGGCCCUGCCCCAGGUCAAGGAGGCCCAUCGGAAGUACACCGAGCUUCAGAAGGCCUUCGAGCAGCUGGAGGCCAAGAAGCGGGUUCUGGAGGAGAAGCUGCAGCUGGCCCAGAAGCAGUGGGUGCUGCAGCAGAAGCGCCUCCAGAACCUGACCAAGAUUUCUGCCGAGGUGAAGCGUCGGAGGAAGAGGGCUCUGGAGAAGCUGGACGGUAGCCACCAGGAGCUGGAGACACUGAAGCAGCAGGCUGGGCAGGAGCAGGAGAAGCUCCAGAGAAAUCAGAGCUAUCUCCAGCUCCUGUGCAGCCUGCAGAACAAGCUUGUCAUCAGCGAGAGCAAGGCUGAUGACAAGGAUGUGAAGGGGCCAGCUCUGCCUCCUAAGAGCCCC
+(((((((((((((((.....((((.(((((((((....(..(((((((........((((((((((........))))))))))........)))))))..)....))))))))).))))..)))))))))))...))))(((((((....(((((((((((((((((.((....((.((..(((((((.....)))))))..)).)).......(((((.((((..((((((((.((((((...(((((((.((.((.....)))))))))))....(((((.((((..((((((.((((((.(((((((.(...(((((((((((((((((.((..((((..((.((((.((.....(((((((((((.((.....(((((((....))))))))).)).)))))))))....))))))))..))))..)).))))..((((.......))))(((((....((((((((......))))))))..)))))((((((((((((.(..((((((((..(((((.......))))))))))))).....).)))))))))))).........)))))))))))))...).)))))))..))))))))))))....)))).))))))))))).))))))))..)))).))))).((((((((.((((((((.((((((((((..((....)).))))).))))).)))))))).))))))))...(((..((((((((((((.........))))))))))))..)))..))))).))))))))))))))..)))))))
+Folding free energy: -464.8 kcal/mol
+CAI: 0.886
+Total runtime: 64.844 s
+===================================================================================================================
+Protein ID: Q76N59
+Protein length: 268
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGGAGAUCGAUAGUAAGAUUACCAAUUUUGAGGACGCUGGAACUAUCAAUCUGAACCUCCACAACUUUGUUAGCGAGAAGUUCGCUAACAAGCCCAAGGUGCUCAAUGUCGCCAGCCUCGCCAGCAACAGCGUGGACGAGGCUGGCGACAGUGAGCAGAAGGUGUCCUUCCGGAUCAACCAGACCGGAAACAUCUUCUACAGCACAACAACACCGGAGCUGACGUUGGAGAGCAAGAAGCUCUUCAACUCAGUGACGGUGUUGUUUGCUGCCAUGACCAAGGCUCUGGGUGAGAAGGGCCUGAACUUGUUCAACUACGAGGCCGUGGCCUCUCUCAUCCAGAAGUCUGGUUAUUUUGUGGAGGUUCAGAAGUUCCAGAAGAACCUGUCCAUCAAGAGUGGUAGUCUGUCUAUCGAUACCCAGAUCAUUCAGCAGCUGAUCCCCGGGCUGACGUCUGGAGCUUCUCUGGACAUCGCGAAGGGUGUGCUGGGGGCACUGAACGGGGAGUUCAGUGCUAGCUCUUCUGAUGAGAAGGUCAAGAUCGCUCACCUGCUGUUCAUCUGCGAGGAGCUGUUCGGUGCCCCCAGCGUCACUGUGCGUCUCUUUUACGCCACAAAGGAGACGCACAAGACGCUGACCAGCAGCCCUUGCCACAAGAGCAGCAGCGUGAGCUUUGAGCUGAAUCAGGAGGCUAGCACCUUCCUGUUCGUGUCCCCAGACACCAUCGCGGAGUUCAGCCAGAAGUUCGAGACUCAGCCCGAGGAGUACAAGAACCUGAUCGAGAAGCUGAAGGGCUACCUGCCC
+.(((..((((((((..(((((((((.(((((((((((((((((((.....(((((((((((((((..((((((((((.....))))))))))(((...)))(((((.(((((((((((((((((((....)).))).)))))))))))))).)))))(((((((((..((((((.((.....))))))))))))))))).(((((.((((((((((..(((((.((((((((((.....)))))))))))))))..)))))))))))))))..(((((((.((((((((((((((.(((((((..(((((......)))))..)).))))).))))))))))).)))))))))).))))))))))))))))))))))).......))))).)))))).)))))))))..))))))))..))).....((((((..((((((((((((((((.((((.((((((((((((((.((((((..(((((.((((((((((.((((((((((....((((((((.((((((((....((.(((((...(((((((((((((((....((((((.((((((.(((.....(((((((..((((((((((((((.......)))))))))))))).)))))))))))))))))))))).....))))))))).))))))))))).))..))))))))))))))))))))))))))))))))))))))))).)))))).))))))..)))))))).)))))))))))).)).............)))).))..))))))((((.....))))
+--- Score Breakdown ---
+Total Score: 38852.649
+  - MFE Score: 47400.000
+  - CAI Score (weighted): -8547.351
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -474.000 kcal/mol
+CAI: 0.853
+Total runtime: 309.822 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGGAGAUCGACAGCAAGAUCACCAACUUCGAGGACGCUGGAACUAUCAAUCUGAACCUCCACAACUUUGUUAGCGAGAAGUUCGCUAACAAGCCCAAGGUGCUCAAUGUCGCCAGCCUCGCCAGCAACAGCGUGGACGAGGCUGGCGACAGUGAGCAGAAGGUGUCCUUCCGGAUCAACCAGACCGGAAACAUCUUCUACAGCACAACAACACCGGAGCUGACGUUGGAGAGCAAGAAGCUCUUCAACUCAGUGACGGUGUUGUUUGCUGCCAUGACCAAGGCUCUGGGUGAGAAGGGCCUGAACUUGUUCAACUACGAGGCCGUGGCCUCUCUCAUCCAGAAGUCUGGUUAUUUUGUGGAGGUUCAGAAGUUCCAGAAGAACCUGUCCAUCAAGUCGGGAUCUCUGUCGAUCGACACGCAGAUAAUCCAGCAGCUGAUCCCCGGGCUGACGUCUGGAGCUUCUCUGGACAUCGCGAAGGGUGUGCUGGGGGCACUGAACGGGGAGUUCAGUGCUAGCUCUUCUGAUGAGAAGGUCAAGAUCGCUCACCUGCUGUUCAUCUGCGAGGAGCUGUUCGGUGCCCCCAGCGUCACUGUGCGUCUCUUUUACGCCACAAAGGAGACGCACAAGACGCUGACCAGCAGCCCUUGCCACAAGAGCAGCAGCGUGAGCUUUGAGCUGAAUCAGGAGGCUAGCACCUUCCUGUUCGUGUCCCCAGACACCAUCGCGGAGUUCAGCCAGAAGUUCGAGACUCAGCCCGAGGAGUACAAGAACCUGAUCGAGAAGCUGAAGGGUUAUCUGCCC
+.((..(((((((((..(((((.((.((((.(((((((((((((((.....(((((((((((((((..((((((((((.....))))))))))(((...)))(((((.((((((((((((((((((......).))).)))))))))))))).)))))(((((((((..((((((.((.....))))))))))))))))).(((((.((((((((((..(((((.((((((((((.....)))))))))))))))..)))))))))))))))..(((((((.((((((((((((((.(((((((..(((((......)))))..)).))))).))))))))))).)))))))))).))))))))))))))))))))))).......))))).)))))).))))))))))))))))..)).(((((((((((..(((((((((((((((((((.((((.((((((((((((((.((((((..(((((.((((((((((.((((((((((....((((((((.((((((((....((.(((((...(((((((((((((((....((((((.((((((.(((.....(((((((..((((((((((((((.......)))))))))))))).)))))))))))))))))))))).....))))))))).))))))))))).))..))))))))))))))))))))))))))))))))))))))))).)))))).))))))..)))))))).)))))))))))).)).............))))....)))))..)))))))))))..
+Folding free energy: -474.5 kcal/mol
+CAI: 0.843
+Total runtime: 77.25 s
+===================================================================================================================
+Protein ID: O95229
+Protein length: 277
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGGAGGCUGCAGAGACCGAGGCCGAGGCUGCCGCCCUGGAGGUCCUGGCCGAGGUGGCCGGUAUUCUGGAGCCCGUCGGCCUCCAGGAGGAGGCCGAGCUGCCCGCCAAGAUCCUCGUCGAGUUCGUGGUGGAUAGCCAGAAGAAGGACAAGCUCCUCUGCUCCCAGCUGCAGGUGGCCGACUUCCUGCAGAAUAUCCUCGCCCAGGAGGACACAGCCAAGGGGCUGGAUCCCCUGGCCAGCGAGGAUACCAGCAGGCAGAAGGCCAUCGCAGCUAAGGAGCAGUGGAAGGAGCUGAAGGCUACCUACCGCGAGCACGUCGAGGCCAUCAAGAUCGGGCUGACCAAGGCCCUGACCCAGAUGGAGGAGGCCCAGCGCAAGCGGACCCAGCUGCGCGAGGCCUUCGAGCAGCUCCAGGCCAAGAAGCAGAUGGCCAUGGAGAAGCGGCGGGCAGUGCAGAACCAGUGGCAGCUGCAGCAGGAGAAGCACCUGCAGCACCUGGCAGAGGUGUCUGCUGAGGUUCGCGAGCGGAAGACCGGGACCCAGCAGGAGCUGGACCGGGUCUUCCAGAAGCUCGGGAACCUCAAGCAGCAGGCCGAGCAGGAGCGGGACAAGCUGCAGAGGUACCAGACCUUCCUGCAGCUCCUGUACACCCUGCAGGGCAAGCUGCUGUUUCCUGAGGCCGAGGCUGAGGCUGAGAAUCUGCCUGAUGACAAGCCUCAGCAGCCCACUCGGCCUCAGGAGCAGAGUACCGGCGACACCAUGGGCCGGGACCCCGGGGUGAGCUUCAAGGCCGUCGGCCUGCAGCCUGCCGGGGACGUGAACCUCCCC
+..(((((((((((.(.((((((((((((((..((((((((.((((((((((.(((((((((((((((((.......(((((((((....)))))))))((((((((((.....(((((.((.(((((((((((.(((((............((((((((((((((.((((((.(((((((..((.(((((....((((((((((((((.(((..(((((....)))))..))))))))...)))))))))...))))).))..)))))))))))))..)))))))....)))))))...))))).))))))))))).)).)))))(((((..(.(((((((......))))).)).)..))))).(((((((..((((.(((.......)))))))..)))))))..((..((((((((((.........))))).)))))..))))))))))))((((((((..((.(((.(((.(((((.......))))).))).))).))..))).)))))((((((((.(((((((((((((.((..(((((....))))).)).))))))))....))))).))))))))((((((..(((..(((((.((((((...(((((((((((.....))))..)))))))))))))....)))))..)))..))))))..(((((((((((((((((((((((....(((.....)))....)))))))))......))))))))))))))))))))))))))..)))).).))))))))))))))))))))))))..)))).)))))))))))))).))(((((........)))))
+--- Score Breakdown ---
+Total Score: 47056.049
+  - MFE Score: 51910.000
+  - CAI Score (weighted): -4853.951
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -519.100 kcal/mol
+CAI: 0.916
+Total runtime: 272.679 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGGAGGCCGCCGAGACUGAGGCGGAGGCCGCGGCCCUGGAGGUGCUGGCUGAGGUGGCUGGCAUCCUGGAGCCCGUGGGGCUCCAGGAGGAGGCUGAGCUGCCCGCCAAGAUCCUCGUCGAGUUCGUGGUGGAUAGCCAGAAGAAGGACAAGCUCCUCUGCUCCCAGCUGCAGGUGGCCGACUUCCUGCAGAAUAUCCUCGCCCAGGAGGACACAGCCAAGGGGCUGGAUCCCCUGGCCAGCGAGGAUACCAGCAGGCAGAAGGCCAUCGCAGCUAAGGAGCAGUGGAAGGAGCUGAAGGCUACCUACCGCGAGCACGUCGAGGCCAUCAAGAUCGGGCUGACCAAGGCCCUGACCCAGAUGGAGGAGGCCCAGCGCAAGCGGACCCAGCUGCGCGAGGCCUUCGAGCAGCUCCAGGCCAAGAAGCAGAUGGCCAUGGAGAAGCGGCGGGCAGUUCAGAAUCAGUGGCAGCUGCAGCAGGAGAAGCACCUCCAGCACCUGGCCGAGGUCUCCGCCGAGGUUCGCGAGCGGAAGACCGGGACCCAGCAGGAGCUGGACCGGGUCUUCCAGAAGCUCGGGAACCUCAAGCAGCAGGCCGAGCAGGAGCGGGACAAGCUGCAGAGGUACCAGACCUUCCUGCAGCUCCUGUACACCCUGCAGGGCAAGCUGCUGUUUCCUGAGGCCGAGGCUGAGGCUGAGAAUCUGCCUGAUGACAAGCCUCAGCAGCCCACUCGGCCUCAGGAGCAGUCUACCGGCGACACCAUGGGCAGGGACCCCGGCGUGAGCUUCAAGGCCGUGGGCCUGCAGCCCGCCGGGGACGUGAACCUGCCC
+((((..(.(((((((((((.((((((((((.((((((((((((((((..(((..(((((((.(((((((((((((...))))))))))).((..((((((((((((((.....(((((.((.(((((((((((.(((((............((((((((((((((.((((((.(((((((..((.(((((....((((((((((((((.(((..(((((....)))))..))))))))...)))))))))...))))).))..)))))))))))))..)))))))....)))))))...))))).))))))))))).)).)))))(((((..(.(((((((......))))).)).)..))))).(((((((..((((.(((.......)))))))..)))))))..((..((((((((((.........))))).)))))..))))))))))))))))..))..)).)))))))..)))....))))))))))).....))))).))))))))))(((((((.(((((((((((((.((..((((......)))).)).))))))))....))))).))))))).((((((..(((..(((((.((((((...(((((((((((.....))))..)))))))))))))....)))))..)))..))))))..(((((((((((((((((((((((....(((.....)))....)))))))))......))))))))))))))))))))..))))).).))))(((((((..((((((((.(.(((...(((((...)))))..)))))))))))).......)))))))
+Folding free energy: -518.6 kcal/mol
+CAI: 0.916
+Total runtime: 76.126 s
+===================================================================================================================
+Protein ID: Q2TBH8
+Protein length: 286
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGGGUGCCGCUGAGAGCGAGGUCGAGACUGCUGCCCGGGAGGUGCUGGCAAAGGUGGCCGACAUCCUGGAGCCCGUGGGGUUCCAGGAGGAGGCCGAGCUGCCAGCACAGAUCCUGGCCGAGUUCGUGAUGGACUCUCGGAAGAAGGAUAAGCUGCUGUGUUCCCAGCUCCAGGUGGUGGAUUUCCUCCAGAACUUCCUGGUGCAGGAGGGCACAGCUCAGGACCAGAAUCCUCUGGCCUCCGAGGACACUUCUAGGCAGAAGGCCUUGGAGGCCAAGGAGCAGUGGAAGGAGCUGAAGGCCACCUACCAGGAGCACGUGGAGGUGAUCACCAACAGCUUGACUGAGGCUCUUCCAAAGGUGGAGGAGGCUCAGAUCAAGCAGGCCCAGCUGCAGGAGGCUCUGAAGCAGCUCCAGGCCAAGAAGCAGAUGGCCAUGGAGAAGCUUCGGAUCGCCCAGAAGCAGUGGCAGCUGGAGCAGGAGAAGCACCUGCAGAACCUGGCUGAGGCCUCCAGUGAGGUGCGGGAGCGCCAGACUGGGGCCCAGCAGGAGCUGCAGAGGCUGUACCAGGAGCUGGGAACACUGAAGCAGCAGGCCGGGCAGGAGAAGGACAAGCUCCAGCGGCACCAGACCUUCCUGCAGCUGCUGUACACCCUGCAGGGCAAGCAGCUGUUCAACGAGGCUGAGGCUGAGAUCCCUCAGGAGCUUGACCUGCCCAAGGACAAGCUCCAGCAGGUGACUCAGCCUCAGGAGCAGAAUACCCAGGACACCAUGGGUAGGGAGGCCGACAACCCCCAGCCCGUGGGGGAUGCCGGCCUCCCCUGGUUGCCCGGCAGGCAGCAGCACAAGGAGGAGUCU
+...((((((((((.((((...(((....((.((((((((...(((((((((....(((((..(.(((((((((((...))))))))))))..)))))...)))))))))..(((((..(((((.((......))..)))))....)))))..((((((((((((((((((((.(((((((.(((.((((((....((((((((..(((..(((.((((((....(((...((((.((((((((((((.(.(((((....))))))))))))))))))))))....)))...))))))...))).)))))))))))....)))))).)))))))....(((((((((((.((((((((....)))))))).))))).))))))..((((((((((..(.(((((((((((..((((((((((.........))))).)))))..))))))))..))))..........)))))))).))......(((..((((((..((((.(((.((((.(((((..(((((....)))))..))))))))))))))))..))))))..)))..))).))))))))))))))...))))))...)))))))).))...)))..))))))))))))))((((((((((...(((((((.....(((((.((((((.(((((((((.......(((((((((((.((((((.((((((((.(((.....))).)))))))).).))).)))))))))))))))))))..((((((((...)).))))))(((((((((.((.((((((.....)))))).)).)))))))))))).)))))).))))))))))))...)))))).))))
+--- Score Breakdown ---
+Total Score: 46286.886
+  - MFE Score: 51530.000
+  - CAI Score (weighted): -5243.114
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -515.300 kcal/mol
+CAI: 0.912
+Total runtime: 267.772 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGGGCGCUGCAGAGUCCGAGGUGGAGACCGCCGCCAGGGAGGUGCUGGCAAAGGUGGCCGACAUCCUGGAGCCCGUGGGGUUCCAGGAGGAGGCCGAGCUGCCAGCACAGAUCCUGGCCGAGUUCGUGAUGGACUCCAGGAAGAAGGACAAGCUCCUGUGUAGCCAGCUCCAGGUGGUGGACUUCCUGCAGAACUUCCUGGUGCAGGAGGGCACCGCCCAGGACCAGAAUCCUCUGGCCUCCGAGGACACUUCUAGGCAGAAGGCCUUGGAGGCCAAGGAGCAGUGGAAGGAGCUGAAGGCUACAUACCAGGAGCACGUGGAGGUCAUCACGAACUCCUUGACUGAGGCUCUUCCAAAGGUGGAGGAGGCUCAGAUCAAGCAGGCCCAGCUGCAGGAGGCCCUGAAGCAGCUGCAGGCCAAGAAGCAGAUGGCCAUGGAGAAGCUGCGCAUUGCUCAGAAGCAGUGGCAGCUGGAGCAGGAGAAGCAUCUGCAGAACCUGGCCGAGGCCUCUUCAGAGGUGCGCGAGCGCCAGACAGGCGCUCAGCAGGAGCUGCAGCGCCUGUACCAGGAGCUCGGCACCCUGAAGCAGCAGGCCGGCCAGGAGAAGGACAAGCUGCAGCGCCACCAGACCUUCCUGCAGCUGCUGUACACCCUGCAGGGCAAGCAGCUGUUCAACGAGGCUGAGGCUGAGAUCCCUCAGGAGCUUGACCUGCCCAAGGACAAGCUCCAGCAGGUGACUCAGCCUCAGGAGCAGAAUACCCAGGACACCAUGGGUAGGGAGGCCGACAACCCCCAGCCCGUGGGGGAUGCCGGCCUCCCCUGGUUGCCCGGCAGGCAGCAGCACAAGGAGGAGUCU
+...((((((((((.((((..(((((...)))))(((((((..(((((((((....(((((..(.((((((((((.....)))))))))))..)))))...)))))))))...))))))).((((((((((((..(((((.(...........((((((((((((((((((((.(((((((..(((((((((...........))))))))).))))))).....(((...((((.((((((((((((.(.(((((....))))))))))))))))))))))....)))..))))))...)))))))...))))))).).)))))..))))))))))))((((((((((.((((((((....)))))))).))))).)))))..((((((((((((((....)))...)))))))..)))).....(((((((.((.((....((((((.(((((((....)))))))))))))....)))).....)))))))....(((((((..(((((((((((.(((((.(((((.((..(((((((((((((....)))).)))))))))....)).))))))))))))))))....))))))))))))....))))...))))))))))...((((((((((...(((((((.....(((((.((((((.(((((((((.......(((((((((((.((((((.((((((((.(((.....))).)))))))).).))).)))))))))))))))))))..((((((((...)).))))))(((((((((.((.((((((.....)))))).)).)))))))))))).)))))).))))))))))))...)))))).))))
+Folding free energy: -508.5 kcal/mol
+CAI: 0.92
+Total runtime: 77.213 s
+===================================================================================================================
+Protein ID: Q9FX68
+Protein length: 302
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGUACAACAACAACCAGUACAGUUUCUCAGGGGAUGAGGACUCCGUGGUGCUGAGCCUGGGCCCCCCUGGUCAGCAGUACCCCAGCCACAACAAGCCGACCAGCACCAAGCCCAGCUCAGACCACGAGUUCAAUCAUCCCCUGACAAACCCCAACGGAGUGACCGUGGCCCUCCACAUUGGGCCCCCCAGCAGCGACAAGGAGACGCUGUCUGGGGGGAACAAUCAGGAGGGCCUGACCGCCCGGCAGGGUCAGUACUGGAUCCCUUCCCUCUCACAGAUCCUCGUGGGCCCCACCCAGUUCUCCUGCUCCGUCUGCAAUAAGACCUUCAAUAGGUUUAAUAACAUGCAGAUGCACAUGUGGGGACACGGGUCCCAGUACCGGAAGGGACCCGAGUCCCUGCGUGGCACGAAGUCCUCCUCCUCCAUCCUCCGCCUCCCCUGUUAUUGUUGCGCCGAGGGGUGCAAGAAUAACAUCGAUCAUCCUCGCAGCAAGCCCCUGAAGGACUUCCGCACUCUUCAGACCCACUACAAGCGGAAGCACGGCGCCAAGCCCUUCCGCUGUAGGAAGAAGUGCGAGAAGACCUUCGCUGUGCGGGGAGACUGGCGCACACACGAGAAGAACUGCGGGAAGCUGUGGUUCUGCGUGUGUGGGUCAGACUUCAAGCACAAGCGGUCCCUGAAGGACCACGUGAGGGCCUUCGGGGACGGCCAUGCCGCCCACACGGUGAGCGACCGUGUGGUCGGCAUCGGGGAUGCUGACGAGGAUGACGAGGAGGAGGAGGAGGAGGAGGAGGACGACGUGGAGGAGGAGGACGCCCACGAGGAGAAUGUGAGAGGGGAGAAGAACUACGGGAUCCGGUACGACCACUUCCGGCGGUACGGUCAGAUCUCCGAUGACAACUAC
+.(((((...........)))))((((.((((((((((((((((.((((((.(((((.((((((....((((((.((...................)).))))))......))))))))))))))))))))))..))))))))))).))))..((.((((((((((((((((((((..((((..(((((((((((((.(.....).))))).))))))))..))))..))))))))..((((.((((.((((((.((((((((((((((((((((((((..(((((((((((........((((((((.(((((((((((((.((((((.....)))))).))....)))))))((.(((((((((((.((((((((..........)))))))).)))))))))))))(((..(((((((((((((.((((((.(((((..(((((((.(((((((....))))))).)))))))(((.((((((((((((((..((((((((((.((((((((((((((.......(((((.(((((((...(((.....)))))))))))))))))))).))))).)))).)))))).(((((..((((.(((((.((((((((...((((((((((....)))))))))).)))))))).))))).))))..))))).((.(((((((((((.((.(....)))))))))))))).)).((((((.(((((((((.....))))))))).)))))).)))).))))).))))))))))))))))).)))))))))))))))))))..))))))).)))))))))))))))))))...))))))))))))..........)))))))))))))))).)).)))))))))))))))...))))).))........
+--- Score Breakdown ---
+Total Score: 48206.686
+  - MFE Score: 54370.000
+  - CAI Score (weighted): -6163.314
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -543.700 kcal/mol
+CAI: 0.903
+Total runtime: 330.885 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGUACAACAACAACCAGUACAGCUUCUCAGGGGAUGAGGACUCCGUGGUGCUGAGCCUGGGCCCCCCUGGUCAGCAGUACCCCAGCCACAACAAGCCGACCAGCACCAAGCCCAGCUCAGACCACGAGUUCAAUCAUCCCCUGACCAAUCCUAAUGGGGUGACGGUGGCCCUGCACAUUGGGCCACCGUCAUCCGAUAAGGAGACCCUGUCUGGCGGCAACAAUCAGGAGGGCCUGACCGCCAGACAGGGUCAGUACUGGAUCCCUUCCCUCUCACAGAUCCUCGUGGGCCCCACCCAGUUCUCCUGCUCCGUCUGCAAUAAGACCUUCAAUAGGUUUAAUAACAUGCAGAUGCACAUGUGGGGACACGGGUCCCAGUACCGGAAGGGACCCGAGUCCCUGCGUGGCACGAAGUCCUCCUCCUCCAUCCUCCGCCUCCCCUGUUAUUGUUGCGCCGAGGGGUGCAAGAAUAACAUCGAUCAUCCUCGCAGCAAGCCCCUGAAGGACUUCCGCACUCUUCAGACCCACUACAAGCGGAAGCACGGCGCCAAGCCCUUCCGCUGUAGGAAGAAGUGCGAGAAGACCUUCGCUGUGCGGGGAGACUGGCGCACACACGAGAAGAACUGCGGGAAGCUGUGGUUCUGCGUGUGUGGGUCAGACUUCAAGCACAAGCGGUCCCUGAAGGACCACGUGAGGGCCUUCGGGGACGGCCAUGCCGCCCACACGGUGAGCGACCGUGUGGUCGGCAUCGGGGAUGCUGACGAGGAUGACGAGGAGGAGGAGGAGGAGGAGGAGGACGACGUGGAGGAGGAGGACGCCCACGAGGAGAAUGUGAGAGGGGAGAAGAACUACGGGAUCCGGUACGAUCACUUUCGGAGAUACGGCCAGAUCUCCGAUGAUAACUAC
+.(((((...........))))).....((((((((((((((((.((((((.(((((.((((((....((((((.((...................)).))))))......))))))))))))))))))))))..)))))))))))....((((.((.(((((((((((((((........))))))))))))))).)).))))(((((((((((((((......(((((....)))))))))))))))))))).((((((((((((((((((((((((..(((((((((((........((((((((.(((((((((((((.((((((.....)))))).))....)))))))((.(((((((((((.((((((((..........)))))))).)))))))))))))(((..(((((((((((((.((((((.(((((..(((((((.(((((((....))))))).)))))))(((.((((((((((((((..((((((((((.((((((((((((((.......((((.((((((((...(((.....)))))))))))))))))))).))))).)))).)))))).(((((..((((.(((((.((((((((...(((((((((......))))))))).)))))))).))))).))))..))))).((.(((((((((((.((.(....)))))))))))))).)).((((((.(((((((((.....))))))))).)))))).)))).))))).))))))))))))))))).)))))))))))))))))))..))))))).)))))))))))))))))))...))))))))))))..........)))))))))))).((((...((((((((.(.....)))))))))))))......
+Folding free energy: -539.2 kcal/mol
+CAI: 0.902
+Total runtime: 92.614 s
+===================================================================================================================
+Protein ID: Q9SGD1
+Protein length: 337
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGAACUCCUAUGAGACUAAGGGGCUCUCUUUUGAGAGCCCCAGUUUCAUCGAGUGGCUGAAGCCACAGAGCUCCACUACCAGCAGUAAGUCUGUGCUCUACCGGGGGAAGACCCGGGAUGCCAUUUCCCGGUCUAACCACCACCAGAGCCAGAUGAACAUGCUGGAGCGGAGCCUGUUCCUGUAUCAGCCACAGGAGCCUCUGAACACCAGCAUUCAGUGUCUUCCUCUCCUGAACAAGCUGAUGGAGAACAACAGCCAGGCCUCCGACAUCAAGGAGGAGAACAAGGAUGAUGUCGUGACCCUCCAGAUCGGGUUCCCCAAGUACCACCGGGGGAGCUCCGAGGACGGGUCCGACAUCACCUUUGAUCACCAGAAGAAGCCCAUCAAGCGGGAGAUUAUCGAGGAUGGGGUGGUGAUGAUGAAGAAGCGGAGGAAGAUGAAGUUCGACGAGGAGAUCAUCGACUCCGACGUGGAGGUGUGCGGGAAGAGGUUCUGGAUCCCCUCUCCCGCACAGAUCCACGUCGGACCCAUGCAGUUCGCAUGUAGCAUCUGCAGCAAGACCUUCAAUAGGUACAACAACAUGCAGAUGCACAUGUGGGGGCAUGGGUCCGAGUUCAGGAAGGGCGCAGAUUCGCUGAAGGGCACCAUCCAGCCCGCAGCGAUUCUGCGCCUGCCCUGCUACUGCUGCGCCGAGGGGUGCAAGAACAACAUCAACCACCCCCGGAGCAAGCCCUUGAAGGACUUCCGCACGCUGCAGACCCACUACAAGCGGAAGCAUGGGUCCAAGCCAUUCUCCUGCGGCAAGUGCGGCAAGGCACUUGCCGUGAAGGGAGAUUGGCGGACCCAUGAGAAGAACUGCGGGAAGCUGUGGUACUGCACGUGCGGAAGUGACUUCAAGCACAAGCGGAGCCUGAAGGACCACAUCCGGUCCUUCGGCUCCGGUCACUCACCCCAUCCUAGUCUCCUGUUUGAUGGGUUUGAGGAGGACACUGAGUGCGUGACCACAGAG
+.....(((((((((((((..(((((((((....)))))))))))))))))...((((((((.((.((((.(((((.((.((((((((..(((((.(((((...((((..(((.((((((.......)))))))))..)).))...))))))))))..)).)))))))).)))))))))....)).))))))))))))).(((((..(((..((((((((((((((((((.((((.....((((.((.....)).))))))))(((((........))))).((.(((((.((((((((.((((((((...(((((((((((..((...))..))))))).))))))).))))))))))))).))))).))........(((((((((((((((((((((....((((((((((((((((..........(((((...(((((..(((.....)))..)))))..)))))(((((((..((((((((.(((((..........)))))))))))))..)))))))(((((((((((..(((((((((.(((((((((.....((((.....)))).........)))))))))))))))))).)))))))))))(((.((((..(((((((((.((((((..((((........)))).)))))).)))))))))..))))..)))(((((.(((.((((((...((......))...))))))))).))).)).(((((((.(((((((((((.((((((((((((.(..((((...(((((((((..((((.(((((((((((((((((......)))))))))))...)))))).))))))))))))).......))))..).)).)).))).))))))))))))))))..)))))))......(((((((.((((((((......)))))))))))))))))))).)))))))))))))))))))))))))))))))))))))))))))))))))))))....)))))
+--- Score Breakdown ---
+Total Score: 50687.110
+  - MFE Score: 57690.000
+  - CAI Score (weighted): -7002.890
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -576.900 kcal/mol
+CAI: 0.901
+Total runtime: 430.852 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGAACUCCUAUGAGACUAAGGGGCUCUCUUUUGAGAGCCCCAGUUUCAUCGAGUGGCUGAAGCCACAGAGCUCCACUACCAGCAGUAAGUCUGUGCUCUACCGGGGGAAGACCCGGGAUGCCAUUUCCCGGUCUAACCACCACCAGAGCCAGAUGAACAUGCUGGAGCGGAGCCUGUUCCUGUAUCAGCCACAGGAGCCUCUGAACACCAGCAUUCAGUGUCUUCCUCUCCUGAACAAGCUGAUGGAGAACAACAGCCAGGCCUCCGACAUCAAGGAGGAGAACAAGGAUGAUGUCGUGACCCUCCAGAUCGGGUUCCCCAAGUACCACCGGGGGAGCUCCGAGGACGGGUCCGACAUCACCUUUGAUCACCAGAAGAAGCCCAUCAAGCGGGAGAUUAUCGAGGAUGGGGUGGUGAUGAUGAAGAAGCGGAGGAAGAUGAAGUUCGACGAGGAGAUCAUCGACUCCGACGUGGAGGUGUGCGGGAAGAGGUUCUGGAUCCCCUCUCCCGCACAGAUCCACGUCGGACCCAUGCAGUUCGCAUGUAGCAUCUGCAGCAAGACCUUCAAUAGGUACAACAACAUGCAGAUGCACAUGUGGGGGCAUGGGUCCGAGUUCAGGAAGGGCGCAGAUUCGCUGAAGGGCACCAUCCAGCCCGCAGCGAUUCUGCGCCUGCCCUGCUACUGCUGCGCCGAGGGGUGCAAGAACAACAUCAACCACCCCCGGAGCAAGCCCUUGAAGGACUUCCGCACGCUGCAGACCCACUACAAGCGGAAGCAUGGGUCCAAGCCAUUCUCCUGCGGCAAGUGCGGCAAGGCACUUGCCGUGAAGGGAGAUUGGCGGACCCAUGAGAAGAACUGCGGGAAGCUGUGGUACUGCACGUGCGGAAGUGACUUCAAGCACAAGCGGAGCCUGAAGGACCACAUCCGGUCCUUCGGCUCCGGUCACUCACCCCAUCCUAGUCUCCUGUUUGAUGGGUUUGAGGAGGACACUGAGUGCGUGACCACAGAG
+.....(((((((((((((..(((((((((....)))))))))))))))))...((((((((.((.((((.(((((.((.((((((((..(((((.(((((...((((..(((.((((((.......)))))))))..)).))...))))))))))..)).)))))))).)))))))))....)).))))))))))))).(((((..(((..((((((((((((((((((.((((.....((((.((.....)).))))))))(((((........))))).((.(((((.((((((((.((((((((...(((((((((((..((...))..))))))).))))))).))))))))))))).))))).))........(((((((((((((((((((((....((((((((((((((((..........(((((...(((((..(((.....)))..)))))..)))))(((((((..(((((((((.((((..........)))))))))))))..)))))))(((((((((((..(((((((.(.(((((((((.....((((.....)))).........)))))))))).))))))).)))))))))))(((.((((..(((((((((.((((((..((((........)))).)))))).)))))))))..))))..)))(((((.(((.((((((...((......))...))))))))).))).)).(((((((.(((((((((((.((((((((((((.(..((((...(((((((((..((((.(((((((((((((((((......)))))))))))...)))))).))))))))))))).......))))..).)).)).))).))))))))))))))))..)))))))......(((((((.((((((((......)))))))))))))))))))).)))))))))))))))))))))))))))))))))))))))))))))))))))))....)))))
+Folding free energy: -572.5 kcal/mol
+CAI: 0.901
+Total runtime: 142.082 s
+===================================================================================================================
+Protein ID: Q8W031
+Protein length: 337
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGAGCAACCCCGCCUGCUCAAACCUGUUCAAUAACGGAUGCGAUCAUAAUAGCUUCAACUACUCCACCUCCCUGUCGUACAUCUACAACUCUCACGGGUCGUAUUACUACAGUAAUACGACCAACCCCAACUACAUCAACCACACCCACACCACUAGUACCAGCCCCAACUCGCCUCCCCUGCGGGAGGCCCUGCCGCUCCUGAGCCUGAGCCCCAUCAGGCAUCAGGAGCAGCAGGACCAGCACUACUUCAUGGACACUCACCAGAUCUCAUCCAGCAACUUCCUGGAUGACCCUCUGGUGACCGUGGACCUGCACCUGGGGCUGCCCAACUAUGGUGUGGGUGAGAGCAUCAGGAGCAACAUUGCUCCUGAUGCUACCACCGAUGAGCAGGACCAGGAUCACGACAGGGGGGUGGAGGUCACCGUGGAGAGUCAUCUCGACGACGACGAUGACCACCACGGUGACCUGCACAGGGGGCACCACUACUGGAUCCCCACGCCCAGUCAGAUCCUGAUUGGGCCCACCCAGUUCACGUGCCCCCUGUGCUUCAAGACCUUCAACAGAUACAACAACAUGCAGAUGCACAUGUGGGGGCAUGGGUCCCAGUACCGCAAGGGACCCGAGUCCCUGCGGGGGACCCAGCCCACCGGCAUGCUGCGUCUGCCAUGUUUCUGUUGCGCCCCCGGAUGCAAGAACAAUAUCGAUCACCCCAGGGCCAAGCCCCUGAAGGACUUCCGGACCCUUCAGACUCACUACAAGCGGAAGCACGGGAGCAAGCCAUUCGCUUGCCGCAUGUGUGGGAAGGCCUUCGCCGUGAAGGGCGACUGGCGGACCCACGAGAAGAAUUGCGGCAAGCUGUGGUAUUGCUCCUGUGGUUCCGACUUCAAGCACAAGAGGAGUCUGAAGGAUCACGUGAAGGCCUUCGGCAACGGGCAUGUGCCCUGCGGGAUCGAUAGCUUCGGGGGCGACCAUGAGGACUAUUAUGAUGCCGCAUCCGAUAUUGAGCAG
+.((((((........))))))...((((((((((.(((((((((((((((((((((((.....((((((((((((((((..((((....(((((((((((((((((((....)))))))))))....................(((((((((((.((((..((((((((....(((((((....)))))))(((((.((((((((((((((......)))))).)))))))).)))))....(((....(((((((....((((((((..((((((((.......))))))))...)))))))))))))))..)))...))))))))....)))))))))))))))..(((((((((((((....))))))))))))).....)).)))).)).....)))).))))))))))))))))(((((((((((.(.(((((((((....))).))))))).))))))))))).(((((((((((((....(((((........((((((((((...))))))))))....)))))....)))))))))))))...........(((((((......(((((((((((((((((((((((((.((((((((....((((.((((((....)))))))))))))))))))))).))).)))).))))))))).))))))))))))((((((((((.((........((((((((.((.((((((((.(((((((((((.((((((((.(((((((((((.((..((((((((.((((((((((((((((..((((((((((..((((((...(((.(((((......)))))..)))...))))))........)))))))))).))))).))))))))))).))))).)))..........))))))))))))).)).)).)))).)))))))....)))).)).)))))).))))))))))))))))))))))....))))).))))))))))..)))))))).))))))))))
+--- Score Breakdown ---
+Total Score: 50268.843
+  - MFE Score: 57730.000
+  - CAI Score (weighted): -7461.157
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -577.300 kcal/mol
+CAI: 0.895
+Total runtime: 410.977 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGAGCAACCCCGCCUGCUCCAAUCUGUUCAAUAACGGAUGCGAUCAUAAUAGCUUCAACUACUCCACCUCCCUGUCGUACAUCUACAACUCUCACGGGUCGUAUUACUACAGUAAUACGACCAACCCCAACUACAUCAACCACACCCACACCACUAGUACCAGCCCCAACUCGCCUCCCCUGCGGGAGGCCCUGCCGCUCCUGAGCCUGAGCCCCAUCAGGCAUCAGGAGCAGCAGGACCAGCACUACUUCAUGGACACUCACCAGAUCUCAUCCAGCAACUUCCUGGAUGACCCUCUGGUGACCGUGGACCUGCACCUGGGGCUGCCCAACUAUGGUGUGGGUGAGAGCAUCAGGAGCAACAUUGCUCCUGAUGCUACCACCGAUGAGCAGGACCAGGAUCACGACAGGGGGGUGGAGGUCACCGUGGAGAGUCAUCUCGACGACGACGAUGACCACCACGGUGACCUGCACAGGGGGCACCACUACUGGAUCCCCACGCCCAGUCAGAUCCUGAUUGGGCCCACCCAGUUCACGUGCCCCCUGUGCUUCAAGACCUUCAACAGAUACAACAACAUGCAGAUGCACAUGUGGGGGCAUGGGUCCCAGUACCGCAAGGGACCCGAGUCCCUGCGGGGGACCCAGCCCACCGGCAUGCUGCGUCUGCCAUGUUUCUGUUGCGCCCCCGGAUGCAAGAACAAUAUCGAUCACCCCAGGGCCAAGCCCCUGAAGGACUUCCGGACCCUUCAGACUCACUACAAGCGGAAGCACGGGAGCAAGCCAUUCGCUUGCCGCAUGUGUGGGAAGGCCUUCGCCGUGAAGGGCGACUGGCGGACCCACGAGAAGAAUUGCGGCAAGCUGUGGUAUUGCUCCUGUGGUUCCGACUUCAAGCACAAGAGGAGUCUGAAGGAUCACGUGAAGGCCUUCGGCAACGGGCAUGUGCCCUGCGGGAUCGAUAGCUUCGGGGGCGACCAUGAGGACUAUUAUGAUGCCGCAUCCGAUAUUGAGCAG
+(((((((........)))))..))((((((((((.(((((((((((((((((((((((.....((((((((((((((((..((((....(((((((((((((((((((....)))))))))))....................(((((((((((.((((..((((((((....(((((((....)))))))(((((.((((((((((((((......)))))).)))))))).)))))....(((....(((((((....((((((((..((((((((.......))))))))...)))))))))))))))..)))...))))))))....)))))))))))))))..(((((((((((((....))))))))))))).....)).)))).)).....)))).))))))))))))))))(((((((((((.(.(((((((((....))).))))))).))))))))))).(((((((((((((....(((((........((((((((((...))))))))))....)))))....)))))))))))))...........(((((((......(((((((((((((((((((((((((.((((((((....(((((.(((((....)))))))))))))))))))))).))).)))).))))))))).))))))))))))((((((((((.((........((((((((.((.((((((((.(((((((((((.((((((((.(((((((((((.((..((((((.(.((((((((((((((((..((((((((((..((((((...(((.(((((......)))))..)))...))))))........)))))))))).))))).))))))))))).).))).)))..........))))))))))))).)).)).)))).)))))))....)))).)).)))))).))))))))))))))))))))))....))))).))))))))))..)))))))).))))))))))
+Folding free energy: -575.9 kcal/mol
+CAI: 0.896
+Total runtime: 132.68 s
+===================================================================================================================
+Protein ID: Q8GSP8
+Protein length: 371
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGCUCAGGUCAGCGGGGCGGGUGGCUGCCGUCGCUCUCCUGGCCCUGUUCGCCCUGGGCUGCGUGAGCGCCGCCGCCAAGCCUAGCACCGACCGCCUGGUGGCCGCCAUCAAGAGCAAGAAUCUGAGUGCUGUGGUGGACGCGUUGAGCGUGAAGGGGCUCGACGUGAACACCCCCGACAGCACUCGGAGGCUGCCCUUGGUGGAGGCCGCCAGGAGUCGGGAUGCUAGGCUGGUGGGGGCGCUCCUGGACCAGGGCGCACUGGCCAGGGUGAGCGACGGCACCACCACCCCGCUGCACCUGAGCAUGCAGGGCGGCAGCGCUGCCAUCGUCAAGCUGCUCCUGGCGCAUGGCGCCGAUCCUAACGCCAAGGAUAAGACCGGCGCCAGCGCCAGGAGCACGGCGGCUGCCGUCAAGGAGCUGGCCGAUCUCCUGAAGCAGUGGGAUGCAAGGGGCGCCAUGGCCUUCGAGGACGAGCCUGGCGCCUGGAUUCGCGAGGAGCGGGACGGCCAGUCCUACUACUGGAAGCCAGCCAACGGCGAGUCUCGGUGGGCAGUUCCGCCGAGCUGUGCGUGGCAGCGGGUGACCGUGCAGGGACACCCAAUUAAGUACAUCAACAGCCUGACAGGGCAGGAGACCACCCGCGUGCCGCCCGCCCUGGCCUGGGCCAGGGUGACGGCCGCGGAUGGCUCCGCCCUGUGGCUGAAUUGGGCGUCCCGCGUGGCAUCCGCUGCCGCCACAGCUCCGGCGGAGCUGCCCGCCGAGCUCGCCGCUGAGCUGGCCAUGCACCCUAACCGGCGGUGGUACAACACCGCCACUAGGGAGUAUGUGUACACCGAUCCCGCUUACGCGACUCCAUGGCGCGAGCUCGUCGACGAGGCCAGUGGCGCCCCUUUCUUCUUCAAUGUGGAGACCGGGGACACCACCUGGGAGCUGCCUGCCGCUCUCGCCUGGACCGAGGUGAUCGAGAGCUCAUCUGGGGCCGACGGCGAGAGCGGCAGCGGCUCCGAGGCGGGUCCCCGGUACUUCCACAACACUGUUUCAGGAGAGGUGGCUUGGUCAGCUCCUGAGGGCAGCCGCCACGUGUUUGUCGAGGCCAGCGCUGCCGACCUG
+((((((((((((((((((..(((((.(((((((((((((((((((..((.((((((((.(((.(.(((((((.(((((.((((((((((((((..((((((((((.((((((((.((.((..((((((((((((((((..((((((((((........))))))))))..))))....))))))))))))..)))).)))))))).)))))))))).)))))..)))))))))))))).))))))))))).)))))))).)).)))))))).)))))))))))))))).)))))))).)))))))))).((((.(((((((((((((.(((.(((((((((((((((((.(((((((((((((.......))))).....)))))))))))))))))))).((((((((((.((.(((((((((((((((((((((((((((((((.(.(((((((((((((((((.((..(((((((.(.(((((((((.(((((..((((((((((((((((......)))))..((((((((.(((((((.(((((((((((((((((((((((((((.(((((((((((((.((((((.(((((.(((((((...........(((((..(((((((.((((.(((.(((((.((((..(((((((((....))))))))).))))))))).)))))))))))))))))))))))))).)))))))))))))))))))))))))))))))).)))))))))))))))))))))))))).)).))))))(((((.(((((...(((((((......)))))))..))))).)))))......))).)))))))).))))).)))).))))).))))))))..)))))))).))))))))))).).)))....((((((((((((((((.((.(((.(((((((.(((((((((((((((((.((.((((((.(....).)))))).)).)))..))))))))))))))))))))).))).))))))))))).)).))))).)))))))))))))))......))))))))))))))).))))))))))....))))).)))))).)))))))))).))))
+--- Score Breakdown ---
+Total Score: 73154.057
+  - MFE Score: 85120.000
+  - CAI Score (weighted): -11965.943
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -851.200 kcal/mol
+CAI: 0.851
+Total runtime: 870.354 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGCUGAGGUCAGCGGGGCGGGUGGCUGCCGUCGCUCUCCUGGCCCUGUUCGCCCUGGGCUGCGUGAGCGCCGCCGCCAAGCCUAGCACCGACCGCCUGGUGGCCGCCAUCAAGAGCAAGAAUCUGAGUGCUGUGGUGGACGCGUUGAGCGUGAAGGGGCUCGACGUGAACACCCCCGACAGCACUCGGAGGCUGCCCUUGGUGGAGGCCGCCAGGAGUCGGGAUGCUAGGCUGGUGGGGGCGCUCCUGGACCAGGGCGCACUGGCCAGGGUGAGCGACGGCACCACCACCCCGCUGCACCUCAGCAUGCAGGGCGGCAGCGCUGCCAUCGUCAAGCUGCUCCUGGCGCAUGGCGCCGAUCCUAACGCCAAGGAUAAGACCGGCGCCAGCGCCAGGAGCACGGCGGCUGCCGUCAAGGAGCUGGCCGAUCUCCUGAAGCAGUGGGAUGCAAGGGGCGCCAUGGCCUUCGAGGACGAGCCUGGCGCCUGGAUUCGCGAGGAGCGGGACGGCCAGUCCUACUACUGGAAGCCAGCCAACGGCGAGUCUCGGUGGGCAGUUCCGCCGAGCUGUGCGUGGCAGCGGGUGACCGUGCAGGGACACCCAAUUAAGUACAUCAACAGCCUGACAGGGCAGGAGACCACCCGCGUGCCGCCCGCCCUGGCCUGGGCCAGGGUGACGGCCGCGGAUGGCUCCGCCCUGUGGCUGAAUUGGGCGUCCCGCGUGGCAUCCGCUGCCGCCACAGCUCCGGCGGAGCUGCCCGCCGAGCUCGCCGCUGAGCUGGCCAUGCACCCUAACCGGCGGUGGUACAACACCGCCACUAGGGAGUAUGUGUACACCGAUCCCGCUUACGCGACUCCAUGGCGCGAGCUCGUCGACGAGGCCAGUGGCGCCCCUUUCUUCUUCAAUGUGGAGACCGGGGACACCACCUGGGAGCUGCCUGCCGCUCUCGCCUGGACCGAGGUGAUCGAGAGCUCAUCUGGGGCCGACGGCGAGAGCGGCAGCGGCUCCGAGGCGGGUCCCCGGUACUUCCACAACACUGUUUCAGGAGAGGUGGCUUGGUCAGCUCCUGAGGGCAGCCGCCACGUGUUUGUCGAGGCCAGCGCUGCCGACCUG
+((((((((((((((((((..(((((.(((((((((((((((((((..((.((((((((.(((.(.(((((((.((((((.(((((((((((((..((((((((((.((((((((.(((.(..((((((((((((((((..((((((((((........))))))))))..))))....))))))))))))..)))).)))))))).)))))))))).)))))..)))))))))))))).))))))))))).)))))))).)).)))))))).)))))))))))))))).)))))))).)))))))))).((((.(((((((((((((.(((.(((((((((((((((((.(((((((((((((.......))))).....)))))))))))))))))))).((((((((((.(((.((((((((((((((((((((((((((((((.(.(((((((((((((((((.((..(((((((.(.(((((((((.(((((..((((((((((((((((......)))))..((((((((.(((((((.(((((((((((((((((((((((((((.(((((((((((((.((((((.(((((.(((((((...........(((((..(((((((.((((.(((.(((((.((((..((((((((......)))))))).))))))))).)))))))))))))))))))))))))).))))))))))))))))))))))))))))))).))))))))))))))))))))))))))).)).))))))(((((.(((((...(((((((......)))))))..))))).)))))......))).)))))))).))))).)))).))))).))))))))..)))))))).))))))))))).).)))....((((((((((((((((.((.(((.(((((((.(((((((((((((((((.((.((((((.(....).)))))).)).)))..))))))))))))))))))))).))).))))))))))).)).))))).)))))))))))))))......))))))))))))))).))))))))))....))))).))))).))))))))))).))))
+Folding free energy: -850.3 kcal/mol
+CAI: 0.851
+Total runtime: 296.985 s
+===================================================================================================================
+Protein ID: Q9SVY1
+Protein length: 383
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGACUGAUCCUUACUCCAACUUCUUCACCGACUGGUUCAAGAGCAAUCCUUUUCAUCACUACCCAAACAGUUCCACCAACCCCAGCCCACACCCACUGCCUCCUGUGACCCCUCCUUCAAGCUUCUUUUUCUUCCCUCAGUCUGGAGACCUGCGGCGGCCCCCACCCCCCCCCACGCCUCCUCCCUCCCCCCCCCUGCGGGAGGCGCUGCCGCUGCUGUCUCUGUCACCAGCAAACAAGCAGCAGGACCACCAUCACAAUCAUGAUCAUCUCAUCCAGGAGCCCCCGUCCACGUCCAUGGACGUGGACUAUGAUCAUCACCACCAGGAUGAUCAUCACAACCUGGAUGACGAUGAUCAUGAUGUGACGGUGGCCCUGCACAUCGGCUUGCCAUCUCCUAGCGCCCAGGAGAUGGCAAGCCUGCUGAUGAUGAGCAGCAGCAGCAGCUCCUCCCGCACCACCCACCACCAUGAGGACAUGAACCACAAGAAGGACCUGGAUCAUGAGUAUUCUCAUGGUGCGGUGGGGGGGGGGGAGGACGACGACGAGGACAGCGUGGGGGGGGAUGGGGGCUGCCGCAUCUCCAGACUGAACAAGGGGCAGUACUGGAUCCCCACGCCCAGUCAGAUCCUGAUUGGGCCCACCCAGUUCAGCUGCCCCGUGUGCUUCAAGACGUUCAACAGAUACAAUAACAUGCAGAUGCACAUGUGGGGGCAUGGGUCCCAGUACCGCAAGGGACCCGAGUCCCUGCGGGGGACCCAGCCCACCGGCAUGCUGCGUCUGCCCUGUUAUUGCUGCGCCCCAGGGUGCAGGAAUAACAUCGACCAUCCCCGCGCCAAGCCGCUGAAGGACUUCCGCACACUUCAGACACAUUACAAGCGGAAGCACGGCAUCAAGCCCUUCAUGUGUCGGAAGUGUGGGAAGGCCUUCGCGGUGCGCGGGGACUGGCGGACCCACGAGAAGAAUUGUGGGAAGCUGUGGUAUUGUAUCUGUGGGAGCGACUUCAAGCACAAGAGAAGCUUGAAGGAUCACAUCAAGGCAUUUGGGAAUGGGCAUGGGGCCUAUGGAAUUGAUGGGUUUGAUGAGGAGGAUGAGCCUGCCAGUGAGGUGGAGCAGUUGGAUAACGAUCACGAGUCAAUGCAGAGCAAG
+.(((((((((.(((.(((((((.(((((((.((((((...((.((.(((((((((((((..(((((..((((((((....((((((((((..((((.(((((..(((((....((((((((((((((((........((((((((((((..((((((((((((((.((((((((((((.((((((((((((((((((((((((((.(((((.(((((((.(((.((((.(((((........(((((.(((((.((((.(((((((((((((((((((((.......(((((((((....))))))))).(((((((((........))))))))).....))))))))).)))))))))))))))).))))).))))).....(((((((((((((((.......)))))))))))))))))))).)))))))))))))).))))).)))))))))(((((...((((((((((((((((.(((...........))).)))))....))))))))))).)))))))))))))))))........)))))..)))))))))))).))))))))))))))))))))))))))....(((((((((((((........((((((((((...))))))))))....)))))...)))))))).(((((((.(((.(((((.((((((((((((.(((((((((((((((((((((((.((((((((....((((.((((((....)))))))))))))))))))))).))).)))).)))))))))..(((((((.(((((((....))))))).)))))))(((.((((((((((((...(((((.(((((.(((((.((((((((.(((((((........((((...(((.....)))))))))))))).))))))))))))).))))))))))))))))))).)))))).(((((((......))))))).....))).))))))))))))..))))).))).))))))))))))))))))))))))))))...)))))..))))..))))).)))))....)))))))).))))).)))))))))))))..))))))))))..))))))).)))))))))).)))))...))))............
+--- Score Breakdown ---
+Total Score: 59518.658
+  - MFE Score: 69710.000
+  - CAI Score (weighted): -10191.342
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -697.100 kcal/mol
+CAI: 0.875
+Total runtime: 586.506 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGACUGAUCCUUACUCCAACUUCUUCACCGACUGGUUCAAGAGCAAUCCUUUUCAUCACUACCCAAACAGUUCCACCAACCCCAGCCCACACCCACUGCCUCCUGUGACCCCUCCUUCAAGCUUCUUUUUCUUCCCUCAGUCUGGAGACCUGCGGCGGCCCCCACCCCCCCCCACGCCUCCUCCCUCCCCCCCCCUGCGGGAGGCGCUGCCGCUGCUGUCUCUGUCACCAGCAAACAAGCAGCAGGACCACCAUCACAAUCAUGAUCAUCUCAUCCAGGAGCCCCCGUCCACGUCCAUGGACGUGGACUAUGAUCAUCACCACCAGGAUGAUCAUCACAACCUGGAUGACGAUGAUCAUGAUGUGACGGUGGCCCUGCACAUCGGCUUGCCAUCUCCUAGCGCCCAGGAGAUGGCAAGCCUGCUGAUGAUGAGCAGCAGCAGCAGCUCCUCCCGCACCACCCACCACCAUGAGGACAUGAACCACAAGAAGGACCUGGAUCAUGAGUAUUCUCAUGGUGCGGUGGGGGGGGGGGAGGACGACGACGAGGACAGCGUGGGGGGGGAUGGGGGCUGCCGCAUCUCCAGACUGAACAAGGGGCAGUACUGGAUCCCCACGCCCAGUCAGAUCCUGAUUGGGCCCACCCAGUUCAGCUGCCCCGUGUGCUUCAAGACGUUCAACAGAUACAAUAACAUGCAGAUGCACAUGUGGGGGCAUGGGUCCCAGUACCGCAAGGGACCCGAGUCCCUGCGGGGGACCCAGCCCACCGGCAUGCUGCGUCUGCCCUGUUAUUGCUGCGCCCCAGGGUGCAGGAAUAACAUCGACCAUCCCCGCGCCAAGCCGCUGAAGGACUUCCGCACACUUCAGACACAUUACAAGCGGAAGCACGGCAUCAAGCCCUUCAUGUGUCGGAAGUGUGGGAAGGCCUUCGCGGUGCGCGGGGACUGGCGGACCCACGAGAAGAAUUGUGGGAAGCUGUGGUAUUGUAUCUGUGGGAGCGACUUCAAGCACAAGAGAAGCUUGAAGGAUCACAUCAAGGCAUUUGGGAAUGGGCAUGGGGCCUAUGGAAUUGAUGGGUUUGAUGAGGAGGAUGAGCCUGCCAGUGAGGUGGAGCAGUUGGAUAACGAUCACGAGUCUAUGCAGAGCAAG
+((...(((((.(((.(((((((.(((((((.((((((...((.((.(((((((((((((..(((((..((((((((....((((((((((..((((.(((((..(((((....((((((((((((((((........((((((((((((..((((((((((((((.((((((((((((.((((((((((((((((((((.(((((.(((((.(((((((.(((.((((.(((((........(((((.(((((.((((.(((((((((((((((((((((.......(((((((((....))))))))).(((((((((........))))))))).....))))))))).)))))))))))))))).))))).))))).....(((((((((((((((.......)))))))))))))))))))).)))))))))))))).))))).))))).)))(((((...((((((((((((((((.(((...........))).)))))....))))))))))).)))))))))))))))))........)))))..)))))))))))).))))))))))))))))))))))))))....(((((((((((((........((((((((((...))))))))))....)))))...)))))))).(((((((.(((.(((((.((((((((((((.(((((((((((((((((((((((.((((((((....((((.((((((....)))))))))))))))))))))).))).)))).)))))))))..(((((((.(((((((....))))))).)))))))(((.((((((((((((...(((((.(((((.(((((.((((((((.(((((((........((((...(((.....)))))))))))))).))))))))))))).))))))))))))))))))).)))))).(((((((......))))))).....))).))))))))))))..))))).))).))))))))))))))))))))))))))))...)))))..))))..))))).)))))....)))))))).))))).)))))))))))))..))))))))))..))))))).)))))))))).)))))...))((.(((...)))))
+Folding free energy: -695.3 kcal/mol
+CAI: 0.876
+Total runtime: 199 s
+===================================================================================================================
+Protein ID: P0DW87
+Protein length: 399
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGUCUGGAGCAGAGGAGGCCGGCGGCGGGGGCCCCGCCGCCGGCCCCGCGGGCGCCGUGCCAGCCGGCGUCGGCGUGGGUGCCGGGCCCGGGGCCGCCGCCGGGCCGGCCGCCGCCGCCCUGGGGGAGGCCGCCGGGCCCGGCAUCCCCGACGAGGCCGCGCUGGCCGGCGCCCGCCAGCUGCAGGAGGCCGCCGGCGACCCCGACGCUCCACCGAAGAAGCGGCUGCGGGCCGCCGAGGCCGCCGAGGCGGCCGCAGCCGCUGUGGCCGCCGGCAGCGGGAAGCUGGAGGAGCGGCUGUACUCCGUGCUGUGCUGCACUGUGUGCCUGGACCUGCCCAAGGCCAGCGUAUAUCAGUGCACCAACGGGCACCUGAUGUGCGCUGGCUGCUUCAUCCACCUUCUGGCUGACGCCCGGCUGAAGGAGGAGCAGGCCACUUGCCCCAACUGCCGCUGCGAGAUUUCUAAGAGCCUGUGCUGUAGAAAUCUCGCAGUGGAGAAGGCGGUGAGUGAGCUGCCCUCCGAGUGCGGGUUCUGCCUGCGGCAGUUCCCGCGCUCUCUGCUGGAGCGUCACCAGAAGGAGGAGUGCCAGGACCGGGUCACACAGUGCAAGUACAAGCGGAUCGGGUGCCCCUGGCACGGGCCGUUUCAUGAGCUGACCGUUCAUGAGGCGGCCUGUGCCCACCCGACCAAGACCGGGAACGAGCUCAUGGAGAUCCUGGAUGAGAUGGAUCAGUCCCAUAGGAAGGAGAUGCAGCUCUACAACUCGAUCUUCUCACUGCUGAGCUUUGAGAAGAUCGGGUACACAGAGGUGCAGUUCCGGCCCUAUCGGACUGACGAUUUCAUCACCAGGCUCUACUAUGAGACUCCCCGGUUCACCGUGCUCAAUCAGACAUGGGUGCUGAAGGCCAGGGUGAACGACAGCGAGAGGAACCCCAACCUCUCCUGUAAGCGCACCCUGAGCUUUCAGCUCCUGCUGAAGAGCAAGGUGACCGCUCCUCUGGAGUGCAGCUUCCUGCUGCUGAAGGGGCCAUACGAUGAUGUGCGGAUCAGCCCCGUGAUCUAUCACUUCGUGUUCACCAACGAGAGCAACGAGACAGAUUACGUGCCUCUGCCCAUCAUCGAUUCGGUGGAGUGUAACAAGUUGCUGGCGGCCAAGAACAUCAACCUGCGGCUGUUUCUGUUCCAGAUCCAGAAG
+..((((((((((((((.(((((((((((((...)))))))))))))))((((((((((.((((((((((.(((.((.(((((((((((((((((((.((.(((((.((((....)))).))))).)).)))).))))))))))))))).)).))).)))).))))))))))))))))((((((((((.(((((((((((((....(((((((((((((..((((((((((.((((((..((...))..))))))))))))))))((((((.((((((((((((((((((((((((((......(((((..(((((((((((((((((((((.((((.....(((((((((((((((((((.((...)))))).)))))))))))))))((....(((.((((((((.(((((((((((.((.(((((.((((..((((((((((..((.(((((((((((((((((..(((....))).)))))))))))))))))))..)).))))))))..)))))))))(((((((((..(((((...)))))..))))))))))).))))).)))))))))))))).)))..)))))).))))).))))))))))).))))).)))))(((((((.....(((((((((((((((((((((.....)))))))))))))))))))))))))))).....((((((...(((((((((((((.((((((((((((.(.(((((((.(((((..((((.((((.((((...((((((((((((((..((...))..))))))))))))))....)))).)))).))))...))))).)))))))).)))))))..))))).))).))))))).)))))))))(((((.(((((..((((.((.(((.((((((((((((((((..(.((((.((((((........))))))))))..)..))))))).)))))))))))))))))).))))).)))))))))))))).......))))))))))))))))..).)))))).((((((((.(((((...((..((((((((.((...((((((((........))))).))))).)))))))).)).))))).)))))))).))))))))))))).....)))))))))))))...........))))))))))..)))))))))))).......
+--- Score Breakdown ---
+Total Score: 70761.272
+  - MFE Score: 80590.000
+  - CAI Score (weighted): -9828.728
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -805.900 kcal/mol
+CAI: 0.884
+Total runtime: 843.611 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGUCCGGCGCCGAGGAGGCCGGCGGCGGCGGGCCCGCCGCCGGGCCCGCCGGCGCCGUGCCUGCCGGCGUCGGCGUCGGAGCUGGACCAGGAGCAGCCGCAGGUCCUGCAGCUGCCGCCCUCGGCGAGGCGGCCGGUCCGGGCAUCCCGGACGAGGCCGCCCUCGCCGGGGCGCGGCAGCUGCAGGAGGCGGCCGGCGACCCCGACGCUCCACCGAAGAAGCGGCUGCGGGCCGCCGAGGCCGCCGAGGCGGCCGCAGCCGCUGUGGCCGCCGGCAGCGGGAAGCUGGAGGAGCGGCUGUACUCCGUGCUGUGCUGCACUGUGUGCCUGGACCUGCCCAAGGCCAGCGUAUAUCAGUGCACCAACGGGCACCUGAUGUGCGCUGGCUGCUUCAUCCACCUUCUGGCUGACGCCCGGCUGAAGGAGGAGCAGGCCACUUGCCCCAACUGCCGCUGCGAGAUUUCUAAGAGCCUGUGCUGUAGAAAUCUCGCAGUGGAGAAGGCGGUGAGUGAGCUGCCCUCCGAGUGCGGGUUCUGCCUGCGGCAGUUCCCGCGCUCUCUGCUGGAGCGUCACCAGAAGGAGGAGUGCCAGGACCGGGUCACACAGUGCAAGUACAAGCGGAUCGGGUGCCCCUGGCACGGGCCGUUUCAUGAGCUGACCGUUCAUGAGGCGGCCUGUGCCCACCCGACCAAGACCGGGAACGAGCUCAUGGAGAUCCUGGAUGAGAUGGAUCAGUCCCAUAGGAAGGAGAUGCAGCUCUACAACUCGAUCUUCUCACUGCUGAGCUUUGAGAAGAUCGGGUACACAGAGGUGCAGUUCCGGCCCUAUCGGACUGACGAUUUCAUCACCAGGCUCUACUAUGAGACUCCCCGGUUCACCGUGCUCAAUCAGACAUGGGUGCUGAAGGCCAGGGUGAACGACAGCGAGAGGAACCCCAACCUCUCCUGUAAGCGCACCCUGAGCUUUCAGCUCCUGCUGAAGAGCAAGGUGACCGCUCCUCUGGAGUGCAGCUUCCUGCUGCUGAAGGGGCCAUACGAUGAUGUGCGGAUCAGCCCCGUGAUCUAUCACUUCGUGUUCACCAACGAGAGCAACGAGACAGAUUACGUGCCUCUGCCCAUCAUCGAUUCGGUGGAGUGUAACAAGUUGCUGGCCGCCAAGAACAUCAACCUGCGGCUGUUCCUGUUCCAGAUCCAGAAG
+(((.(((((((((.(.(((((((((.(((((((((((....))))))))))).))))).)))).)))))))))))))((((.(((((.(((((((((((((((((((((((((((((((((((((((((((((((.(((((((...)))))))..))))))).))))))))).)))))))))))))))(((((((((((((....(((((((((((((..(((((((((.(((((((..((...))..))))))))))))))))((((((.((((((((((((((((((((((((((......(((((..(((((((((((((((((((((.((((.....(((((((((((((((((((.((...)))))).)))))))))))))))((....(((.((((((((.(((((((((((.((.(((((.((((..((((((((((..((.(((((((((((((((((..((......)).)))))))))))))))))))..)).))))))))..)))))))))(((((((((..(((((...)))))..))))))))))).))))).)))))))))))))).)))..)))))).))))).))))))))))).))))).)))))(((((((.....(((((((((((((((((((((.....)))))))))))))))))))))))))))).....((((((...(((((((((((((.((((((((((((.(.(((((((.(((((..((((.((((.((((...((((((((((((((..((...))..))))))))))))))....)))).)))).))))...))))).)))))))).)))))))..))))).))).))))))).)))))))))(((((.(((((..((((.((.(((.((((((((((((((((..(.((((.((((((........))))))))))..)..))))))).)))))))))))))))))).))))).)))))))))))))).......))))))))))))))))..).)))))).((((((((.(((((...((..((((((((.((...((((((((........))))).))))).)))))))).)).))))).)))))))).))))))))))))).....)))))))))))))...........)))))))))))))))).))))).)))....)
+Folding free energy: -812.1 kcal/mol
+CAI: 0.872
+Total runtime: 288.586 s
+===================================================================================================================
+Protein ID: P0DW89
+Protein length: 399
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGUCCGGCGCCGAGGAGGCCGGCGGCGGCGGGCCCGCCGCCGGGCCCGCCGGCGCCGUGCCUGCCGGCGUCGGAGUGGGUGUGGGACCAGGAGCAGCCGCAGGUCCUGCAGCUGCCGCCCUCGGCGAGGCCGCCGGUCCGGGCAUCCCGGACGAGGCCGGCCUCGCCGGGGCGCGGCAGCUGCAGGAGGCCGCCGGCGACCCCGACGCUCCACCGAAGAAGCGGCUGCGGGCGGCCGAGGCCGCCGAGGCCGCCGCAGCCGCUGUGGCCGCCGGCAGCGGGAAGCUGGAGGAGCGGCUGUACUCCGUGCUGUGCUGCACUGUGUGCCUGGACCUGCCCAAGGCCAGCGUAUAUCAGUGCACCAACGGGCACCUGAUGUGCGCUGGCUGCUUCAUCCACCUUCUGGCUGACGCCCGGCUGAAGGAGGAGCAGGCCACUUGCCCCAACUGCCGCUGCGAGAUUUCUAAGAGCCUGUGCUGUAGAAAUCUCGCAGUGGAGAAGGCGGUGAGUGAGCUGCCCUCCGAGUGCGGGUUCUGCCUGCGGCAGUUCCCGCGCUCUCUGCUGGAGCGUCACCAGAAGGAGGAGUGCCAGGACCGGGUCACACAGUGCAAGUACAAGCGGAUCGGGUGCCCCUGGCACGGGCCGUUUCAUGAGCUGACCGUUCAUGAGGCGGCCUGUGCCCACCCGACCAAGACCGGGAACGAGCUCAUGGAGAUCCUGGAUGAGAUGGAUCAGUCCCAUAGGAAGGAGAUGCAGCUCUACAACUCGAUCUUCUCACUGCUGAGCUUUGAGAAGAUCGGGUACACAGAGGUGCAGUUCCGGCCCUAUCGGACUGACGAUUUCAUCACCAGGCUCUACUAUGAGACUCCCCGGUUCACCGUGCUCAAUCAGACAUGGGUGCUGAAGGCCAGGGUGAACGACAGCGAGAGGAACCCCAACCUCUCCUGUAAGCGCACCCUGAGCUUUCAGCUCCUGCUGAAGAGCAAGGUGACCGCUCCUCUGGAGUGCAGCUUCCUGCUGCUGAAGGGGCCAUACGAUGAUGUGCGGAUCAGCCCCGUGAUCUAUCACUUCGUGUUCACCAACGAGAGCAACGAGACAGAUUACGUGCCUCUGCCCAUCAUCGAUUCGGUGGAGUGUAACAAGUUGCUGGCGGCCAAGAACAUCAACCUGCGGCUGUUCCUGUUCCAGAUCCAGAAG
+...((((((((((.(.(((((((((.(((((((((((....))))))))))).))))).)))).))))))))))).(((((.((((((.((((((((((((((((((((((((((((((((((((((((((((((.(((((((...)))))))..)).)))))))))))))).)))))))))))))))(((((((((((((....(((((((((((((..((((((((((.((((((..((...))..))))))))))))))))((((((.((((((((((((((((((((((((((......(((((..(((((((((((((((((((((.((((.....(((((((((((((((((((.((...)))))).)))))))))))))))((....(((.((((((((.(((((((((((.((.(((((.((((..((((((((((..((.(((((((((((((((((..(((....))).)))))))))))))))))))..)).))))))))..)))))))))(((((((((..(((((...)))))..))))))))))).))))).)))))))))))))).)))..)))))).))))).))))))))))).))))).)))))(((((((.....(((((((((((((((((((((.....)))))))))))))))))))))))))))).....((((((...(((((((((((((.((((((((((((.(.(((((((.(((((..((((.((((.((((...((((((((((((((..((...))..))))))))))))))....)))).)))).))))...))))).)))))))).)))))))..))))).))).))))))).)))))))))(((((.(((((..((((.((.(((.((((((((((((((((..(.((((.((((((........))))))))))..)..))))))).)))))))))))))))))).))))).)))))))))))))).......))))))))))))))))..).)))))).((((((((.(((((...((..((((((((.((...((((((((........))))).))))).)))))))).)).))))).)))))))).))))))))))))).....)))))))))))))...........))))))))))))))))))))).)))))....
+--- Score Breakdown ---
+Total Score: 70879.651
+  - MFE Score: 81470.000
+  - CAI Score (weighted): -10590.349
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -814.700 kcal/mol
+CAI: 0.876
+Total runtime: 834.567 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGAGCGGCGCAGAGGAGGCCGGCGGCGGCGGCCCGGCGGCCGGGCCGGCCGGAGCCGUGCCUGCGGGGGUGGGCGUCGGGGUGGGCCCCGGCGCCGCCGCCGGCCCUGCAGCUGCCGCCCUCGGCGAGGCCGCCGGUCCGGGCAUCCCGGACGAGGCCGGCCUCGCCGGGGCGCGGCAGCUGCAGGAGGCCGCCGGGGACCCCGACGCCCCCCCCAAGAAGCGGCUCCGGGCGGCCGAGGCCGCCGAGGCCGCCGCCGCCGCCGUGGCCGCCGGCAGCGGGAAGCUGGAGGAGCGGCUGUACUCCGUGCUGUGCUGCACUGUGUGCCUGGACCUGCCCAAGGCCAGCGUAUAUCAGUGCACCAACGGGCACCUGAUGUGCGCUGGCUGCUUCAUCCACCUUCUGGCUGACGCCCGGCUGAAGGAGGAGCAGGCCACUUGCCCCAACUGCCGCUGCGAGAUUUCUAAGAGCCUGUGCUGUAGAAAUCUCGCAGUGGAGAAGGCGGUGAGUGAGCUGCCCUCCGAGUGCGGGUUCUGCCUGCGGCAGUUCCCGCGCUCUCUGCUGGAGCGUCACCAGAAGGAGGAGUGCCAGGACCGGGUCACACAGUGCAAGUACAAGCGGAUCGGGUGCCCCUGGCACGGGCCGUUUCAUGAGCUGACCGUUCAUGAGGCGGCCUGUGCCCACCCGACCAAGACCGGGAACGAGCUCAUGGAGAUCCUGGAUGAGAUGGAUCAGUCCCAUAGGAAGGAGAUGCAGCUCUACAACUCGAUCUUCUCACUGCUGAGCUUUGAGAAGAUCGGGUACACAGAGGUGCAGUUCCGGCCCUAUCGGACUGACGAUUUCAUCACCAGGCUCUACUAUGAGACUCCCCGGUUCACCGUGCUCAAUCAGACAUGGGUGCUGAAGGCCAGGGUGAACGACAGCGAGAGGAACCCCAACCUCUCCUGUAAGCGCACCCUGAGCUUUCAGCUCCUGCUGAAGAGCAAGGUGACCGCUCCUCUGGAGUGCAGCUUCCUGCUGCUGAAGGGGCCAUACGAUGAUGUGCGGAUCAGCCCCGUGAUCUAUCACUUCGUGUUCACCAACGAGAGCAACGAGACAGAUUACGUGCCUCUGCCCAUCAUCGACAGCGUGGAGUGCAACAAGCUCCUCGCUGCCAAGAACAUCAAUCUGCGCCUGUUCCUCUUCCAGAUCCAGAAG
+(.((((((((((((.(((((.(((((((((((((((((((((.(((((.((((((((((..((..(((((.((((((((((((...((((((((.....(((...((((((((((((((((((((((((((((((.((((((.....))))))..)).)))))))))))))).)))))))))))))).)))))))))))))))))))))))))))).))..)))))))))).)))))..)))))))).))))))))))))))))((((((.((((((((((((((((((((((((((......(((((..(((((((((((((((((((((.((((.....(((((((((((((((((((.((...)))))).)))))))))))))))((....(((.((((((((.(((((((((((.((.(((((.((((..((((((((((..((.(((((((((((((((((..(((....))).)))))))))))))))))))..)).))))))))..)))))))))(((((((((..(((((...)))))..))))))))))).))))).)))))))))))))).)))..)))))).))))).))))))))))).))))).)))))(((((((.....(((((((((((((((((((((.....)))))))))))))))))))))))))))).....((((((...(((((((((((((.((((((((((((.(.(((((((.(((((..((((.((((.((((...((((((((((((((..((...))..))))))))))))))....)))).)))).))))...))))).)))))))).)))))))..))))).))).))))))).)))))))))(((((.(((((..((((.((.(((.((((((((((((((((..(.((((.((((((........))))))))))..)..))))))).)))))))))))))))))).))))).)))))))))))))).......))))))))))))))))..).)))))).((((((((.(((((...((..((((((((.((...((((((((........))))).))))).)))))))).)).))))).)))))))).(((((.(((((.......))))).))))).........))..)))))))).)))).)((((........))))
+Folding free energy: -808.5 kcal/mol
+CAI: 0.878
+Total runtime: 311.942 s
+===================================================================================================================
+Protein ID: Q8W030
+Protein length: 412
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGCUGUUCUCCACGGUGCUGAGUCACAGAACCCUGUACAUCCUGACAUGCCCAAAUACGCUGAUCCACAGCUACACCCACCCCCACAUUCACGCGUAUUUGGCAUUCACAGGGUUCCUGACUCAGCUGCACCACCUGGAGAUCAGCUGCCUGCUCCUGCUGUUCUUCUCGCUGAGCAGCCUCCUCAAGCUCAUGGCCGAUCCCGACUGCAUCUUCCGGAACGGGUACGUGGACUAUUACAACUACUCCUUCAAUUAUGCUACAAGUCUGAGCCGCAUCUACAAUAGCCACGACUCCUUCUAUUACCCUCAUCAGACCACCAAUCCCAACAUUAACGAGAACCCUAAUCUCACAUCUCCUGACAGCCCUCCCCUGCGGGAGGCGCUGCCGCUGCUGUCCCUGUCCCCCAUUCACAAGCACCAGGAGCCCACCGCCAACCACCAUGAGUACUAUUUCAUGGAGACCACCGAGACGUCGUCCAAUAGCAACUUCCUGGACCAGUGCCAGGAUAGCUAUCGGCACGACGUCACGGUGGAUCUGCACCUGGGCUUGCCGAACCUGGGGGACGGGGGCAGCAGCAGCAGCGACGUGGUCCUGGACUCCACGGACCACCAGGAGGGCCACCAUGAUCAUCAUCAGGAUCAGGGCCUGGAGGUGACCAUGGCCUCUGAUCAUGAUGAUGAGCAUGGUGGCCUUCAGCGGGGCAACCAUCUGCAUCACUUUUGGAUCCCCACUCCCUCUCAGAUUCUCAUGGGCCCUACCCAGUUCUCGUGCCCCCUGUGCUUCAAGACCUUCAAUAGGUACAACAACAUGCAGAUGCACAUGUGGGGGCACGGGAGCCAGUACCGGAAGGGCCCUGAGAGUCUGAGAGGGACCCAGCCAACAGCGAUGCUGAAGUUGCCCUGCUACUGCUGCGCCCCGGGGUGCAAGAACAACAUCGACCACCCCCGGGCGCGGCCCCUGAAGGACUUCCGCACCCUGCAGACCCACUACAAGCGGAAGCACGGGGUGCGGCCCUUCGCCUGCAGGAGAUGUGGGAAGGCGUUCGCCGUUAAGGGGGAUUGGCGGACUCAUGAGAAGAAUUGUGGGAAGUUGUGGUAUUGUAGCUGCGGCUCAGACUUCAAGCAUAAGAGGAGCCUGAAGGACCACGUGAAGGCCUUCGGGAAUGGCCACGUGCCCUGCUGCGGGAUCGACCAUGAGGAGGAGGAGGCUGCCAGCGACGUGGAGCAGCAGGAG
+..((((.((((((.((((((((((((..(((((((((.......((.(((.(((((((((((((.........................))).)))))))))))))))))))))))).)))))))))......))))))))).))))......(((((((((((((.(((((((.(((((((((((...(((((((.((((((((.(.(((...........((((((((((.(((((.......((((((...(((((((..((((((((((((((.(((((((.((((((((((((.(.(((...(((((.((.((.((((((((....((((((.(((((((..((((((((((((((.(((.((((((....))))))((((((.(((((((((((((((((((((((.(((((.(((((.((.............(((((((......)))))))(((((((((.((((((((((.(((((....((((((.......))))))..))))).)).)))))))).)))))).))))).))))))))))..)))..)))))))))))))))))))).))))))..((((((((((...))).)))))))...(((((((((((((.(((((((((.(((((((((((((......))).)))).)))))).))))))))).)))))))))))))(((((((((((..((.(((((.((.((((........(((((((((((((((((.(((((((.((..(((((((((((((((((((.((...((((.....)))).............)).)))))...)))))))))))))).......)).)))))))))))))))))))))))).....)))).)).))))).)).)))))))))))...(((((((((.((((((...((......))...)))))).)))))))))...((((((....((((((((((.....((.((...)).)).....)))))))))).)))))).)))))))))))))))))))).))))..))))))..)))))))).)).)).)))))...))).).)))).))))))))))))))).))))))))))))))..)))))))))))))((((((((.((.......)))))))))))))))))))))))))))).))))))))).)))))))...))))))))))))))))).).)))))))))))))
+--- Score Breakdown ---
+Total Score: 60466.875
+  - MFE Score: 71890.000
+  - CAI Score (weighted): -11423.125
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -718.900 kcal/mol
+CAI: 0.871
+Total runtime: 820.524 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGCUGUUCUCCACGGUGCUGAGUCACAGAACCCUGUACAUCCUGACAUGCCCAAAUACGCUGAUCCACAGCUACACCCACCCCCACAUUCACGCGUAUUUGGCAUUCACAGGGUUCCUGACUCAGCUGCACCACCUGGAGAUCAGCUGUCUCCUGCUGCUCUUCUUCUCGCUGAGCAGCCUCCUCAAGCUCAUGGCCGAUCCCGACUGCAUCUUCCGGAACGGGUACGUGGACUAUUACAACUACUCCUUCAAUUAUGCUACAAGUCUGAGCCGCAUCUACAAUAGCCACGACUCCUUCUAUUACCCUCAUCAGACCACCAAUCCCAACAUUAACGAGAACCCUAAUCUCACAUCUCCUGACAGCCCUCCCCUGCGGGAGGCGCUGCCGCUGCUGUCCCUGUCCCCCAUUCACAAGCACCAGGAGCCCACCGCCAACCACCAUGAGUACUAUUUCAUGGAGACCACCGAGACGUCGUCCAAUAGCAACUUCCUGGACCAGUGCCAGGAUAGCUAUCGGCACGACGUCACGGUGGAUCUGCACCUGGGCUUGCCGAACCUGGGGGACGGGGGCAGCAGCAGCAGCGACGUGGUCCUGGACUCCACGGACCACCAGGAGGGCCACCAUGAUCAUCAUCAGGAUCAGGGCCUGGAGGUGACCAUGGCCUCUGAUCAUGAUGAUGAGCAUGGUGGCCUUCAGCGGGGCAACCAUCUGCAUCACUUUUGGAUCCCCACUCCCUCUCAGAUUCUCAUGGGCCCUACCCAGUUCUCGUGCCCCCUGUGCUUCAAGACCUUCAAUAGGUACAACAACAUGCAGAUGCACAUGUGGGGGCACGGGAGCCAGUACCGGAAGGGCCCUGAGAGUCUGAGAGGGACCCAGCCAACAGCGAUGCUGAAGUUGCCCUGCUACUGCUGCGCCCCGGGGUGCAAGAACAACAUCGACCACCCCCGGGCGCGGCCCCUGAAGGACUUCCGCACCCUGCAGACCCACUACAAGCGGAAGCACGGGGUGCGGCCCUUCGCCUGCAGGAGAUGUGGGAAGGCGUUCGCCGUUAAGGGGGAUUGGCGGACUCAUGAGAAGAAUUGUGGGAAGUUGUGGUAUUGUAGCUGCGGCUCAGACUUCAAGCAUAAGAGGAGCCUGAAGGACCACGUGAAGGCCUUCGGGAAUGGCCACGUGCCCUGCUGCGGGAUCGACCAUGAGGAGGAGGAGGCUGCCAGCGACGUGGAGCAGCAGGAG
+((((((.((((((.((((((((((((..(((((((((.......((.(((((.((((.((((((.........................))).))).)))))))))))))))))))).)))))))))......))))))))).)))).))(((((((((((((.(...((((((.(((((((((((...(((((((.((((((((.(.(((...........((((((((((.(((((.......((((((...(((((((..((((((((((((((.(((((((.((((((((((((.(.(((...(((((.((.((.((((((((....((((((.(((((((..((((((((((((((.(((.((((((....))))))((((((.(((((((((((((((((((((((.(((((.(((((.((.............(((((((......)))))))(((((((((.((((((((((.(((((....((((((.......))))))..))))).)).)))))))).)))))).))))).))))))))))..)))..)))))))))))))))))))).))))))..((((((((((...))).)))))))...(((((((((((((.(((((((((.(((((((((((((......))).)))).)))))).))))))))).)))))))))))))(((((((((((..((.(((((.((.((((........(((((((((((((((((.(((((((.((..(((((((((((((((((((.((...((((.....)))).............)).)))))...)))))))))))))).......)).)))))))))))))))))))))))).....)))).)).))))).)).)))))))))))...(((((((((.((((((...((......))...)))))).)))))))))...((((((....((((((((((.....((.((...)).)).....)))))))))).)))))).)))))))))))))))))))).))))..))))))..)))))))).)).)).)))))...))).).)))).))))))))))))))).))))))))))))))..)))))))))))))((((((((.((.......)))))))))))))))))))))))))))).))))))))).)))))))...))))))))))))))))).).)))))))))))))
+Folding free energy: -721.4 kcal/mol
+CAI: 0.869
+Total runtime: 309.582 s
+===================================================================================================================
+Protein ID: P32527
+Protein length: 433
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGUUCAGCCUCCCUACUCUCACUUCCGACAUCACCGUGGAGGUGAACUCCUCCGCCACGAAGACCCCCUUCGUGCGGAGGCCCGUGGAGCCUGUGGGCAAGUUCUUCCUGCAGCAUGCCCAGAGGACUCUGCGGAAUCAUACUUGGUCCGAGUUCGAGCGGAUCGAGGCCGAGAAGAAUGUGAAGACCGUCGAUGAGUCAAACGUGGAUCCUGAUGAGCUGCUGUUCGACACCGAGCUGGCUGAUGAGGAUCUGCUGACUCACGACGCCCGGGACUGGAAGACUGCCGACCUGUAUGCUGCGAUGGGCCUUAGUAAGCUGCGCUUUCGGGCCACCGAGAGCCAGAUUAUUAAGGCCCAUCGCAAGCAGGUGGUGAAGUACCACCCGGACAAGCAGUCCGCUGCAGGCGGCAGUCUGGACCAGGACGGGUUCUUCAAGAUCAUUCAGAAGGCCUUCGAGACCCUGACCGACUCGAACAAGCGGGCCCAGUAUGACAGCUGCGACUUCGUGGCUGACGUGCCUCCGCCCAAGAAGGGGACCGACUACGACUUCUACGAGGCGUGGGGUCCCGUUUUUGAGGCGGAGGCACGCUUCUCCAAGAAGACUCCUAUCCCCUCCUUGGGCAACAAGGACUCCUCCAAGAAGGAGGUCGAGCAGUUCUAUGCCUUCUGGCAUAGGUUCGACUCUUGGAGGACCUUCGAGUUCCUGGACGAGGACGUGCCCGACGACAGCUCCAACCGGGACCACAAGCGGUACAUCGAGCGGAAGAACAAGGCCGCUCGGGACAAGAAGAAGACCGCUGACAACGCCCGGUUGGUGAAGCUGGUCGAGCGCGCCGUGUCCGAGGAUCCUCGGAUCAAGAUGUUCAAGGAGGAGGAGAAGAAGGAGAAGGAGCGUCGGAAGUGGGAGAGGGAGGCUGGGGCCCGGGCGGAGGCGGAGGCCAAGGCCAAGGCCGAGGCCGAGGCCAAGGCCAAGGCCGAGUCCGAGGCCAAGGCCAACGCCUCCGCCAAGGCCGACAAGAAGAAGGCUAAGGAGGCUGCUAAGGCAGCUAAGAAGAAGAACAAGCGCGCUAUCCGCAAUAGUGCUAAGGAGGCGGACUACUUCGGCGACGCCGACAAGGCCACCACCAUCGACGAGCAGGUUGGCCUGAUCGUGGACAGCCUGAAUGACGAGGAGCUCGUCAGCACGGCUGACAAGAUCAAGGCCAACGCUGCUGGGGCCAAGGAGGUGCUGAAGGAGUCCGCCAAGACUAUUGUGGAUAGCGGCAAGCUGCCUAGCAGCCUCCUUAGCUACUUCGUG
+....(((((((((((.((((((((((((((.(((((.....)))))...(((((((.((((((.....))))))))))))).(((((((((((.((((((.((((.....).))).)))))).))).))))))))..(((((((.((((((.((((((((((.((((((((.....(((((((((((.(((((.(((((((...(((((((((.((.((((...(((((....))))).)))).)).)))))))))))))))))))))((((...((((.(((((((((.(((((((((((((((((((((((((((.(((.((((((((....))))))))))).)))))))))))))))))).)))(((((((...)))))))(((((.....))))).)))))))))))))))...))))..)))).))))))....)))))....))))).)))........))).)))))))...)))))).)))))))((((((((....)))))))).((((((((((((((((((.((((((..(((((.((((...))))))))))))))).)))))).))))))))))))(((((((.......(((((....((((((((((((...(((..((((((((((.....(((((((....(((((((....)))))))))))))))))))))))))))(((((.(((((((((.((.(((((.((((..((((((((((((((......((((((...((((((((..........))))))))............)))))).......)))))))))...))))))))).))))))).))))).))))..))))).......))))))))))))))))).....)))))))....)))))))))))))))))))))))))((((..((((((((((..((((..((((..((.(..((((..(((....)))..))))..).))..))))..))))..))))))))))..))))..((.((((..(((((((((((((((((.(((((((..............((.((((((((((((((((.((.....((((((((.(((((((...(((..(..((((.(((..........((((((((((((((((.((..(((((((..(((((((...))))))).)).))))).)).))))).))))))).)))))))))))..)..)))))))))).)))))))).)))))))))))))))))))).)))))))))))))))))))))))).)))).))
+--- Score Breakdown ---
+Total Score: 65791.339
+  - MFE Score: 76060.000
+  - CAI Score (weighted): -10268.661
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -760.600 kcal/mol
+CAI: 0.888
+Total runtime: 800.563 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGUUCUCUCUCCCUACUCUGACCUCCGACAUCACCGUGGAGGUGAACUCCUCGGCCACCAAGACCCCUUUCGUCCGGCGGCCAGUCGAGCCUGUCGGCAAGUUCUUCUUGCAGCACGCGCAGCGGACUCUCCGCAAUCACACUUGGUCUGAGUUCGAGAGAAUUGAGGCCGAGAAGAAUGUGAAGACUGUGGACGAGUCCAAUGUGGAUCCCGAUGAGCUGUUGUUUGACACUGAGUUAGCAGAUGAGGAUCUGCUGACUCACGACGCCAGGGACUGGAAGACCGCCGACCUGUAUGCUGCGAUGGGCCUUAGUAAGCUGCGCUUUCGGGCCACCGAGAGCCAGAUUAUUAAGGCCCAUCGCAAGCAGGUCGUGAAGUACCAUCCUGACAAGCAGAGCGCCGCCGGGGGCUCUCUUGAUCAGGAUGGUUUCUUCAAGAUCAUCCAGAAGGCCUUCGAGACCCUGACCGACUCGAACAAGCGGGCCCAGUACGACUCGUGCGAUUUCGUGGCCGACGUGCCCCCUCCCAAGAAGGGCACCGACUACGAUUUCUACGAGGCGUGGGGGCCCGUGUUCGAGGCCGAGGCCAGGUUCUCGAAGAAGACUCCCAUCCCUUCUUUGGGGAAUAAGGAUUCCUCAAAGAAGGAGGUGGAGCAGUUUUACGCCUUCUGGCACAGGUUCGACAGCUGGCGGACCUUCGAGUUCCUGGACGAGGACGUGCCAGACGACAGCUCCAAUCGGGACCACAAGCGCUACAUCGAGCGCAAGAACAAGGCUGCGCGUGACAAGAAGAAGACUGCCGACAACGCUCGGCUGGUCAAGCUGGUCGAGAGGGCGGUGUCCGAGGAUCCACGGAUCAAGAUGUUCAAGGAGGAGGAGAAGAAGGAGAAGGAGCGCAGGAAGUGGGAGCGGGAGGCCGGGGCCCGGGCGGAGGCGGAGGCCAAGGCCAAGGCCGAGGCCGAGGCCAAGGCCAAGGCCGAGUCCGAGGCCAAGGCCAACGCCUCCGCCAAGGCCGACAAGAAGAAGGCCAAGGAGGCCGCCAAGGCCGCCAAGAAGAAGAACAAGCGGGCCAUCCGGAAUUCCGCUAAGGAGGCCGAUUACUUCGGCGAUGCUGACAAGGCUACCACCAUCGAUGAGCAGGUCGGCCUGAUCGUCGACUCGCUCAACGAUGAGGAGCUGGUCAGCACCGCCGAUAAGAUCAAGGCCAACGCAGCAGGGGCGAAGGAGGUGCUGAAGGAGUCCGCGAAGACCAUCGUGGACUCCGGCAAGCUUCCUUCGUCCCUGCUGUCCUACUUCGUG
+.((((((.(((((((.((((..(((((((((((.(((((((.......(((((((.((((.....((.(((((.(((((((((((((((((.((((((((..(((((((((...((((((((((((((((((((((.(((((((((((((.(((((....))))).)))))))).....)))))....)))))).))))))..(((((.((((((((((((((((((((.((((((((((((((((....)))))))))))))(..(((((((((((.((((.((((((((((((.(((((((((((((((((((((.(((.((((((((....))))))))))).)))))))))))))))))).)))((((.(((((.((((((((((((((.(((((.((....)).))))))))).))))))))))..))))).))))..(((((((((((((((((.((((.((..(((((((..((((((((..((((.((((((.((..((((((.((..((((((..((....)).)))))))).))))))..)))))))).)))).))))))))))))))).....)).)))).))))))))(((((((((((((((((((((((((((....))))))))))))))).))))).).))))))..))))))))).)))))))........)))))..)))).))))))))).))..)..))).)))))))))))))..)))))))))))).(((((......))))).........)))))))))).)))))))))...))))))))..))))))))))))..))))).))))).)).)))).)))))))))))))).....))))))...))))).)))).))..))))).))))))((.(((((((((((((((..((((((((((((((((((((..((((..((((..((.(..((((..(((....)))..))))..).))..))))..))))..))))))))))..((((..(.....)..))))..((.((((.....)))).))...............))))))..))))..)))))))..(..((((((((...((((((.(((((((..((((.((..(((((.(((((.(((((((......))))))).))))).))))).)))))).))))))).))))))...))))..))))..)((((((((((((((((((((..((..(((((((((((......)))))))))))..)).)))))))))))))))))))))))))))).))
+Folding free energy: -770.2 kcal/mol
+CAI: 0.872
+Total runtime: 287.996 s
+===================================================================================================================
+Protein ID: Q9Y7I8
+Protein length: 442
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGUCCGCCGGCGACAGCAUCCAGCUCUUCCCCCCCACCACGAAGCAGGCCAUCGAGGCCAGCUUCGUGCCCCACGGGAAGAUCAGCCCUCUGAUCAAGAGGGCUGUGGAGCCCGUGGGGCCCCUCUUCCUGGCCCACGCCAGGCGCCAGCGUCACGGGAGAACCUUCUCCGAGGACGAGCGCCUGGAGGUGAAGAACAAGGUCCAGGAGGAGGUGAAGGAGGAGUCCGAGGACGAGGAGGAGGAUCCUGCCAUGCUCCGCGCCGACCCCAAGGAGUGGAAGCAGCAGGAUCACUACGCCGUCCUCGGACUCUCCAAGUAUCGGUACAAGGCCGAUACUGAGCAGAUCAAGAAGGCACAUCUGAAGAAGGUGCUGAAGCACCACCCCGACAAGAAGGCCGCUUCUGGGAACAUCAACGACGACUCCUUCUUCAAGUGCAUCCAGAAGGCCUACGAGAUCCUCUCCGACCCUGUGCGGCGGCGGCAGUUCGACUCCGUGGACGAGAACGCGGACGUCGAGCCACCGGAGUCCACAACCAAGGAGACCUUCUUUGAGUUGUGGACUCCGGUGUUCGAGUCCGAGGCUAGGUUCAGCAAGAAGCAGCCUGUGCCUAGCCUCGGCACCAUCGAGUCUACCCGGGCCGAGGUCGACAACUUCUACAAUUUCUGGUACAACUUCGACUCCUGGAGGAGCUUCGAGUACCUGGACAAGGACAUCCCCGACGACGGGGAGUCCAGGGACAACAAGCGCUUCCAGGAGAAGAAGAACAGAUCCGAGCGGCAGAAGAACAAGGCCAGGGACAACGCCAGGUUGCGGAACCUGGUGGACACCGCCCUGGCCUCUGACCCUCGGAUCAAGCUGUUCAAGGAGCAGGAGAAGGCCGCCAAGGCCGCCAGAAAGUGGGAGCGGGAGGCCGGGGCCCGGGAGGCUGCCGCCGCCGCACAGAAGAAGAAGGAGGAGGAGGAGCGGCGGGCCGCGGAGGAGGCCGCCGCCAAGGCCUCCGCCGCGGCCGCCAACAAGAAGGCCAAGGAGGACAAGAAGAAGGCCCAGAAGCGGGACAAGAAGGUGGUGAAGAAUGCCCUGAAGGAUUUCAACUACUUCAGCGCCACAGAUGUGCCUUCUGCUGAGCACGUGGACAGCGUGCUCAAGGACGUGGACGUGAUCAUGUCCAAGCUGGGGGAGGGAGAGCUGGGGCAGUUGGCGGCGGACAUCAAUGCGGAGAAGGCCGCCGGCGCUGCUAGCGUGCAGGCCGUGUUCGAUAAAUUCGCCAAGAUGUUUAUCGAGCGCGGCAGCAUGAGCAGCGCCGACGUGGUCUUCUUCGCACAG
+((((((((((.((((.((.((((((((((((((((((..(((((((.((((.....)))).)))))))((((((((((.....(((((((((.....))))))))).....)))))))))).((((((((((((((((.((((((((...((((...(((((....)))))...)))).))))))))..)))........)).)))))))))))....((((.((((((((((((..(.((..((((((((..((((((((.((........)).))))).))))))))))).)).)..)))))))))))))))).(((((((((.....)))))))))..........((((((((((((((.....(((((((((((((((((............(((((((((((................((((((((..((.(.(((....(((((......((((((((..(((((((((((((((((((((((((((((((........)))))).)))))))((((((((((((((((((((((.....)))))).)))))))))))))))).((((((((((((((((((.((((........)).)).)))))))))))).))..))))((((.((((((((..((((..(..(((((((..((((((((....((((..((((((((((.((((...((.(((((((.......((((((....))))))))))))).))...)))).))))))))))..))))....((((((((.((((((.......((((((((....(((((((((....))))))))).......)))))))))))).))))))))))...((((((...)))))).....((((.....)))))))))))))))))))..)..))))..))))))))))))))))))))))))))))........)).)))).))))..(((.((((((((.(((((((........))))))).))))))))))).......)))))..)))).))..)))))))))))))))))))........)))))))..(((..((.....))..))).....)))))))))).))))))))))))))..(((((((((.....))))))))).(((((((........)))))))....)))))).)))))))))))))).)))).))))))))))...(((((((((((((((((((((((((..(((((..((((((((((((((((((.....)).)))))))))))))))).)))))))))))))))..)))))))))))))))...
+--- Score Breakdown ---
+Total Score: 71121.813
+  - MFE Score: 79350.000
+  - CAI Score (weighted): -8228.187
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -793.500 kcal/mol
+CAI: 0.911
+Total runtime: 843.148 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGUCCGCCGGCGACAGCAUCCAGCUCUUCCCCCCCACCACGAAGCAGGCCAUCGAGGCCAGCUUCGUGCCCCACGGGAAGAUCAGCCCUCUGAUCAAGAGGGCUGUGGAGCCCGUGGGGCCCCUCUUCCUGGCCCACGCCAGGCGCCAGCGUCACGGGAGAACCUUCUCCGAGGACGAGCGCCUGGAGGUGAAGAACAAGGUCCAGGAGGAGGUGAAGGAGGAGUCCGAGGACGAGGAGGAGGAUCCUGCCAUGCUCCGCGCCGACCCCAAGGAGUGGAAGCAGCAGGAUCACUACGCCGUCCUCGGACUCUCCAAGUAUCGGUACAAGGCCGAUACUGAGCAGAUCAAGAAGGCACAUCUGAAGAAGGUGCUGAAGCACCACCCCGACAAGAAGGCCGCUUCUGGGAACAUCAACGACGACUCCUUCUUCAAGUGCAUCCAGAAGGCCUACGAGAUCCUCUCCGACCCUGUGCGGCGGCGGCAGUUCGACUCCGUGGACGAGAACGCGGACGUCGAGCCACCGGAGUCCACAACCAAGGAGACCUUCUUUGAGUUGUGGACUCCGGUGUUCGAGUCCGAGGCUAGGUUCAGCAAGAAGCAGCCUGUGCCUAGCCUCGGCACCAUCGAGUCUACCCGGGCCGAGGUCGACAACUUCUACAAUUUCUGGUACAACUUCGACUCCUGGAGGAGCUUCGAGUACCUGGACAAGGACAUCCCCGACGACGGGGAGUCCAGGGACAACAAGCGCUUCCAGGAGAAGAAGAACAGAUCCGAGCGGCAGAAGAACAAGGCCAGGGACAACGCCAGGUUGCGGAACCUGGUGGACACCGCCCUGGCCUCUGACCCUCGGAUCAAGCUGUUCAAGGAGCAGGAGAAGGCCGCCAAGGCCGCCAGAAAGUGGGAGCGGGAGGCCGGGGCCCGGGAGGCUGCCGCCGCCGCACAGAAGAAGAAGGAGGAGGAGGAGCGGCGGGCCGCGGAGGAGGCCGCCGCCAAGGCCUCCGCCGCGGCCGCCAACAAGAAGGCCAAGGAGGACAAGAAGAAGGCCCAGAAGCGGGACAAGAAGGUGGUGAAGAAUGCCCUGAAGGAUUUCAACUACUUCAGCGCCACAGAUGUGCCUUCUGCUGAGCACGUGGACAGCGUGCUCAAGGACGUGGACGUGAUCAUGUCCAAGCUGGGGGAGGGAGAGCUGGGGCAGUUGGCGGCGGACAUCAAUGCGGAGAAGGCCGCCGGCGCUGCUAGCGUGCAGGCCGUGUUCGAUAAAUUCGCCAAGAUGUUUAUCGAGCGCGGCAGCAUGAGCAGCGCCGACGUGGUCUUCUUCGCACAG
+((((((((((.((((.((.((((((((((((((((((..(((((((.((((.....)))).)))))))((((((((((.....(((((((((.....))))))))).....)))))))))).((((((((((((((((.((((((((...((((...(((((....)))))...)))).))))))))..)))........)).)))))))))))....(((.(((((((((((((..(.((..((((((((..((((((((.((........)).))))).))))))))))).)).)..)))))))))))))))).(((((((((.....)))))))))..........((((((((((((((.....(((((((((((((((((............(((((((((((................((((((((..((.(.(((....(((((......((((((((..(((((((((((((((((((((((((((((((........)))))).)))))))(((((((((((((((((((((.......))))).)))))))))))))))).((((((((((((((((((.((((........)).)).)))))))))))).))..))))((((.((((((((..((((..(..(((((((..((((((((....((((..((((((((((.((((...((.(((((((.......((((((....))))))))))))).))...)))).))))))))))..))))....((((((((.((((((.......((((((((....(((((((((....))))))))).......)))))))))))).))))))))))...((((((...)))))).....((((.....)))))))))))))))))))..)..))))..))))))))))))))))))))))))))))........)).))).)))))..(((.((((((((.(((((((........))))))).))))))))))).......)))))..)))).))..)))))))))))))))))))........)))))))..(((..((.....))..))).....)))))))))).))))))))))))))..(((((((((.....))))))))).(((((((........)))))))....)))))).)))))))))))))).)))).))))))))))(..(((((((((((((((((((((((((..(((((..((((((((((((((((((.....)).)))))))))))))))).)))))))))))))))..)))))))))))))))..)
+Folding free energy: -795.2 kcal/mol
+CAI: 0.911
+Total runtime: 312.56 s
+===================================================================================================================
+Protein ID: Q04584
+Protein length: 542
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGGCCAGUCCAGGGACACCUGGGACUAGGAUGACCACCACCGUGAGCAUCAACAUCAGCACCCCCAGCUUCUACAACCCCCAGAAGAAGUUUGCUCCGGUGGUGGCUCCUAAGCCCAAGGUGAAUCCCUUCAAGACUGGAGGGACAUCUGAGUCCUCUCAGCCCCAGCCCCCCGGGACUGGGGCUCAGAGGGCUCAGAUCGGAAGGGUGGGGGAGAUCCCGGUGAGCGUGACAGCCGAGGAGCUGCCUCUGCCUCCUCCCCCCCCCCCGGGGGAGGAGCUGAGCUUCAGCUCCAACUGCGCGUUCCCGCCCCCUCCCCCACCCUUCGAGGAGCCAUUCCCACCGGCCCCGGACGAGGCCUUCCCCAGUCCUCCACCCCCCCCUCCUCCCAUGUUCGACGAGGGGCCGGCGCUGCAGAUCCCACCUGGGUCUACGGGGUCAGUGGAGAAGCCACUGGCCCCGAAGGCCCACGUGGAGAUCAGCAGCGCCCCCAGGGACCCCACCCCACCGUUUCCCAGCAAGUUCACUCCAAAGCCCUCCGGCACGCUGAGUUCUAAGCCUCCGGGGCUCGACAGCACACCCGCACCGGCUCCUUGGGCUGCUCCCCAGCAGCGCAAGGAGCCGCUCGCUAGUGUGCCGCCUCCACCGUCCCUGCCUUCUCAGCCAACAGCCAAGUUCACUCCACCUCCUGUGGCCAGUAGCCCCGGGUCCAAGCCCGGGGCUACUGUGCCAAUGGCCCCCUCAAAUUCUACACGGUACCCGACUUCUCUGCAGACACAGUUCACUGCACCUAGCCCCUCCGGCCCGCUGAGCAGGCCCCAGCCUCCCAACUUCACCUACGCUCAGCAGUGGGAGAGGCCCCAGGUGCAGGAGAAGCCUGUGCCUACAGAGAAGUCGGCUGCCGUGAAGGAUAUGAGGAGGCCAACGGCUGAUCCCCCCAAGGGGAACAGCCCCCUGACCAUGAAGGAGGUGGAGGAGCUUGAGCUGUUGACCCAGAAGCUGAUGAAGGACAUGGACCACCCCCCCCCGGUGGAGGCGGCCACUAGCGAGCUGUGCGGGUUCUGUCGGAAGCCCCUGAGUAGAACUCAGCCUGCCGUGAGGGCUUUGGACUGCCUCUUCCACGUGGAGUGUUUCACAUGCUUCAAGUGCGAGAAGCAGCUGCAGGGGCAGCAGUUCUACAACGUGGAUGAGAAGCCUUUCUGUGAGGACUGCUACGCCGGAACACUGGAGAAGUGUUCCGUGUGUAAGCAGACCAUCACAGAUAGGAUGCUCAAGGCCACCGGGAACAGCUACCACCCGCAGUGCUUCACGUGCGUGAUGUGUCACACUCCACUGGAGGGGGCAUCCUUCAUCGUGGAUCAGGCUAAUCAGCCUCACUGCGUGGACGACUACCACCGGAAGUACGCCCCCCGGUGUAGCGUCUGCAGUGAGCCGAUUAUGCCUGAGCCCGGGAAGGACGAGACGGUGCGGGUGGUGGCCCUGGAGAAGAACUUCCACAUGAAGUGCUACAAGUGCGAGGACUGCGGAAGGCCUCUGUCCAUCGAGGCCGAUGAGAAUGGCUGCUUCCCCCUGGACGGCCAUGUGCUGUGUAUGAAGUGCCACACAGUGCGGGCCAAGACGGCCUGC
+((((((.((((((((.((((((((..(((((.(.(((((((((.(((((.................(((((((.(........).)))))))))))))))))))))))))))..)))).))))..((((((((....)))))))).(((((((((((((.(((((((((((...))).)))))))).)))))))))))))..((((((((((((((....(((.(((((((.(((....(((((((.(((.(.((((((((((......))))))))))).)))...)))))))..)))))))))))))....))))))))))))))(((.((((((((.((.((((((.((((((((((((((.(((((((((((...((((((.((........)).))))))..((((((((.((((((((.(((((((.((((((((((((.....)))))))))))).))))))).)))).)))).)))))))).((((((.(((((((((((((((((.............(((((((((((((((((.(((((((((((...(((.((((((((((((...((((((((.(((((((((.((((((....)))))).)))))))))(((((((((((.((((((((((((((((.((((((((((((((((((((((((((.(((((((((((.((((((((((((((((((....)))))))))))))).)))).(((((.(((((.(((((.(((((((.((((((((((((.((.((((((((.((((((((.(((.((((.((..(((((((((((....))))...............))))))).)).)))).)))...))))))))..)))..))))).)).)))))))))))).))))))).))))).))))).)))))..(((((.(((((....))))).)))))............)))))))))))))))))).)))))))........))))).))))).)).))))...........))))))))))))))))))))))).)))))))).))))))..)))))).)))))))))))))).))))).)))))))))))).(((((((((((.(((((((((..((((....(((.(((((.((((((.((((.((((.(((.(((((.....((((.((((...(((.(((((((((.((((((((((((((((((.....))))))))).))))).)))).)).))))))).)))...))))...))))..))))).))).)).)).)))))))))).))))).)))))))..))))))))))))))))))))((((((.(((.((.(((((((((((.((.(((((((..(((((.(((.((((((...........))))))))))))))))))))))).))))).)))))).))))))))))).))))))))).)))))).))))))))...((.(((((.....))))).))....))).)))))))).)))))))))).))))...).))))).)).)))))))).)))..))))))))))))))..(((((((..........)))))))(((((((.....)))))))
+--- Score Breakdown ---
+Total Score: 86741.015
+  - MFE Score: 102950.000
+  - CAI Score (weighted): -16208.985
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -1029.500 kcal/mol
+CAI: 0.861
+Total runtime: 1505.432 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGGCCAGUCCAGGGACACCUGGGACUAGGAUGACCACCACCGUGAGCAUCAACAUCAGCACCCCCAGCUUCUACAACCCCCAGAAGAAGUUUGCUCCGGUGGUGGCUCCUAAGCCCAAGGUGAAUCCCUUCAAGACUGGAGGGACAUCUGAGUCCUCUCAGCCCCAGCCCCCCGGGACUGGGGCUCAGAGGGCUCAGAUCGGAAGGGUGGGGGAGAUCCCGGUGAGCGUGACAGCCGAGGAGCUGCCUCUGCCUCCUCCCCCCCCCCCGGGGGAGGAGCUGAGCUUCAGCUCCAACUGCGCGUUCCCGCCCCCUCCCCCACCCUUCGAGGAGCCAUUCCCACCGGCCCCGGACGAGGCCUUCCCCAGUCCUCCACCCCCCCCUCCUCCCAUGUUCGACGAGGGGCCGGCGCUGCAGAUCCCACCUGGGUCUACGGGGUCAGUGGAGAAGCCACUGGCCCCGAAGGCCCACGUGGAGAUCAGCAGCGCCCCCAGGGACCCCACCCCACCGUUUCCCAGCAAGUUCACUCCAAAGCCCUCCGGCACGCUGAGUUCUAAGCCUCCGGGGCUCGACAGCACACCCGCACCGGCUCCUUGGGCUGCUCCCCAGCAGCGCAAGGAGCCGCUCGCUAGUGUGCCGCCUCCACCGUCCCUGCCUUCUCAGCCAACAGCCAAGUUCACUCCACCUCCUGUGGCCAGUAGCCCCGGGUCCAAGCCCGGGGCUACUGUGCCAAUGGCCCCCUCAAAUUCUACACGGUACCCGACUUCUCUGCAGACACAGUUCACUGCACCUAGCCCCUCCGGCCCGCUGAGCAGGCCCCAGCCUCCCAACUUCACCUACGCUCAGCAGUGGGAGAGGCCCCAGGUGCAGGAGAAGCCUGUGCCUACAGAGAAGUCGGCUGCCGUGAAGGAUAUGAGGAGGCCAACGGCUGAUCCCCCCAAGGGGAACAGCCCCCUGACCAUGAAGGAGGUGGAGGAGCUUGAGCUGUUGACCCAGAAGCUGAUGAAGGACAUGGACCACCCCCCCCCGGUGGAGGCGGCCACUAGCGAGCUGUGCGGGUUCUGUCGGAAGCCCCUGAGUAGAACUCAGCCUGCCGUGAGGGCUUUGGACUGCCUCUUCCACGUGGAGUGUUUCACAUGCUUCAAGUGCGAGAAGCAGCUGCAGGGGCAGCAGUUCUACAACGUGGAUGAGAAGCCUUUCUGUGAGGACUGCUACGCCGGAACACUGGAGAAGUGUUCCGUGUGUAAGCAGACCAUCACAGAUAGGAUGCUCAAGGCCACCGGGAACAGCUACCACCCGCAGUGCUUCACGUGCGUGAUGUGUCACACUCCACUGGAGGGGGCAUCCUUCAUCGUGGAUCAGGCUAAUCAGCCUCACUGCGUGGACGACUACCACCGGAAGUACGCCCCCCGGUGUAGCGUCUGCAGUGAGCCGAUUAUGCCUGAGCCCGGGAAGGACGAGACGGUGCGGGUGGUGGCCCUGGAGAAGAACUUCCACAUGAAGUGCUACAAGUGCGAGGACUGCGGAAGGCCUCUGUCCAUCGAGGCCGAUGAGAAUGGCUGCUUCCCCCUGGACGGCCAUGUGCUGUGCAUGAAGUGCCACACCGUGCGCGCCAAGACAGCCUGC
+((((((.((((((((.((((((((..(((((.(.(((((((((.(((((.................(((((((.(........).)))))))))))))))))))))))))))..)))).))))..((((((((....)))))))).(((((((((((((.(((((((((((...))).)))))))).)))))))))))))..((((((((((((((....(((.(((((((.(((....(((((((.(((.((.(((((((((......))))))))))).)))...)))))))..)))))))))))))....))))))))))))))(((.((((((((.((.((((((.((((((((((((((.(((((((((((...((((((.((........)).))))))..((((((((.((((((((.(((((((.((((((((((((.....)))))))))))).))))))).)))).)))).)))))))).((((((.(((((((((((((((((.............(((((((((((((((((.(((((((((((...(((.((((((((((((...((((((((.(((((((((.((((((....)))))).)))))))))(((((((((((.((((((((((((((((.((((((((((((((((((((((((((.(((((((((((.((((((((((((((((((....)))))))))))))).)))).(((((.(((((.(((((.(((((((.((((((((((((.((.((((((((.((((((((.(((.((((.((..((((((((((......)))...............))))))).)).)))).)))...))))))))..)))..))))).)).)))))))))))).))))))).))))).))))).)))))..(((((.(((((....))))).)))))............)))))))))))))))))).)))))))........))))).))))).)).))))...........))))))))))))))))))))))).)))))))).))))))..)))))).)))))))))))))).))))).)))))))))))).(((((((((((.(((((((((..((((....(((.(((((.((((((.((((.((((.(((.(((((.....((((.((((...(((.(((((((((.((((((((((((((((((.....))))))))).))))).)))).)).))))))).)))...))))...))))..))))).))).)).)).)))))))))).))))).)))))))..))))))))))))))))))))((((((.(((.((.(((((((((((.((.(((((((..(((((.(((.((((((...........))))))))))))))))))))))).))))).)))))).))))))))))).))))))))).)))))).))))))))...((.(((((.....))))).))....))).)))))))).)))))))))).))))...).))))).)).)))))))).)))..))))))))))))))(((((((.(.((..(((((((...))).)))))).))))))..))
+Folding free energy: -1024.3 kcal/mol
+CAI: 0.863
+Total runtime: 725.71 s
+===================================================================================================================
+Protein ID: Q62523
+Protein length: 564
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGGCCGCCCCAAGGCCACCACCCGCCAUCAGCGUGUCCGUGAGCGCCCCCGCAUUCUACGCCCCCCAGAAGAAGUUUGCCCCUGUGGUGGCUCCGAAGCCCAAGGUGAAUCCCUUUCGCCCUGGGGAUUCGGAGCCACCAGUGGCUGCGGGGGCCCAGCGGGCACAGAUGGGGCGCGUCGGGGAGAUACCGCCACCUCCUCCCGAGGACUUCCCGCUGCCUCCCCCUCCCCUGAUUGGGGAGGGGGACGACAGCGAGGGGGCGCUGGGGGGGGCCUUCCCCCCCCCUCCUCCUCCAAUGAUCGAGGAGCCGUUCCCCCCGGCUCCUCUGGAGGAGGACAUCUUCCCCAGUCCUCCUCCACCAUUGGAGGAGGAGGGGGGGCCGGAGGCCCCCACCCAGCUGCCCCCUCAGCCUCGGGAGAAGGUGUGCAGUAUCGACCUUGAGAUCGAUAGUCUGUCAUCCCUGCUGGAUGACAUGACUAAGAACGAUCCCUUCAAGGCCAGGGUGAGCAGCGGGUACGUGCCCCCCCCGGUGGCCACCCCCUUCGUGCCCAAGCCCAGCACGAAGCCGGCCCCGGGGGGCACGGCCCCGCUGCCACCCUGGAAGACACCAUCUUCUUCUCAGCCGCCCCCUCAGCCCCAGGCCAAGCCACAGGUGCAGCUGCACGUGCAGCCCCAGGCUAAGCCGCACGUGCAGCCGCAGCCUGUGAGCUCGGCCAACACCCAGCCGAGGGGGCCGCUGAGCCAGGCUCCCACCCCGGCCCCGAAGUUUGCCCCCGUGGCUCCCAAGUUCACCCCCGUGGUGAGCAAGUUCAGCCCGGGGGCACCUUCGGGGCCGGGGCCCCAGCCUAACCAGAAGAUGGUGCCCCCCGACGCGCCCUCAUCUGUGUCCACUGGGUCCCCGCAGCCACCCAGCUUCACCUAUGCCCAGCAGAAGGAGAAGCCACUGGUGCAGGAGAAGCAGCACCCUCAGCCACCUCCUGCUCAGAAUCAGAACCAGGUCCGCUCCCCCGGCGGACCUGGCCCUCUGACUCUGAAGGAGGUGGAGGAGCUGGAGCAGCUGACCCAGCAGCUGAUGCAGGACAUGGAGCACCCCCAGAGGCAGAGCGUGGCCGUCAACGAGAGUUGCGGCAAAUGCAAUCAGCCUCUGGCCCGGGCCCAGCCUGCCGUCAGGGCGCUGGGUCAGCUGUUCCACAUCACCUGCUUCACCUGCCACCAGUGCCAGCAGCAGCUGCAGGGGCAGCAGUUCUACUCUCUGGAGGGCGCCCCCUAUUGCGAGGGGUGCUACACGGACACGCUGGAGAAGUGCAAUACCUGCGGGCAGCCGAUCACCGACAGGAUGCUGAGGGCGACAGGCAAGGCCUAUCACCCUCAGUGUUUCACCUGUGUGGUGUGCGCCUGCCCGCUGGAGGGCACUUCUUUCAUUGUGGAUCAGGCCAACCAGCCCCACUGCGUGCCUGAUUACCACAAGCAGUACGCCCCCCGGUGCUCCGUGUGUAGUGAGCCCAUUAUGCCGGAGCCCGGGCGGGACGAGACUGUGCGGGUGGUGGCCUUGGACAAGAAUUUUCACAUGAAGUGCUACAAGUGUGAGGAUUGCGGGAAGCCCCUGUCCAUCGAGGCCGAUGACAACGGGUGCUUCCCGCUGGACGGCCAUGUGCUGUGCCGGAAGUGCCACAGCGCUCGGGCACAGACC
+((((((((((((((((((((((((((...(((((((((((((((((((((((((.....(((((.(((((((((.(((((((((((((((((((((((.((((.((((((.....)))))).))))..)))))))))))))((((((((((((((((((.((((((((((((((((((((((((.(((((.(((((((.(((((((((.((....(((((.(((((((((((.....))))))))))).).))))((((((((((((((((((((((((.((((((((((((((((((((...(((((((((.......)))))))))(((((((((((..........))))))))))).))))))))))))))))))))..)))))))))).)))))).))))))))))))))))))).))))).)).)))))..(((((((((((.(((((((((((((.....)))))))).)))))....)))))...))))))((((((((.((((((((..((((((((((..((.((((.....((((((((.........))))))))..))))))))))))))))..))))))))))))))))....(((((((((((.((((((.((((((((.((....((((.((((((((((((.(((((((((((((((...)))).....))))))))))).))).)))))).))).))))........)).)))))))).))))))..(((((....((((((((((((((..((((((((.((((.....(((((((.....)))))))......)))))))))))).))))))))))))))....)))))....)))))))))))..))))))))))))).))))))))))).))))))))))))))))))...(((((.(((.(((...)))..))).)))))((((((((((((.(((((((....(((..(((((((((..(((((.(((((.(((((((((((.....)))))))))))...))))).))))))))))))))..))).((((((((((((((((((..((((((((((.(.(((.((.((.((((((((.((((((.((((.((((....))))))))..))))..)).))))))))...))))))))))))).)))))...))))))))))))))))))......))))))).))))).))))))).((((....))))))))))))).).))))....))))).)))))........)))).)))))))).)))))))))))))(((((((((..(.((.((((((((.((..((((((((((((((((((((.((.((((...)))).)).))))))))))....))))).)))))..)).)))))))).)))..)))))))))...(((((((((((((..(((((.....))).)))))))))..))))))(((((.((((((((((.((((((.((((((((....))))))))))))))))))).))).))..)))))))))))))))))))))).....(((((((((((............)))))))))))(((((((((((((((.(((((....))))))))..))).))))))))).)).)))))))((.(((((((.(.(((((....)))))).))))))))).
+--- Score Breakdown ---
+Total Score: 98012.633
+  - MFE Score: 115020.000
+  - CAI Score (weighted): -17007.367
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -1150.200 kcal/mol
+CAI: 0.860
+Total runtime: 1672.068 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGGCCGCCCCAAGGCCACCACCCGCCAUCAGCGUGUCCGUGAGCGCCCCCGCAUUCUACGCCCCCCAGAAGAAGUUUGCCCCUGUGGUGGCUCCGAAGCCCAAGGUGAAUCCCUUUCGCCCUGGGGAUUCGGAGCCACCAGUGGCUGCGGGGGCCCAGCGGGCACAGAUGGGGCGCGUCGGGGAGAUACCGCCACCUCCUCCCGAGGACUUCCCGCUGCCUCCCCCUCCCCUGAUUGGGGAGGGGGACGACAGCGAGGGGGCGCUGGGGGGGGCCUUCCCCCCCCCUCCUCCUCCAAUGAUCGAGGAGCCGUUCCCCCCGGCUCCUCUGGAGGAGGACAUCUUCCCCAGUCCUCCUCCACCAUUGGAGGAGGAGGGGGGGCCGGAGGCCCCCACCCAGCUGCCCCCUCAGCCUCGGGAGAAGGUGUGCAGUAUCGACCUUGAGAUCGAUAGUCUGUCAUCCCUGCUGGAUGACAUGACUAAGAACGAUCCCUUCAAGGCCAGGGUGAGCAGCGGGUACGUGCCCCCCCCGGUGGCCACCCCCUUCGUGCCCAAGCCCAGCACGAAGCCGGCCCCGGGGGGCACGGCCCCGCUGCCACCCUGGAAGACACCAUCUUCUUCUCAGCCGCCCCCUCAGCCCCAGGCCAAGCCACAGGUGCAGCUGCACGUGCAGCCCCAGGCUAAGCCGCACGUGCAGCCGCAGCCUGUGAGCUCGGCCAACACCCAGCCGAGGGGGCCGCUGAGCCAGGCUCCCACCCCGGCCCCGAAGUUUGCCCCGGUGGCUCCCAAGUUCACCCCCGUGGUGAGCAAGUUCAGCCCCGGGGCACCUUCGGGGCCGGGGCCCCAGCCUAACCAGAAGAUGGUGCCCCCCGACGCGCCCUCAUCUGUGUCCACUGGGUCCCCGCAGCCACCCAGCUUCACCUAUGCCCAGCAGAAGGAGAAGCCACUGGUGCAGGAGAAGCAGCACCCUCAGCCACCUCCUGCUCAGAAUCAGAACCAGGUCCGCUCCCCCGGCGGACCUGGCCCUCUGACUCUGAAGGAGGUGGAGGAGCUGGAGCAGCUGACCCAGCAGCUGAUGCAGGACAUGGAGCACCCCCAGAGGCAGAGCGUGGCCGUCAACGAGAGUUGCGGCAAAUGCAAUCAGCCUCUGGCCCGGGCCCAGCCUGCCGUCAGGGCGCUGGGUCAGCUGUUCCACAUCACCUGCUUCACCUGCCACCAGUGCCAGCAGCAGCUGCAGGGGCAGCAGUUCUACUCUCUGGAGGGCGCCCCCUAUUGCGAGGGGUGCUACACGGACACGCUGGAGAAGUGCAAUACCUGCGGGCAGCCGAUCACCGACAGGAUGCUGAGGGCGACAGGCAAGGCCUAUCACCCUCAGUGUUUCACCUGUGUGGUGUGCGCCUGCCCGCUGGAGGGCACUUCUUUCAUUGUGGAUCAGGCCAACCAGCCCCACUGCGUGCCUGAUUACCACAAGCAGUACGCCCCCCGGUGCUCCGUGUGUAGUGAGCCCAUUAUGCCGGAGCCCGGGCGGGACGAGACUGUGCGGGUGGUGGCCUUGGACAAGAAUUUUCACAUGAAGUGCUACAAGUGUGAGGAUUGCGGGAAGCCCCUGUCCAUCGAGGCCGAUGACAACGGGUGCUUCCCGCUGGACGGCCAUGUGCUGUGCCGGAAGUGCCACAGCGCUCGGGCACAGACC
+((((((((((((((((((((((((((...(((((((((((((((((((((((((.....(((((.(((((((((.(((((((((((((((((((((((.((((.((((((.....)))))).))))..)))))))))))))((((((((((((((((((.((((((((((((((((((((((((.(((((.(((((((.(((((((((.((....(((((.(((((((((((.....))))))))))).).))))((((((((((((((((((((((((.((((((((((((((((((((...(((((((((.......)))))))))(((((((((((..........))))))))))).))))))))))))))))))))..)))))))))).)))))).))))))))))))))))))).))))).)).)))))..(((((((((((.(((((((((((((.....)))))))).)))))....)))))...))))))((((((((.((((((((..((((((((((..((.((((.....((((((((.........))))))))..))))))))))))))))..))))))))))))))))....(((((((((((.((((((.((((((((.((....((((.((((((((((((.(((((((((((((((...)))).....))))))))))).))).)))))).))).))))........)).)))))))).))))))..(((((....((((((((((((((..((((((((.((((.....(((((((.....)))))))......)))))))))))).))))))))))))))....)))))....)))))))))))..))))))))))))).))))))))))).))))))))))))))))))...(((((.(((.(((...)))..))).)))))((((((((((((.(((((((....(((..(((((((((..(((((.(((((.(((((((((((.....)))))))))))...))))).))))))))))))))..))).((((((((((((((((((..((((((((((.(.(((.((.((.((((((((.((((((.((((.((((....))))))))..))))..)).))))))))...))))))))))))).)))))...))))))))))))))))))......))))))).))))).))))))).((((....))))))))))))).).))))....))))).)))))........)))).)))))))).)))))))))))))(((((((((..(.((.((((((((.((..((((((((((((((((((((.((.(((.....))).)).))))))))))....))))).)))))..)).)))))))).)))..)))))))))...(((((((((((((..(((((.....))).)))))))))..))))))(((((.((((((((((.((((((.((((((((....))))))))))))))))))).))).))..)))))))))))))))))))))).....(((((((((((............)))))))))))(((((((((((((((.(((((....))))))))..))).))))))))).)).)))))))(..(((((((.(.(((((....)))))).)))))))..)
+Folding free energy: -1151.5 kcal/mol
+CAI: 0.86
+Total runtime: 787.017 s
+===================================================================================================================
+Protein ID: Q15942
+Protein length: 572
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGGCCGCCCCGCGGCCAAGUCCCGCAAUCAGCGUGUCCGUGUCUGCGCCCGCCUUCUAUGCGCCCCAGAAGAAGUUCGGGCCGGUGGUGGCUCCGAAGCCCAAGGUGAAUCCCUUUCGCCCUGGGGAUUCGGAGCCACCACCGGCCCCUGGGGCGCAGCGGGCGCAGAUGGGGAGGGUGGGGGAGAUUCCCCCCCCUCCCCCAGAGGACUUUCCUCUGCCCCCUCCUCCUCUGGCGGGGGACGGGGACGAUGCGGAGGGGGCCCUGGGGGGGGCCUUCCCCCCCCCGCCCCCUCCCAUCGAGGAGUCUUUUCCUCCAGCCCCGCUGGAGGAGGAGAUUUUUCCCAGUCCCCCUCCCCCGCCAGAGGAGGAGGGGGGGCCAGAGGCUCCAAUUCCUCCACCUCCUCAGCCCAGGGAGAAGGUCUCCAGCAUCGACCUGGAGAUCGACUCCCUGUCUAGCCUGCUGGAUGACAUGACCAAGAAUGACCCAUUCAAGGCUAGGGUCAGCUCUGGGUACGUGCCGCCACCUGUGGCAACGCCUUUCAGCUCGAAGAGCUCUACCAAGCCCGCGGCAGGGGGGACCGCCCCCCUGCCGCCUUGGAAGAGCCCUUCGAGCUCCCAGCCGUUGCCACAGGUGCCGGCACCUGCCCAGAGCCAGACCCAGUUCCACGUGCAGCCGCAGCCUCAGCCCAAGCCCCAGGUGCAGCUGCACGUGCAGAGCCAGACUCAGCCCGUGAGUCUGGCUAACACUCAGCCCCGGGGGCCCCCGGCCUCCUCACCUGCUCCUGCACCCAAGUUUUCUCCCGUGACCCCCAAGUUCACCCCUGUGGCCAGUAAGUUUAGCCCGGGGGCCCCUGGGGGGAGCGGGUCCCAGCCGAACCAGAAGCUCGGGCACCCCGAGGCUCUGUCGGCUGGGACCGGCUCCCCCCAGCCCCCGAGCUUUACUUACGCCCAGCAGCGGGAGAAGCCUCGGGUGCAGGAGAAGCAGCACCCUGUGCCCCCCCCGGCACAGAACCAGAACCAGGUGAGGAGCCCGGGGGCCCCCGGGCCGCUGACGCUGAAGGAGGUGGAGGAGUUGGAGCAGCUGACCCAGCAGCUCAUGCAGGAUAUGGAGCACCCCCAGAGACAGAACGUGGCCGUGAACGAGCUGUGUGGACGCUGCCACCAGCCCCUCGCCCGGGCCCAGCCCGCGGUGAGGGCGCUGGGGCAGCUGUUCCACAUAGCUUGCUUCACGUGCCACCAGUGCGCCCAGCAGCUGCAGGGGCAGCAGUUCUACUCUCUGGAGGGUGCUCCAUACUGCGAGGGCUGCUACACGGACACGCUGGAGAAGUGCAACACCUGCGGGGAGCCUAUCACAGACCGCAUGCUGAGAGCAACGGGGAAGGCCUACCAUCCCCAUUGCUUCACGUGUGUGGUCUGUGCUAGGCCCCUGGAGGGCACUUCCUUCAUCGUGGACCAGGCCAACCGCCCUCACUGCGUGCCCGACUACCACAAGCAGUAUGCCCCUCGCUGCAGCGUGUGCAGCGAGCCCAUUAUGCCUGAGCCUGGUCGGGACGAGACAGUGAGGGUGGUGGCCCUGGACAAGAACUUCCACAUGAAGUGCUACAAGUGCGAGGACUGCGGGAAGCCCCUGUCCAUCGAGGCCGAUGACAACGGGUGCUUCCCGCUGGAUGGGCACGUGCUGUGUCGCAAGUGCCACACAGCACGUGCCCAGACA
+.(((((((...)))))))(((((((((.(((((((((((((((((((((((((......((((((((((.........((((((((((((((((((((.((((.((((((.....)))))).))))..))))))))))))))))))))))))))))))))))))))))).((((((((.((((((...))))))))))))))(((((((...)))))))(((((((((((((((((((((((.((((((((((.(((((((((...((((((((....)))))))).)))))))))))))((((((((((((((((((((...))))))))))))))))))))...)))))).)))))))))))))))))))))))((.(((..(((((((((((((((((((((((((.(((((((..(((((((((.......)))))))))..)))))))..((((((..((((((.(((........)))...))))))))))))(((((.((((((((((.((((((.((((((((((((((.((...(((((((((.(((((.(((((...((((((((((((....))))))))))))))))).))))).)))))))))...)).)))))))))))))).)))))).))))))))))..))))).....((((((((((.(((.(((..((....))...)))))).))))))))))...(((((((((((.....))))))))))).....((((((((((((((((((((.((((((((((((((((((((((.((.((((((((((.................(((.(((..((((((..(((.(((((((...((((((((((.((((((((((((..((((..((((((...))))))..)))))))))))))))).))))))))))))))))).)))..))))))))))))..)))))))))).)).)))))))))))..........(((((((......))))))).........))))))))))).)))))))))))))))..))))).))))).))))))))))))))))))))..))).)).((((((((.(((((..(((((((((((((((((((.((((((((((((((((((((((((((((((((((((.((((((((((((((((((...))))).)))))))).))))))))))).)).)))))))))))).)))))).)))))...(((((((.((....))..)))).))))))))..))))))).))))))))))))))))).)))))))).)))))))))))))).(((((((....(((.(((((.(((((.(((((((((((((((((.(((((.(((((.((....)).))))).)))))))).)))))))))))))).)))))))))).))))))))))((((((.(((((((((((((.(((((((((((((.((((((((((...((.(((..(((...(((((((((.....)))))))))..)))..))).))....)))))))).)).).))))))))))))))))).))).........))))))))))).........)))).)))))(((((((((((((((.(((((....))))))))..))).)))))))))((..((((((((((((((((.((....)).))))))))))))))))..))
+--- Score Breakdown ---
+Total Score: 103785.362
+  - MFE Score: 123330.000
+  - CAI Score (weighted): -19544.638
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -1233.300 kcal/mol
+CAI: 0.843
+Total runtime: 1970.805 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGGCCGCCCCGCGGCCAAGUCCCGCAAUCAGCGUGUCCGUGUCUGCGCCCGCCUUCUAUGCGCCCCAGAAGAAGUUCGGGCCGGUGGUGGCUCCGAAGCCCAAGGUGAAUCCCUUUCGCCCUGGGGAUUCGGAGCCACCACCGGCCCCUGGGGCGCAGCGGGCGCAGAUGGGGAGGGUGGGGGAGAUUCCCCCCCCUCCCCCAGAGGACUUUCCUCUGCCCCCUCCUCCUCUGGCGGGGGACGGGGACGAUGCGGAGGGGGCCCUGGGGGGGGCCUUCCCCCCCCCGCCCCCUCCCAUCGAGGAGUCUUUUCCUCCAGCCCCGCUGGAGGAGGAGAUUUUUCCCAGUCCCCCUCCCCCGCCAGAGGAGGAGGGGGGGCCAGAGGCUCCAAUUCCUCCACCUCCUCAGCCCAGGGAGAAGGUCUCCAGCAUCGACCUGGAGAUCGACUCCCUGUCUAGCCUGCUGGAUGACAUGACCAAGAAUGACCCAUUCAAGGCUAGGGUCAGCUCUGGGUACGUGCCGCCACCUGUGGCAACGCCUUUCAGCUCGAAGAGCUCUACCAAGCCCGCGGCAGGGGGGACCGCCCCCCUGCCGCCUUGGAAGAGCCCUUCGAGCUCCCAGCCGUUGCCACAGGUGCCGGCACCUGCCCAGAGCCAGACCCAGUUCCACGUGCAGCCGCAGCCUCAGCCCAAGCCCCAGGUGCAGCUGCACGUGCAGAGCCAGACUCAGCCCGUGAGUCUGGCUAACACUCAGCCCCGGGGGCCCCCGGCCUCCUCACCUGCUCCUGCACCCAAGUUUUCUCCCGUGACCCCCAAGUUCACCCCUGUGGCCAGUAAGUUUAGCCCGGGGGCCCCUGGGGGGAGCGGGUCCCAGCCGAACCAGAAGCUCGGGCACCCCGAGGCUCUGUCGGCUGGGACCGGCUCCCCCCAGCCCCCGAGCUUUACUUACGCCCAGCAGCGGGAGAAGCCUCGGGUGCAGGAGAAGCAGCACCCUGUGCCCCCCCCGGCACAGAACCAGAACCAGGUGAGGAGCCCGGGGGCCCCCGGGCCGCUGACGCUGAAGGAGGUGGAGGAGUUGGAGCAGCUGACCCAGCAGCUCAUGCAGGAUAUGGAGCACCCCCAGAGACAGAACGUGGCCGUGAACGAGCUGUGUGGACGCUGCCACCAGCCCCUCGCCCGGGCCCAGCCCGCGGUGAGGGCGCUGGGGCAGCUGUUCCACAUAGCUUGCUUCACGUGCCACCAGUGCGCCCAGCAGCUGCAGGGGCAGCAGUUCUACUCUCUGGAGGGUGCUCCAUACUGCGAGGGCUGCUACACGGACACGCUGGAGAAGUGCAACACCUGCGGGGAGCCUAUCACAGACCGCAUGCUGAGAGCAACGGGGAAGGCCUACCAUCCCCAUUGCUUCACGUGUGUGGUCUGUGCUAGGCCCCUGGAGGGCACUUCCUUCAUCGUGGACCAGGCCAACCGCCCUCACUGCGUGCCCGACUACCACAAGCAGUAUGCCCCUCGCUGCAGCGUGUGCAGCGAGCCCAUUAUGCCUGAGCCUGGUCGGGACGAGACAGUGAGGGUGGUGGCCCUGGACAAGAACUUCCACAUGAAGUGCUACAAGUGCGAGGACUGCGGGAAGCCCCUGUCCAUCGAGGCCGAUGACAACGGGUGCUUCCCGCUGGAUGGGCACGUGCUGUGUCGCAAGUGCCACACAGCACGUGCCCAGACC
+((((((((...)))))))(((((((((.(((((((((((((((((((((((((......((((((((((.........((((((((((((((((((((.((((.((((((.....)))))).))))..))))))))))))))))))))))))))))))))))))))))).((((((((.((((((...))))))))))))))(((((((...))))))).((((((((((((((((((((((.((((((((((.(((((((((...((((((((....)))))))).)))))))))))))((((((((((((((((((((...))))))))))))))))))))...)))))).))))))))))))))))))))))(((.(((..(((((((((((((((((((((((((.(((((((..(((((((((.......)))))))))..)))))))..((((((..((((((.(((........)))...))))))))))))(((((.((((((((((.((((((.((((((((((((((.((...(((((((((.(((((.(((((...((((((((((((....))))))))))))))))).))))).)))))))))...)).)))))))))))))).)))))).))))))))))..))))).....((((((((((.(((.(((..((....))...)))))).))))))))))...(((((((((((.....))))))))))).....((((((((((((((((((((.((((((((((((((((((((((.((.((((((((((.................(((.(((..((((((..(((.(((((((...((((((((((.((((((((((((..((((..((((.(...).))))..)))))))))))))))).))))))))))))))))).)))..))))))))))))..)))))))))).)).)))))))))))..........(((((((......))))))).........))))))))))).)))))))))))))))..))))).)))).)))))))))))))))))))))..))).)))((((((((.(((((..(((((((((((((((((((.((((((((((((((((((((((((((((((((((((.((((((((((((((((((...))))).)))))))).))))))))))).)).)))))))))))).)))))).)))))...(((((((.((....))..)))).))))))))..))))))).))))))))))))))))).)))))))).)))))))))))))).(((((((....(((.(((((.(((((.(((((((((((((((((.(((((.(((((.((....)).))))).)))))))).)))))))))))))).)))))))))).))))))))))((((((.(((((((((((((.(((((((((((((.((((((((((...((.(((..(((...(((((((((.....)))))))))..)))..))).))....)))))))).)).).))))))))))))))))).))).........))))))))))).........)))).)))))(((((((((((((((.(((((....))))))))..))).))))))))))((.((((((((((((((((.((....)).))))))))))))))))..))
+Folding free energy: -1227.9 kcal/mol
+CAI: 0.843
+Total runtime: 984.785 s
+===================================================================================================================
+Protein ID: Q5RA78
+Protein length: 591
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGUGGGAGCGCCUGAACUGCGCCGCAGAGGACUUCUACUCCAGGCUGCUGCAGAAGUUCAACGAGGAGAAGAAGGGCAUCAGGAAGGACCCCUUCCUGUAUGAGGCAGAUGUGCAGGUCCAGCUGAUCUCCAAGGGGCAGCCUAAUCCACUGAAGAACAUCCUGAACGAGAACGACAUCGUGUUCAUCGUGGAGAAGGUGCCCCUGGAGAAGGAGGAGACCAGCCACAUCGAGGAGCUCCAGUCCGAGGAGACCGCCAUCAGCGACUUCAGCACCGGCGAGAACGUCGGCCCCCUGGCACUGCCCGUGGGGAAGGCAAGGCAGCUGAUCGGGCUCUACACGAUGGCUCAUAACCCCAAUAUGACCCAUCUGAAGAUCAACCUGCCCGUCACUGCCUUGCCUCCCCUCUGGGUGCGCUGCGACAGCAGCGACCCAGAGGGGACUUGUUGGCUGGGGGCCGAGCUGAUCACCACCAACAAUAGCAUCACUGGGAUCGUGCUGUACGUGGUGUCAUGCAAGGCGGACAAGAACUACAGCGUGAACCUGGAGAACCUCAAGAACUUGCACAAGAAGAGGCACCACCUCUCUACUGUGACAAGUAAGGGGUUCGCCCAGUACGAGCUGUUCAAGUCUUCCGCCUUGGAUGACACCAUUACAGCAUCCCAGACUGCUAUUGCCCUGGACAUCAGCUGGUCCCCAGCCGACGAGAUUCUCCAGAUUCCACCUCUGAGUUCAACGGCCACGUUGAACAUCAAGGUGGAGUCUGGAGAGCCCCGCGGGCCCCUGAACCACCUGUACAGGGAGCUGAAGUUCUUGCUGGUGCUGGCUGAUGGCCUUCGGACUGGAGUGACCGAGUGGCUGGAGCCUCUGGAGGCGAAGUCCGCCGUCGAGCUUGUUCAGGAGUUCCUGAACGACCUGAACAAGCUCGACGGCUUCGGGGACUCCACCAAGAAGGACACCGAGGUGGAGACCCUGAAGCACGACACUGCCGCCGUGGACAGGAGCGUGAAGCGCCUGUUCAAGGUGCGCAGUGAUCUGGACUUCGCCGAGCAGCUGUGGUGCAAGAUGAGCAGCAGCGUCAUCAGCUACCAGGAUCUGGUGAAGUGCUUCACCCUGAUCAUCCAGAGUCUGCAGAGGGGGGAUAUCCAGCCCUGGCUGCAUUCAGGGAGCAACAGCCUCCUGUCCAAGCUGAUCCAUCAGUCCUACCACGGGACGAUGGAUACAGUGAGCUUGUCCGGCACGAUCCCAGUGCAGAUGCUGCUGGAGAUCGGGCUGGACAAGCUGAAGAAGGAUUACAUUUCCUUCUUCAUUGGACAGGAGCUGGCCUCCCUGAAUCACCUGGAGUACUUUAUCGCCCCCUCUGUGGACAUCCAGGAGCAGGUGUACAGGGUGCAGAAGCUUCACCACAUCCUGGAGAUCCUGGUGAGCUGCAUGCCCUUCAUCAAGUCGCAGCACGAGCUGCUCUUCAGCCUGACCCAGAUCUGCAUCAAGUAUUACAAGCAGAACCCGCUGGACGAGCAGCACAUCUUCCAGCUGCCCGUCCGGCCCACUGCUGUGAAGAACCUCUACCAGUCUGAGAAGCCUCAGAAGUGGAGGGUGGAGAUUUACAGUGGGCAGAAGAAGAUCAAGACAGUGUGGCAGCUGUCUGAUUCUUCUCCCAUUGACCACCUGAAUUUCCACAAGCCCGACUUCUCCGAGUUGACUCUGAACGGCAGCCUGGAGGAGAGGAUCUUCUUCACCAACAUGGUGACGUGCAGUCAGGUGCAUUUCAAG
+...(((((((((((((.((((((...(((((((((((.((((((((((((((((.(((.((((..(((((((..((((..((((((((...))))))))..(((.((((((.((..((((..((((((((((.(((((((.(((..(((((.((.((((((..((..((....)).))..)))))).)))))))..))))))))))))))).(((((...((((((((.(((.(..((((((((((((((.....(((((((((.....((((((((((((((((.(((((.((((((((..((((((((((..((((((((((.(((.((((((((.((.(((((.(((((.......))))).))))))).))).......))))))))))))))))))((((((((((((.((((((....))))))))))))))))))(((((((((((((((((.(((((((..(((....((((((((...((((((...(((((((.((((((((((.(((((((((..(((...(((((.((...((((.(((((((....((((((((((((.((((.....)))))))..)))).)))))..)))))))..))))..)).))))).....)))))))))))).)))))))))))))))))))))))..))))))))...)))..)))))))))))))))))))))))).(((((((((((((((((.(((((((((((....)))))))).))))))))))))))))))))))))))))))............))).))))).))))).)))))))))))))))))))))))))))))))))))))))..))))))))))))..)))))...(((((((((((.(((((((((((((((((.(((....)))..)))))))))))))))))(((((((((.(((((((..(........)..))))))).)))))))))..((((((((((((.((((((((.((.....)).)))))))).)))).)))))).)))))))))))))(((((((((((.(((..(((((((((((((.(((((((((.(((((((.(((((((((.((.((((((((((.(((.((((((((((((((((((((....((((.((.((.((((((((((...((((.(((((((((((((((((((((.(((((.....)))))))))))).)))).((((((((((((.((((((((((((....)).))))).))))).))))))))))))(((((((((.......))))))))).))))))))))))))..)))))))))))))).)).))....)))).)))))))))))))).))..)))...)))...))))))).))..))))))))).)))))))))...)))))))))))).)))...))))).....))).))).)))))))).)))))..)))))).)))))).)))....((((.(((((.....((((((((.(((((..........))))).))))))))...)))))))))....(((((((...((((((....)))))).)))))))((((((((((((((((((.((((((..(((.(((((((......)))))))))))))))))))))))......)))))))))))..))))..)))))))..))))))))))..))))))))))))).))))).))))))((((((...)))))).)))))))))))))).)))))..
+--- Score Breakdown ---
+Total Score: 90633.757
+  - MFE Score: 104150.000
+  - CAI Score (weighted): -13516.243
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -1041.500 kcal/mol
+CAI: 0.892
+Total runtime: 2998.328 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGUGGGAGCGGCUGAACUGUGCUGCUGAGGACUUCUACUCCAGGCUGCUGCAGAAGUUCAACGAGGAGAAGAAGGGCAUCAGGAAGGACCCCUUCCUGUAUGAGGCAGAUGUGCAGGUCCAGCUGAUCUCCAAGGGGCAGCCUAAUCCACUGAAGAACAUCCUGAACGAGAACGACAUCGUGUUCAUCGUGGAGAAGGUGCCCCUGGAGAAGGAGGAGACCAGCCACAUCGAGGAGCUCCAGUCCGAGGAGACCGCCAUCAGCGACUUCAGCACCGGCGAGAACGUCGGCCCCCUGGCACUGCCCGUGGGGAAGGCAAGGCAGCUGAUCGGGCUCUACACGAUGGCUCAUAACCCCAAUAUGACCCAUCUGAAGAUCAACCUGCCCGUCACUGCCUUGCCUCCCCUCUGGGUGCGCUGCGACAGCAGCGACCCAGAGGGGACUUGUUGGCUGGGGGCCGAGCUGAUCACCACCAACAAUAGCAUCACUGGGAUCGUGCUGUACGUGGUGUCAUGCAAGGCGGACAAGAACUACAGCGUGAACCUGGAGAACCUCAAGAACUUGCACAAGAAGAGGCACCACCUCUCUACUGUGACAAGUAAGGGGUUCGCCCAGUACGAGCUGUUCAAGUCUUCCGCCUUGGAUGACACCAUUACAGCAUCCCAGACUGCUAUUGCCCUGGACAUCAGCUGGUCCCCAGCCGACGAGAUUCUCCAGAUUCCACCUCUGAGUUCAACGGCCACGUUGAACAUCAAGGUGGAGUCUGGAGAGCCCCGCGGGCCCCUGAACCACCUGUACAGGGAGCUGAAGUUCUUGCUGGUGCUGGCUGAUGGCCUUCGGACUGGAGUGACCGAGUGGCUGGAGCCUCUGGAGGCGAAGUCCGCCGUCGAGCUUGUUCAGGAGUUCCUGAACGACCUGAACAAGCUCGACGGCUUCGGGGACUCCACCAAGAAGGACACCGAGGUGGAGACCCUGAAGCACGACACUGCCGCCGUGGACAGGAGCGUGAAGCGCCUGUUCAAGGUGCGCAGUGAUCUGGACUUCGCCGAGCAGCUGUGGUGCAAGAUGAGCAGCAGCGUCAUCAGCUACCAGGAUCUGGUGAAGUGCUUCACCCUGAUCAUCCAGAGUCUGCAGAGGGGGGAUAUCCAGCCCUGGCUGCAUUCAGGGAGCAACAGCCUCCUGUCCAAGCUGAUCCAUCAGUCCUACCACGGGACGAUGGAUACAGUGAGCUUGUCCGGCACGAUCCCAGUGCAGAUGCUGCUGGAGAUCGGGCUGGACAAGCUGAAGAAGGAUUACAUUUCCUUCUUCAUUGGACAGGAGCUGGCCUCCCUGAAUCACCUGGAGUACUUUAUCGCCCCCUCUGUGGACAUCCAGGAGCAGGUGUACAGGGUGCAGAAGCUUCACCACAUCCUGGAGAUCCUGGUGAGCUGCAUGCCCUUCAUCAAGUCGCAGCACGAGCUGCUCUUCAGCCUGACCCAGAUCUGCAUCAAGUAUUACAAGCAGAACCCGCUGGACGAGCAGCACAUCUUCCAGCUGCCCGUCCGGCCCACUGCUGUGAAGAACCUCUACCAGUCUGAGAAGCCUCAGAAGUGGAGGGUGGAGAUUUACAGUGGGCAGAAGAAGAUCAAGACAGUGUGGCAGCUGUCUGAUUCUUCUCCCAUUGACCACCUGAAUUUCCACAAGCCCGACUUCUCCGAGUUGACUCUGAACGGCAGCCUGGAGGAGAGGAUCUUCUUCACCAACAUGGUCACCUGCUCCCAGGUCCACUUCAAG
+((.(((((((((.(((.(((((.((.(((((((((((.(((((((((((((((((.((.((((..(((((((..((((..((((((((...))))))))..(((.((((((.((..((((..(((((((((((.((((((.(((..(((((.((.((((((..((..((....)).))..)))))).)))))))..))))))))))))))).(((((...((((((((.(((.(..((((((((((((((.....(((((((((.....((((((((((((((((.(((((.((((((((..((((((((((..((((((((((.(((.((((((((.((.(((((.(((((.......))))).))))))).))).......))))))))))))))))))((((((((((((.((((((....))))))))))))))))))(((((((((((((((((.(((((((..(((....((((((((...((((((...(((((((.((((((((((.(((((((((..(((...(((((.((...((((.(((((((....((((((((((((.((((.....)))))))..)))).)))))..)))))))..))))..)).))))).....)))))))))))).)))))))))))))))))))))))..))))))))...)))..)))))))))))))))))))))))).(((((((((((((((((.(((((((((((....)))))))).))))))))))))))))))))))))))))))............))).))))).))))).)))))))))))))))))))))))))))))))))))))))..))))))))))))..)))))...(((((((((((.(((((((((((((((((.(((....)))..)))))))))))))))))(((((((((.(((((((..(........)..))))))).)))))))))..((((((((((((.((((((((.((.....)).)))))))).)))).)))))).)))))))))))))(((((((((((.(((..(((((((((((((.(((((((((.(((((((.(((((((((.((.((((((((((.(((.((((((((((((((((((((....((((.((.((.((((((((((...((((.(((((((((((((((((((((.((((.......))))))))))).))))..(((((((((((.((((((((((((....)).))))).))))).)))))))))))((((((((((.......))))))))))))))))))))))))..)))))))))))))).)).))....)))).)))))))))))))).))..)))...)))...))))))).))..))))))))).)))))))))...)))))))))))).)))...))))).....))).))).)))))))).)))))..)))))).)))))).)))....((((.(((((.....((((((((.(((((..........))))).))))))))...)))))))))....(((((((...((((((....)))))).)))))))((((((((((((((((((.((((((..(((.(((((((......)))))))))))))))))))))))......)))))))))))..))))..)))))))..))))))))))..))))))))))))).)))))....)))))).)).)))))))).))))))))).))(........)
+Folding free energy: -1036.9 kcal/mol
+CAI: 0.892
+Total runtime: 1224.74 s
+===================================================================================================================
+Protein ID: Q6IRM9
+Protein length: 597
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGUGGGCCGAGAGACACCGCGCCGCCGUGGAGCUGCAGCAGUUCCUGAGCAGCGUCUACGAGCAGGUGAAGAAGGAGGAGUCUCUCGGCCCAUUCCAGUUCAAGGAUGACAUCCAGGUGCAUGUGGUGUGCGACGGCCACUGCAAGCCCCUGGAGUCAUUCUGCUCCGGGUCUGAGGUGCUGUACAUUCUGGAGAAGAAGCCGCUGACACUGGAGGACAACGUGCUGGACGAGACUGAGAACAACGAGGGGAUCUCCUUCUACACCAGCCUGCAGGAGAUCCCCCAGCCCCAGGCCAUCCCCACCAUGCGGGCCCGCCAGUUCCUGACCUCUUACACCCUGACCCACAACCCCAACAUGGUCCAGCUGAACUCUGGGGCUCCAGUGAAGGUGCUGCCUCCUCUGUGGGUCCGGUGCGACUGUUCAGACGCCGAGGGGACUUGUUGGCUGGGGGCCGAGCCCAUCAAGUCCAGCCGGAAUGAGAUCACCGGGAUGUCAUUCCGGACUGUGACUUGCGCCGGCCCCACAGCCGACAAGUCCACCUUCCCCAGUCUGGACAGUCUGCGCCAGGCCCACAAGGAGCGGCACUACUCCAGCGUGAUGCAGACCAGAGGGUUCGCCCAGUACGAUCUCUUUGGCUGCAACACGGUGGAGAAUUCAGUGAUCGAGUCCCAGAGUUCAGUGACCGUGGACUUCGUGUGGAACGGGGUGGAGAGGAUCCUGCAGCUGCCCCCACUGGCGAGCGCCGCCACUCUCAACAUCAAGGUUGAGAGUGGCGACCUGCGCUCGCCAGUGUACAGCGUGUACAAGGAGCUGGACUUCCUGCUGGUGCUGGCCGAGGGGCUGAAGACAGGGGUGACAGAGUGGCCCGAGACAGGAGAGACCAAGAGCGCCGUCGACCUGGUCCAGCUGCUGCUGAACGACCUGAAGAACAAGGUCGACGGGCUGACCAGUUCCGUGUCCAAGAAGGACAACGAGAAGAUCAAGUCCGACACCGCAGCCGUCGACUGCAGCAUCCAGUCCUUCAUCACCGAGAGGGGGGACCUGGAUUUUGCAGAGAUGCUGUGGUGUCGGAUGAGAAAGUCCGUGUCCUCUUACCAGGACGUCGUGAACUGCUUCAGCCUGGUGAUCCAGAGCCUGAAGAAUGGCGAGGUCCACCCAUGGAUCCACAGGGGGUCCUCUUCAGCCUUGUCCAAGCUGAUCCAGCAGUCAUACCAUGGGAAGAUGCAGUCCGUGUCCCUGACCGGACUGACUCCCAUGCGUAUGCUGCUGGAGAUCGGCUUGGACAAGAUGAAGAAGGACUACAUCUCCUGUUUCAUUGGGCAGGACCUCGCCACCUUCAACUAUCUGGAUUACUUCAUCAGCAGCAGCGUGGACAUCCAGGAGCAGGUGCAGCGGGUGAAGAAGCUGCACCACAUGCUGGAGGUCGUGGUGGUCUGCAACGCUUUCCUGUCUCUGGGCCACGAGAAUCUGUUUCCCCUGACUCAGUCUUGUCUGAAGUACUACAAGGAGAAUCCUUGGAAUGAGCAGCAUGUGUUUCAGCUGCCCAUUCGUCCUUCAGUGAUCAGCACCUUCUACCAGAACAGCCACCCUCAGACCUGGAGGGUGGAGAUUAUCAGUGGGCACGGUCAGAAGGAGGUGAAGACCACGUGGCAGCUGACCUCCCGGAGGCCAGUUGACCACGUGAGCUUCGCCGUCCCUGACGUGCCCAUUGAUAUGACCAUCUCCGGCGAGAACGAGGAGAUCGUGUACUACCCUACACAGGUCUCCUGUUCUCAGGUGAACUUCUGC
+..((((((((((((((.((.(((((((((((((((((..(((...))).))))).)))))).)).))))........)).))))))))))))))...((((((((((((((.((((((.((.(((((((.((....))))))))).)).)))))))))))))).((((((((((((((.(((((....(((((...(((((..((((((((((((((((...((((((((((((((((((........(((((((((((.(...........).)))))))))))(((((((.(((((....(((((.(((((....(((((((((((((((((.(((((((..(((((.......(((((((..(((((((((((((((((((.((((((((((((.((((.((((((((.(((((((((((((((((...(((((((((((((((((((((((((.((....((((((((((((((((((.(((.....))).))))))))).))).)))))).))))))))).)))))))))))))).)))).....)))))))))))).))))).)))))))))))))))))))).(((((.((((.(((((.((((((((.(((.......))).))))))))))))).)))).)))))..)))).))...)))))))))))))))))))))))).......)))))..))))))))))))).)).((((((((....((((((((((((((((((((((((((......)))))))))))))....)))))))))))))..)))).))))..)))))))))....)))))))))).)))))..)))))))....((((((.(((((((((((((((((((((((((....(((.(((((.(((((..((((((((((((((((.((((((........)))))).((((((((.(((((((((((((((((.((((.(((.((...((..((((((((((((((.((((..((((((.((((((((((((.((.....)).))))))).))))).)))))).))))))))))))))))))..))...)))))))))))))....))))).)).))))))..))))))))((((((((((...(((((..(((((((((((.((((..((...(((((((((((((((((..((((((((((((((((((((((.((((((((((((.....(((((((.(((...))))))))))..))))))).)))))))))))))..)))))))))))))).)))))).)))).....))))))).))..))))..))))))))))).)))))....))))))))))....))))))))))).))))).(((((.(...((((((((..........))))))))...).))))))))))))))).)))......)))))))))))).))))))).....)))))).)))))).)))))))))))))..)))))..((((((...))))))(((((.(((((.((.....))))))).)))))))))))))))).)))))..))))).))))))))))...))))))))))))))(.((((((((((((((((((((.(((((..((((((((((..(((((((((((((.((((...)))).)))))).)))))))..))))))).))))))))))))))))))))).....))))))).)((((((.(((((((((((((......))))).))))))))))))))...)))))).....
+--- Score Breakdown ---
+Total Score: 96936.304
+  - MFE Score: 108330.000
+  - CAI Score (weighted): -11393.696
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -1083.300 kcal/mol
+CAI: 0.909
+Total runtime: 3326.410 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGUGGGCGGAGCGCCAUCGCGCUGCUGUGGAGCUGCAGCAGUUCCUCAGCAGCGUGUAUGAGCAGGUGAAGAAGGAGGAGUCCCUCGGUCCCUUCCAGUUCAAGGAUGACAUCCAGGUGCAUGUGGUGUGCGACGGCCACUGCAAGCCCCUGGAGUCAUUCUGCUCCGGGUCAGAGGUUCUCUACAUCCUGGAGAAGAAGCCUCUGACCCUGGAGGACAAUGUGCUGGAUGAGACCGAGAACAACGAGGGCAUCUCCUUCUACACCUCACUGCAGGAGAUUCCCCAGCCUCAGGCCAUUCCGACCAUGCGGGCUCGGCAGUUCCUCACCUCAUACACGCUGACCCACAACCCGAACAUGGUCCAGCUGAACAGCGGAGCCCCUGUGAAGGUGCUGCCUCCCUUGUGGGUCCGGUGCGACUGUUCAGACGCCGAGGGGACUUGUUGGCUGGGGGCCGAGCCCAUCAAGUCCAGCCGGAAUGAGAUCACCGGGAUGUCAUUCCGGACUGUGACUUGCGCCGGCCCCACAGCCGACAAGUCCACCUUCCCCAGUCUGGACAGUCUGCGCCAGGCCCACAAGGAGAGGCACUACUCUUCAGUGAUGCAGACCAGGGGCUUCGCUCAGUACGACCUGUUCGGGUGCAACACUGUGGAGAACAGCGUGAUUGAGAGCCAGUCCAGCGUGACAGUCGACUUCGUGUGGAACGGAGUGGAGAGGAUUCUGCAGCUCCCCCCUCUGGCCAGCGCCGCCACCUUGAACAUCAAGGUGGAGAGCGGGGACCUGCGGAGUCCUGUCUACUCCGUCUACAAGGAGCUCGACUUUCUGCUGGUGCUGGCUGAGGGACUGAAGACCGGCGUGACGGAGUGGCCUGAGACUGGGGAAACUAAGUCUGCAGUGGACCUGGUGCAGCUGCUCCUGAAUGACCUGAAGAACAAGGUGGACGGGCUGACCAGUUCCGUGUCCAAGAAGGACAACGAGAAGAUCAAGUCCGACACCGCAGCCGUCGACUGCAGCAUCCAGUCCUUCAUCACCGAGAGGGGGGACCUGGAUUUUGCAGAGAUGCUGUGGUGUCGGAUGAGAAAGUCCGUGUCCUCUUACCAGGACGUCGUGAACUGCUUCAGCCUGGUGAUCCAGAGCCUGAAGAAUGGCGAGGUCCACCCAUGGAUCCACAGGGGGUCCUCUUCAGCCUUGUCCAAGCUGAUCCAGCAGUCAUACCAUGGGAAGAUGCAGUCCGUGUCCCUGACCGGACUGACUCCCAUGCGUAUGCUGCUGGAGAUCGGCUUGGACAAGAUGAAGAAGGACUACAUCUCCUGUUUCAUUGGGCAGGACCUCGCCACCUUCAACUAUCUGGAUUACUUCAUCAGUUCUUCAGUGGACAUUCAGGAGCAGGUGCAGCGGGUCAAGAAGCUCCACCACAUGCUGGAGGUUGUCGUGGUCUGCAACGCUUUCCUGAGUCUGGGGCACGAGAACCUGUUCCCCCUGACCCAGUCAUGUCUGAAGUAUUACAAGGAGAAUCCUUGGAAUGAGCAGCACGUCUUCCAGCUGCCCAUCCGGCCGUCUGUGAUCUCCACCUUCUACCAGAACAGUCACCCCCAGACUUGGAGGGUGGAGAUCAUCAGCGGCCAUGGGCAGAAGGAGGUGAAGACCACGUGGCAGCUGACCUCCCGGAGGCCAGUUGACCACGUGAGCUUCGCCGUGCCAGACGUGCCUAUAGACAUGACUAUCUCAGGGGAGAACGAGGAGAUCGUGUACUACCCGACUCAGGUGAGCUGCAGCCAGGUCAACUUCUGC
+((((((..((((((((((((((((((((.(((((((...))))))).)))))))))).))).))(((((.(((((((((.(((((((((((.(.((((((.((((((((((.((((((.((.(((((((.((....))))))))).)).)))))))))))))).(((((((((((((((((((((.....))))))....))))))))))).)))).....)).)))))).).)))))))........)))).))))))))).)))))(((((((((((.((((((((.((((((((((((((..(((((.((.((..(((((((((..((((..(((((((.(((((((((((((((.((((..(((((...((((((((((((((((((((.(((((((((((((((((.(((((((((((((((((...(((((((((((((((((((((((((.((....((((((((((((((((((.(((.....))).))))))))).))).)))))).))))))))).)))))))))))))).)))).....)))))))))))).))))).))))))))))).)))))).))).)))))...........)))))))))))))))))..))))))))))))).......))))).)..)))))))..))))(((((((((((((.((.((((((((((.((((((.(((((((((.((((((((((((.(((((.(((((((....))).(((((((((...))))))))))))).))))).)))))))))))).))))))))))))))).)))).)))))).)))))))).))))))))))))))))..)))).))))).)))))))))))))).)))))))).))...)))))))))((((((.((((.(((((((((((((.((((((((((..((((((((((((((.(((((((((((((((((.(((((.((.((...((..(((((((((((((((.(((..((((((.((((((((((((.(.......).)))))).)))))).)))))).))))))))))))))))))..))...)))))))))))))....))))).)).))))))..))))))))((((((((((...(((((..(((((((((((.((((..((...(((((((((((((((((..((((((((((((((((((((((.((((((((((((.....(((((((.(((...))))))))))..))))))).)))))))))))))..)))))))))))))).)))))).)))).....))))))).))..))))..))))))))))).)))))....)))))))))))))))).))))))))).)..))))))))))))).)))).)))))).....))))).))))))((.((((((((.(.(((.(((((..((((.((((((((.(((((((((...((((((((((((((...(((((((((((.(((((..((((((...))))))..)))....(((((((((((..((((((((..(((((.(((((((((((((((((((.......((((.......)))))))))))))))))))).))))))))))))))))..)))(((((((..(((((((((((((.((((...)))).)))))).)))))))..))))))).....)))))))))).)))))))))))...))))))).)))).)))...))))))....))))))))))).)))))))))))).).))))))))))
+Folding free energy: -1111.4 kcal/mol
+CAI: 0.887
+Total runtime: 1350.5 s
+===================================================================================================================
+Protein ID: Q0IJ01
+Protein length: 597
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGUGGGCCGAGAGACAUCGCGCCGCCGUGGAGCUGCAGCAGUUCCUGAGCAGCAUCUACGAGCAGGUGAAGAAGGGCGAGUCUCUCGGCCCAUUCCAGUACAAGGACGACGUGCAGGUGCACGUCGUCUGUGAUGGACACUGUAAGCCGCUGGAGAACUUCUGCUCCGGGUCUGAGGUGCUGUACAUCAUGGAGAAGAAGCCGCUGACACUGGAGGACAAUGCUUUAGACGAGACUGAGAACAAUGAGGGGAUCAGCUUCUACAUGUCCCUGCAGGAGAGCCCCCAGCCCCAGGCCAUUCCCACGAUGUCCGCCAGACAGUUUCUGACCUCAUACACGCUGACCCACAACCCGAACAUGAUCCAGCUGAACAGCGGAGUCCCCGUGAAGGUGCUGCCUCCCUUGUGGGUCCGGUGCGACUCCAGCGAUGCGGAGGGGACUUGUUGGCUGGGGGCCGAGCCCAUCAAGUCAAACCGGAAUGAGAUCACCGGGAUGUCAUUCCGGACCGUGACUUGCGCCGGCCCCACAGCCGACAAGUCCACCUUCCCAUCGCUGGACAGUCUGCGCCAGGCCCACAAGGAGAGGCACUACAGCAGCGCCAUGCAGACACGGGGCUUCGCUCAGUACGAUCUGUUCGGGUCCAACACUGUGGAGAACAGCGUGAUUGAGAGUCAGAGCUCUGUCACGGUGGACUUCGUGUGGAAUGGCGUGGAGCGCAUCCUGCAGCUGCCCCCACUGACUUCCGCAGCUACACUCAACAUCAAGGUGGAGUCCGGGGACCUGCGCUCCCCGGUGUACUCUGUGUACAAGGAGCUGGACUUCUUGCUGGUCCUGGCCGAGGGCCUGAAGACAGGCGUGACCGAGUGGCCAGAGACCAGCGAGACCAAGUCCGCCGUGGACCUGGUGCAGCAUCUUCUCAAUGACCUGAAGAACAAGGUGGACGGCCUGUCCACCUCUGUGUCUAAGAAGGACAAUGAGAAGAUCAAGAGCGACACCGCCGCGGUGGACUGCUCCAUACAGAGUUUCAUCACGGAGCGCGGGGACCUGGACUUCGCCGAGAUGUUGUGGUGUAAGAUGCGGAAGUCAGUGAGCAGCUACCAGGAUGUGGUGAACUGCUUCUCCCUGGUGAUCCAGUCCCUGAAGCACGGGGAGAUGCACCCCUGGAUCCACAGGGGAAGCAGUUCCACCCUGUCCAAGCUGAUCCAGGAGUCAUACCAUGGGGACAUGCAGAGCCUGUCCCUGACAGGCCUGACCCCCAUGCGUAUGCUCCUGGAGAUCGGCUUGGACAAGAUGAAGAAGGACUACAUUAAUUGUUUCAUUGGCCAGGACCUGGCCACCUUCAAUUAUCUGGACUACUUCAUCUGCACCAGCGUCGACCUCCAGGAGCAGGUGCAGCGGGUGAAGAAGCUGCACCACAUGCUGGAGGUCGUGGUGGUGUGCAACGCUUUCCUGUCCCUGGGACAUGAGAACCUGUUUCCCCUCACUCAGUCUUGUCUGAAGUAUUACAAGGAGAAUCCUUGGAAUGAGCAGCAUGUGUUUCAGCUGCCCAUUCGUCCUUCAGUGAUCAGCACCUUCUACCAGAACAGCCACCCUCAGACCUGGAGGGUGGAGAUCAUCAGCGGCCACGGGCAGAAGGAGGUGAAGACCACCUGGCAGCUGACUAGCAGGAGACCUGUGGACCACGUGAGCUUCGCCGUUCCCGAUGUCCCCAUUGAUAUGACUAUCAGUGGGGACAACGAGGAGCUGGUGUAUUACCCCACACAGGUCUCCUGCAGUCAGGUGCACUUCUGC
+..((((((((((((((.((((((((((((((((((((..(((...))).))))).)))))).)).)))........))))))))))))))))))((((.(((..(((((((((((....)))))))))))))).))))..((((..((((((((.((.(((((.((((((((((((((.(((((...((.(((...(((((..(((((((((((((((((((((((((((((((((((((.....((((((((.(((.((((.((((((((.((((((((((.....((.(((.(((((((((((((.(((((((.(((((.(((((((((((..(((((((.(((((((((((((((.((((..(((((...((((((.(((((((..((((((((((((((((((((((.((((((((((((((((((.((((((((((((((((((((((((((.((....(((((((..(((((((((.(((.....))).)))))))))....))))))).))))))))).)))))))))))))).))))).))))))))))..))).))))).))))))))))).))))))........))))).......))))))))))))))))))..))))))))))))).......))))).)..)))))))..)))).)))))))..)))))..))))))).))))).)))))))).))).))((((((((.((((((...((((((((((((((.((((((((((((((..(((((((((((((..((((((((((..((((.(((((((((....((((((((...((((((((((((((((((.(((((((....)))))....))...))))))).))))))))))))))((((((((((((...(((((..(((((((((((.((.(((..((((((((((((((.....)))))))).))).)))....))).)).))))))))).....))..)))))))))))))))))))))))))))))))..))))..))))))))))..)))))))))))))..))))))).))))).)).)))))))))))))).))))))..))))))))(((((((((((((.(((((..(((((((((((((.....)))))).........)))))))..)))))))))))))).)))).((((((((((((((((((((.((((((((((((.....(((.(((((((...))))))))))..))))))).)))))))))))))..))))))))))))((((((((.((..(.....((((((......(((((((...)))))))....))))))...)..)).))))))))((((((.((.((((((((((.(...((((((((..........))))))))...).)))))))))))).)))))).....))))))))))....)))))))))))).)))..))))))))))))))))))))))))))))).((((((...))))))(((((.(((((.((.....))))))).)))))))))))))))).)))))..))))).))))))))))...)))))))))))))).).)))).)).)))))))).))))(((((((.(((((.....))))).(((.((((((.((((((((((((((......((((....(((((((((((.((((((((((((((....)))))))))))))).)).))))).))))..))))....)))))))))))))))))))).))).)))))))
+--- Score Breakdown ---
+Total Score: 96236.034
+  - MFE Score: 109840.000
+  - CAI Score (weighted): -13603.966
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -1098.400 kcal/mol
+CAI: 0.892
+Total runtime: 3409.320 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGUGGGCCGAGAGACAUCGCGCCGCCGUGGAGCUGCAGCAGUUCCUGAGCAGCAUCUACGAGCAGGUGAAGAAGGGCGAGUCUCUCGGCCCAUUCCAGUACAAGGACGACGUGCAGGUGCACGUGGUGUGCGAUGGACACUGCAAGCCCCUCGAGAACUUCUGCUCCGGGUCUGAGGUGCUGUACAUCAUGGAGAAGAAGCCGCUGACACUGGAGGACAAUGCUUUAGACGAGACUGAGAACAAUGAGGGGAUCAGCUUCUACAUGUCCCUGCAGGAGAGCCCCCAGCCCCAGGCCAUUCCCACGAUGUCCGCCAGACAGUUUCUGACCUCAUACACGCUGACCCACAACCCGAACAUGAUCCAGCUGAACAGCGGAGUCCCCGUGAAGGUGCUGCCUCCCUUGUGGGUCCGGUGCGACUCCAGCGAUGCGGAGGGGACUUGUUGGCUGGGGGCCGAGCCCAUCAAGUCAAACCGGAAUGAGAUCACCGGGAUGUCAUUCCGGACCGUGACUUGCGCCGGCCCCACAGCCGACAAGUCCACCUUCCCAUCGCUGGACAGUCUGCGCCAGGCCCACAAGGAGAGGCACUACAGCAGCGCCAUGCAGACACGGGGCUUCGCUCAGUACGAUCUGUUCGGGUCCAACACUGUGGAGAACAGCGUGAUUGAGAGUCAGAGCUCUGUCACGGUGGACUUCGUGUGGAAUGGCGUGGAGCGCAUCCUGCAGCUGCCCCCACUGACUUCCGCAGCUACACUCAACAUCAAGGUGGAGUCCGGGGACCUGCGCUCCCCGGUGUACUCUGUGUACAAGGAGCUGGACUUCUUGCUGGUCCUGGCCGAGGGCCUGAAGACAGGCGUGACCGAGUGGCCAGAGACCAGCGAGACCAAGUCCGCCGUGGACCUGGUGCAGCAUCUUCUCAAUGACCUGAAGAACAAGGUGGACGGCCUGUCCACCUCUGUGUCUAAGAAGGACAAUGAGAAGAUCAAGAGCGACACCGCCGCGGUGGACUGCUCCAUACAGAGUUUCAUCACGGAGCGCGGGGACCUGGACUUCGCCGAGAUGUUGUGGUGUAAGAUGCGGAAGUCAGUGAGCAGCUACCAGGAUGUGGUGAACUGCUUCUCCCUGGUGAUCCAGUCCCUGAAGCACGGGGAGAUGCACCCCUGGAUCCACAGGGGAAGCAGUUCCACCCUGUCCAAGCUGAUCCAGGAGUCAUACCAUGGGGACAUGCAGAGCCUGUCCCUGACAGGCCUGACCCCCAUGCGUAUGCUCCUGGAGAUCGGCUUGGACAAGAUGAAGAAGGACUACAUUAAUUGUUUCAUUGGCCAGGACCUGGCCACCUUCAAUUAUCUGGACUACUUCAUCUGCACCAGCGUCGACCUCCAGGAGCAGGUGCAGCGGGUGAAGAAGCUGCACCACAUGCUGGAGGUCGUGGUGGUGUGCAACGCUUUCCUGUCCCUGGGACAUGAGAACCUGUUUCCCCUCACUCAGUCUUGUCUGAAGUAUUACAAGGAGAAUCCUUGGAAUGAGCAGCAUGUGUUUCAGCUGCCCAUUCGUCCUUCAGUGAUCAGCACCUUCUACCAGAACAGCCACCCUCAGACCUGGAGGGUGGAGAUCAUCAGCGGGCACGGCCAGAAGGAGGUGAAGACCACCUGGCAGCUGACCUCUCGGCGGCCAGUGGAUCACGUCUCCUUCGCCGUGCCCGAUGUCCCCAUUGAUAUGACUAUCAGUGGGGACAACGAGGAGCUGGUGUACUAUCCCACCCAGGUGUCCUGCAGUCAGGUCCACUUCUGC
+..((((((((((((((.((((((((((((((((((((..(((...))).))))).)))))).)).)))........))))))))))))))))))..(((.....(((((((.((((((.((((.(((.(((.((((((((((...(((.(((((.((.(((((.((((((((((((((.(((((...((.(((...(((((..(((((((((((((((((((((((((((((((((((((.....((((((((.(((.((((.((((((((.((((((((((.....((.(((.(((((((((((((.(((((((.(((((.(((((((((((..(((((((.(((((((((((((((.((((..(((((...((((((.(((((((..((((((((((((((((((((((.((((((((((((((((((.((((((((((((((((((((((((((.((....(((((((..(((((((((.(.(.....).).)))))))))....))))))).))))))))).)))))))))))))).))))).))))))))))..))).))))).))))))))))).)))))........)))))).......))))))))))))))))))..))))))))))))).......))))).)..)))))))..)))).)))))))..)))))..))))))).))))).)))))))).))).))((((((((.((((((...((((((((((((((.((((((((((((((..(((((((((((((..((((((((((..((((.(((((((((....((((((((...((((((((((((((((((.(((((((....)))))....))...))))))).))))))))))))))((((((((((((...(((((..(((((((((((.((.(((..((((((((((((((.....)))))))).))).)))....))).)).))))))))).....))..)))))))))))))))))))))))))))))))..))))..))))))))))..)))))))))))))..))))))).))))).)).)))))))))))))).))))))..))))))))(((((((((((((.(((((..(((((((((((((.....)))))).........)))))))..)))))))))))))).)))).((((((((((((((((((((.((((((((((((.....(((.(((((((...))))))))))..))))))).)))))))))))))..))))))))))))((((((((.((..(.....((((((......(((((((...)))))))....))))))...)..)).))))))))((((((.((.((((((((((.(...((((((((..........))))))))...).)))))))))))).)))))).....))))))))))....)))))))))))).)))..))))))))))))))))))))))))))))).((((((...))))))(((((.(((((.((.....))))))).)))))))))))))))).)))))..))))).))))))))))...)))))))))))))).).)))).)).....((((((((((..(((((((((((...(((.(((((.(((((....))))).)))))))).))))..))))))))))))))))).((((((((((((((....)))))))))))))).))))).)))))))).))))).)))))).)))))))))))))..))))....))).
+Folding free energy: -1087.9 kcal/mol
+CAI: 0.896
+Total runtime: 4048.83 s
+===================================================================================================================
+Protein ID: Q9U3F4
+Protein length: 603
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGGGGCCGCCCCCUCCCCCUCCGCCUCCCCCUCUGCUGCCCUCCGGGGAGAUCCUCCCUUCCAGAAAGUGGAAGACGGAGGAUGCUCCCCGGAGGAACAACCACCCUGCGCCUGCUCCGCCCAAGCCGAGCAGGCCCACGGUGGAUGCCUCAGCCUUGCAGCACGCCGCUGCAAGGCUGAGGAAGACCGGCUACAACGAGCCGGUCCGGGGGGACGUGGAGAAUCUCAGCGACGGGAGGCUGGACCGGCCGCACCAGCAGCUGCCCGAUGGGGACCGGACCUAUCGGGCAAACCUGCAGCAGCUGGCCCAGCCUAAGACCCGCGCUGAGAUUCCCAGUCCCCCCACCUACUCGAACCAGCCCAGGCCAUUGGGGGACUUCCACAGGGACCCCAAUGCCCUGAGCCAGUUCCAGCAGAGCAGGGAGGCGCUGCUGAGCUCCACAUCCCCAACCUCUAACUACAGUCCAAUCAACAAGUUCUCGUCCAGCACACUCACCCAGUACGCCAACAAGUCUCCUUCUCCCCCAUCCUUUGGCAACAGCAACAGCGAGGCCACAUACGUGAGUCCUUACUCCAGCAAGCACUCCUAUCCAACGAACUUCCGCAGCUACCACAAGGACGACGACUACUUCAACAACACAGCAACCACGGCCACCACCACCACAAGCUCCAACAGCUUGAACGAGAACAACAACAGCAACAAGUAUGGCAACAAGGAGACUGUUCUGCAGUGGUCCGAGCCUUACGAUCCUAGUAAGAUCAGGAGGAGCCAGUCACCAAUUCGGAAUGCUCGGGAGAUGAUCCACGAGUAUUCCACCACGAAUUACGUGACGGAGGUGCAGCAGCCACCUCCCCCUCCUCCUGAUCUGUACCAGAGGAUGACCCAGGCUCGGACCUUCCUGCAGAACAGUCUCGCCAAGCAGUUGCGGGAUGAGGGGCUGACAGAGUCCCAGAAGGCUGCCAACCGCAACCAGACUGGGGCUCUGUCAGCCUCCUCAUCCAUCCCAUUUGAUGCCAGCCAGAUCGUCAAGAAUUCCUACAAUGGGGAUGAGGUUGACCAUCUGGUGCAUCAGAUGCGGACCAAGCUCAACCAGCCGGCCGACACUUCUCCAAGCAUUGUGCAGUACCCCCGCAGGCAGGCUCCUGAUAGUAGUCGCGCUAACUAUAGCGCGACUACUAGCACCUCCUUCUCCAGCAGCACCACGCGGAAGAUUAUGAACAUUAAUAUCUGCGUGGGCUGCGGGAAGGAGAUCACUGGCGACCAGCCAGGGUGUAAUGCUAUGAACCAGAUCUUCCACGUGGACUGCUUCAAGUGCGGCCAGUGUAGCAAGACCCUGGCUGGCGCCAGUUUCUACAACAUCGACGACAAGCCUACCUGCGAGGGGUGCUACCAGAAUAGCUUGGAGAAGUGUACGGCCUGCAACAGAGCUAUCUCGGACAAGCUGUUGAGAGCUUGUGGUGGGGUGUACCACGUGAAUUGCUUCGUGUGCUUUAGCUGCAAGAAGUCGUUGGAUGGGAUCCCCUUCACGCUGGAUAAGGACAACAACGUGCACUGUGUGCCUUGCUUCCACGAUAAGUUUGCUCCACGGUGCGCACUGUGCAGCAAGCCUAUCGUGCCACAGGAUGGGGAGAAGGAGAGCGUGCGGGUGGUGGCCAUGGACAAGAGCUUCCACGUGGACUGUUACAAGUGUGAGGAUUGCGGGAUGCAGCUCAGCAGCAAGCUGGAGGGGCAGGGGUGCUACCCCAUCGACAACCACCUGCUGUGCAAGACCUGCAACGGCAACCGCCUGCGGGUCGUGAGCAGCACC
+((((((..(((((((.((((((((((((((.((((((((.((((((((((((((((((((((((.....))))))..))))))).)))))))))))..((.(((((.((.((((((((.((....)).)))))))).)).))))).))(((((((((((((((.....)))))))))))))))..((((((((......)))))))).((((((((.(((.(((((((((((.(((((((((((.(((((.((....((((.(((((((((((.......)))))))))))...)))).)).))))).)))))))....))))))))))))))))))))))))))........((((..((.((((.((((((((..(((....)))..)))))))).)))).))..))))))))))))..)))))))(((((((((((...(((((((((((((..(((((((((((......(((((((.(((((((.(((.(((((.((((((.......((((((((((.((((((((.((((.........(((((((((((((((((..(((((((.(((((((((...(((((((((((((.((((.(((((((....(((.((.((((...............(((((.(((((.((((.(((((((((((((((((((((((..(((((.........(((((..((.((((......(((((((((((((((.(((((((((((....(((((.((((((((((((((((...(((((.((((((((((((((((((.....))).)))))))))).....)))))..)))))((((((((....)).))))))..))))))))))))).)))...))))).....)))))))))))...))))))))))))))))))).)).))))).(((((((((((((((((((((((((..((.(((.....))).))...))))))))))))))))).)))))))).(((((((((((((..(((((((.(((((..(((((((...)))))))....))))).))))))))))))))))).)))...(((((.....((.((((((((((((((((((((((.((.((((((((((((((.(((((..((.((((((((((((((....)))))))))))))).)).(((((((.((.(((((.(((((((((..((((.......)))).)))))))))))))))))))))))...(((((((.(((((((((((.(..(((((..............(((.(((.((((.......)))))))))))))))).))))))))))))))))))...................))))).)))))).))))))))..)).))).)))))))))))))).))))).))....))))).)))))..)))))))))).)))))))))))))))))...).))))..))))))))))).))))))))))..)))))))))))))))))....)))...)))))))))))))....)))))...)))).))))))))...((((((.(((((((.((((((....)))))).))))))).)))))))))).))))))))))))))))))))))))))))))))))..))))).))))))).....))))))))....)))..)))).))).)))))).))))))))))).....))))))).))))).))..))))))...........((((((.((.((((((((..(((....))))))))))).)).))))))..
+--- Score Breakdown ---
+Total Score: 89507.751
+  - MFE Score: 106930.000
+  - CAI Score (weighted): -17422.249
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -1069.300 kcal/mol
+CAI: 0.865
+Total runtime: 2528.753 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGGGGCCGCCCCCUCCCCCUCCGCCUCCCCCUCUGCUGCCCUCCGGGGAGAUCCUCCCUUCCAGAAAGUGGAAGACGGAGGAUGCUCCCCGGAGGAACAACCACCCUGCGCCUGCUCCGCCCAAGCCGAGCAGGCCCACGGUGGAUGCCUCAGCCUUGCAGCACGCCGCUGCAAGGCUGAGGAAGACCGGCUACAACGAGCCGGUCCGGGGGGACGUGGAGAAUCUCAGCGACGGGAGGCUGGACCGGCCGCACCAGCAGCUGCCCGAUGGGGACCGGACCUAUCGGGCAAACCUGCAGCAGCUGGCCCAGCCUAAGACCCGCGCUGAGAUUCCCAGUCCCCCCACCUACUCGAACCAGCCCAGGCCAUUGGGGGACUUCCACAGGGACCCCAAUGCCCUGAGCCAGUUCCAGCAGAGCAGGGAGGCGCUGCUCAGCUCCACAUCCCCAACCUCUAACUACAGUCCAAUCAACAAGUUCUCGUCCAGCACACUCACCCAGUACGCCAACAAGUCUCCUUCUCCCCCAUCCUUUGGCAACAGCAACAGCGAGGCCACAUACGUGAGUCCUUACUCCAGCAAGCACUCCUAUCCAACGAACUUCCGCAGCUACCACAAGGACGACGACUACUUCAACAACACAGCAACCACGGCCACCACCACCACAAGCUCCAACAGCUUGAACGAGAACAACAACAGCAACAAGUAUGGCAACAAGGAGACUGUUCUGCAGUGGUCCGAGCCUUACGAUCCUAGUAAGAUCAGGAGGAGCCAGUCACCAAUUCGGAAUGCUCGGGAGAUGAUCCACGAGUAUUCCACCACGAAUUACGUGACGGAGGUGCAGCAGCCACCUCCCCCUCCUCCUGAUCUGUACCAGAGGAUGACCCAGGCUCGGACCUUCCUGCAGAACAGUCUCGCCAAGCAGUUGCGGGAUGAGGGGCUGACAGAGUCCCAGAAGGCUGCCAACCGCAACCAGACUGGGGCUCUGUCAGCCUCCUCAUCCAUCCCAUUUGAUGCCAGCCAGAUCGUCAAGAAUUCCUACAAUGGGGAUGAGGUUGACCAUCUGGUGCAUCAGAUGCGGACCAAGCUCAACCAGCCGGCCGACACUUCUCCAAGCAUUGUGCAGUACCCCCGCAGGCAGGCUCCUGAUAGUAGUCGCGCUAACUAUAGCGCGACUACUAGCACCUCCUUCUCCAGCAGCACCACGCGGAAGAUUAUGAACAUUAAUAUCUGCGUGGGCUGCGGGAAGGAGAUCACUGGCGACCAGCCAGGGUGUAAUGCUAUGAACCAGAUCUUCCACGUGGACUGCUUCAAGUGCGGCCAGUGUAGCAAGACCCUGGCUGGCGCCAGUUUCUACAACAUCGACGACAAGCCUACCUGCGAGGGGUGCUACCAGAAUAGCUUGGAGAAGUGUACGGCCUGCAACAGAGCUAUCUCGGACAAGCUGUUGAGAGCUUGUGGUGGGGUGUACCACGUGAAUUGCUUCGUGUGCUUUAGCUGCAAGAAGUCGUUGGAUGGGAUCCCCUUCACGCUGGAUAAGGACAACAACGUGCACUGUGUGCCUUGCUUCCACGAUAAGUUUGCUCCACGGUGCGCACUGUGCAGCAAGCCUAUCGUGCCACAGGAUGGGGAGAAGGAGAGCGUGCGGGUGGUGGCCAUGGACAAGAGCUUCCACGUGGACUGUUACAAGUGUGAGGAUUGCGGGAUGCAGCUGAGCAGCAAGCUGGAGGGGCAGGGGUGCUACCCCAUCGACAACCACCUGCUGUGCAAGACCUGCAACGGCAACCGCCUGCGGGUCGUGAGCAGCACG
+((((((..(((((((.((((((((((((((.((((((((.((((((((((((((((((((((((.....))))))..))))))).)))))))))))..((.(((((.((.((((((((.((....)).)))))))).)).))))).))(((((((((((((((.....)))))))))))))))..((((((((......)))))))).((((((((.(((.(((((((((((.(((((((((((.(((((.((....((((.(((((((((((.......)))))))))))...)))).)).))))).)))))))....))))))))))))))))))))))))))........((((..((.((((.((((((((..(((....)))..)))))))).)))).))..))))))))))))..)))))))(((((((((((...(((((((((((((..(((((((((((......(((((((.(((((((.(((.(((((.((((((.......(((((((((((((.(((((.((((.........(((((((((((((((((..(((((((.(((((((((...(((((((((((((.((((.(((((((....(((.((.((((...............(((((.(((((.((((.(((((((((((((((((((((((..(((((.........(((((..((.((((......(((((((((((((((.(((((((((((....(((((.((((((((((((((((...(((((.((((((((((((((((((.....))).)))))))))).....)))))..)))))((((((((....)).))))))..))))))))))))).)))...))))).....)))))))))))...))))))))))))))))))).)).))))).(((((((((((((((((((((((((..((.(((.....))).))...))))))))))))))))).)))))))).(((((((((((((..(((((((.(((((..(((((((...)))))))....))))).))))))))))))))))).)))...(((((.....((.((((((((((((((((((((((.((.((((((((((((((.(((((..((.((((((((((((((....)))))))))))))).)).(((((((.((.(((((.(((((((((..(.((.......)).).)))))))))))))))))))))))...(((((((.(((((((((((.(..(((((..............(((.(((.((((.......)))))))))))))))).))))))))))))))))))...................))))).)))))).))))))))..)).))).)))))))))))))).))))).))....))))).)))))..)))))))))).)))))))))))))))))...).))))..))))))))))).))))))))))..)))))))))))))))))....)))...)))))))))))))....)))))...)))).))))))))...((((((.(((((((.((((((....)))))).))))))).)))))))))).))))))))))))))))))))))))))))))))))..))))).))))))).....))))))))....)))..)))).))).)))))).))))))))))).....))))))).))))).))..))))))((.........((((((.((.((((((((..(((....))))))))))).)).))))))))
+Folding free energy: -1069.8 kcal/mol
+CAI: 0.864
+Total runtime: 1064.84 s
+===================================================================================================================
+Protein ID: A2BFL2
+Protein length: 627
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGGCCUGGCAGGGCAAGCUGACAGACCGGACAGCUUCAAUCUUCCAGGGGAAGCAGAUGAGCCUGAAGCUCAUCAACAUCCCCCGGGUGAAGCUGUCCGCGGCCGCGUUCACCAAGGCCUUUUGCCACCACAAGCUGAUUGAGGUGAACGCCACCUCAGUGGAUAGCGAGCUGCUGGCACCAGACAUUAUCCACGCGCUGCAGAGCAGCGCGUGGAUCCAGAAGAACCUGCAGUGUCUGGUGCUGGACAGCGUGUCUAUCCCGCCAAACUCAGGGCUGGUGGCCCUGUCCCACUUCACAGGGCUGCACACCCUGAGUGUGGCCAACGUCAGCUUCUGCAACGAGGACCUGGUGAGCGUGAGCCAGCUGCCCAACCUGGGCAGCCUGGACAUCAGCAACACGCUGGUGACCAACAUCUCAGCGCUGCUUAGCUGCAAGAACCGGUUGAGGAGCCUGACCAUGCACUACCUGAAGUGCCUGGCCAUGAACAGCCCGCAGGUGCUGGCCGUGAUCAGGCAGCUCAAGUGCCUGCUGCAUCUGGACAUCAGUGACCACCAGCAGCUGAGGUCAGAUUUGGCAUUCUAUCUGCUGCAGCAGAAGGACAUCCUGCCAAAUCUGACCUCACUGGACAUCUCUGGUGGCACUGAUGUCACAGAUCAGGCAGUUGAGUCCUUCCUGCAGCACCGGCCCGCCAUGAGGUUCGUGGGUCUGCUGUACACAGACGCCGGAUACAGCGACUUCUUCACAGCCAAGCAGGGCCUGAAGGUGGCGGGCGGGGCCAACAUGAGCCAGAUCAGCGAGGCCCUGUCCCGCUACCGGAACAGGUCCUGCUUUGUGAAGGAGGCGCUGUUCCGGCUGUUUACAGAGACCCUGAGCCUGCGGGCCGUGCUGCCAGUGAUGCUGAAGCUGGUGGCCAUCGGGAUGAGGAAUCAUCCCCUGGACCUGCCAGUGCAGUUCACGGCCAGCGCCUGCGCUCUGAAUCUGACCCGCCAGGAGCUCGCACGGGGCAUGCCCGUGCGGCUCCUGGCGGAGAUUACAGACCUGCUGUUCAAGGCCACCAAGAAUUUCCCCUACUACCAGCAGCUGCAGAAGAACUGUCUUCUGUCGCUGACUAGUAGUAGGAUUCUGAUGGACGUGCCCUUCGACCGGUUCGAUGCAGCUAAGCUGGCGCUGAGAUGGGUGUGUCGCCGGGAGAGCCCAAAGCUGCGCACCAUGGCUGUGAGCAUCACCAGCAUCCUGGCGCUGAAGCUGAGCCCUGAGGAGAUGGGCCAGCUGCAGGAGGAGCUCAUCAUGGCCAUCAAGGAGCUUCUGACGAUCAUUCGUCAGAAGCUCGCUGAGAACCUGGAUGACGUGACCUUCCUGUUCACCCUGAAGGCCCUGUGGAACCUGACCGACGAGUGCCCUCUGGCCUGCAAGUACUUCAUGGAGAACGAGGGCCUUGCUACUGUGAUCAGGGUGCUGGAGACCUUCUCCAUCAGCGUGAUCCAGAGCAAGGUCCUCGGGCUCCUGAACAACGUGGCCGAGGUGCGGGAGCUGAGCAGCAAGCUGGUGACCGAGGACGUGAUCGAGCGGAUCAUCAGCUUGCUGCACAGCUCCAACUUGGAGGUCAGCUUCCUGGCCGCCGGGGUGCUGGCCCAUCUGACCUGUGAUCGCCAGCACUGGCUGUCGCGGGACCUGCAGCGGACCGAUCUGCUGCGGUACCUGCACUUGGCCAUCCAGAAUUGGCCAAGUAGCAGGUGCGACAUGUCAGUGCUGGUGACUUACAGGUCCUUCAAGGCCUUCAGCCCACUGCUGGUGAACUUCUCACAGCCUGAGGUGCAGCGGUGGGCUCUCUGGGCGAUACACCACGUCUGCAGCAAGAACCCCAGGCCAAAGGACGUG
+.((((((((..((....((((.(((((((((((((((((....(((.(((((.(..(((((((.....)))))))..).))))).))))))))))))))).(((((((((((((.(((((((((((......(((((((((((((((.....)))))))..((((((((.((((((((((((((((((((((((((((((((...)))))))))))))..............))))))))))))))).)))).)).)))))).((((.((((((((.((((((((((((........)))))))))).)))))))))).))))....))))))))..)))).)))).))))))))))))).))).((((((((...)))))))).(((.(((((((.....))))))).))).(((((((((((((((((((((((.(((((((((((((.((.((.(((((((((......))))).(((((.((((((((.((((((((((((((((((..(((..((((((.((((((....(((((((((((((((.((((((((((.(((((((((((((((((((((.(((((....))))))))).....)))))))))))))))))))).......))))))))))))))))).))))))))))).)))))))))(((((((((((.(((((((....(((((((.((((((.(((((.(((...((((((.((((((.((((((((((...((((((((((((..((((((((((((((((....(((......)))....))))))).)))))))))....)))))))))))))))))))))).))))))))))))))).)))))))))))))))))))))))))))))))).)).)).((((..(((((((((((..(((((((....))))))).))).)).)))))).)))))))))))))))))))))).(((((((((...(((((((((((.((((((((.....)))))))))))))))))))))))).))))...)))))))).)))))...(((((....((((((((.((((((.((((((((....)))))))).)))).)).))))))))))))).)))).)).)).)))))))))))))..))))))))))).))))))))))))(((((((((((.((((((((((..(((((((..((.(((((((((..(((((((((...(((.(((((((....(((.(((((((((((((((((.((((((((.(((((((..((...(((..(((((((((((((....)))))))))))))..)))...))..))))).))..))).)))))..((((((..((((....((((.((((((..(((((((((((.((((.....((..((((.((((..(((((((((((((.(((.(((((.(.((.((((((...)))))).)).).)))))))))))))))))))))..))))))))..))..)))))))).)).(((((((.((((((((((((((((((....((....))..))).))))))))))))))).))))))).)))))..)))))).)))).))))..))))))))))))))))))(((((((((((((((((((((((((((((...(((.((((((((....)))))))))))(((((((((((((((........))))))))).)))))))))))).)))))))))))))).)))))))))))))).))))))))))))).)))))))))....)))))))))))..)))))))..)))))))))).)))))))))))..))))))))).....)))))))))).........
+--- Score Breakdown ---
+Total Score: 103910.313
+  - MFE Score: 119130.000
+  - CAI Score (weighted): -15219.687
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -1191.300 kcal/mol
+CAI: 0.886
+Total runtime: 4558.370 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGGCAUGGCAGGGAAAGCUGACGGACCGGACAGCUUCAAUCUUCCAGGGGAAGCAGAUGAGCCUGAAGCUCAUCAACAUCCCCCGGGUGAAGCUGUCCGCCGCAGCUUUCACCAAGGCCUUCUGCCAUCACAAGUUGAUUGAGGUGAACGCCACCUCAGUCGACUCUGAGCUGCUGGCUCCGGACAUCAUCCACGCCCUGCAGAGCUCAGCUUGGAUCCAGAAGAACCUGCAGUGCCUGGUGCUGGACAGCGUGAGCAUCCCGCCCAACAGCGGGCUGGUCGCGCUGUCCCACUUCACCGGCCUGCACACUCUGUCUGUGGCCAACGUGAGCUUCUGCAACGAGGACCUGGUGUCCGUGAGCCAGCUGCCCAACCUUGGGUCCUUGGAUAUUUCGAACACACUGGUGACGAACAUCAGCGCCCUGCUGAGCUGCAAGAACAGGCUGAGGAGCCUGACCAUGCACUACCUGAAGUGCCUGGCCAUGAACUCACCCCAGGUGCUGGCUGUGAUCCGGCAGCUGAAGUGUCUGCUCCAUCUGGACAUCUCCGAUCACCAGCAGCUGCGCAGCGACCUCGCCUUCUACCUGCUGCAGCAGAAGGACAUCCUGCCCAACCUGACCAGUCUGGACAUCAGUGGCGGCACUGAUGUCACAGACCAGGCGGUGGAGUCCUUCCUGCAGCACAGGCCCGCUAUGCGGUUCGUGGGGUUGCUGUACACCGACGCCGGGUACAGCGACUUCUUUACCGCAAAGCAGGGCCUGAAGGUGGCCGGGGGCGCUAACAUGAGUCAGAUUUCAGAGGCCUUGAGCAGGUACAGGAACAGGUCAUGCUUCGUCAAGGAGGCCCUGUUUCGGCUCUUCACUGAGACCCUGUCCCUCAGGGCUGUGCUGCCAGUGAUGCUGAAGCUCGUGGCCAUCGGUAUGCGGAACCACCCUUUGGACCUCCCUGUGCAGUUCACAGCCAGCGCAUGCGCCCUGAACUUGACGCGGCAGGAGCUGGCGAGGGGCAUGCCAGUGCGGCUGCUGGCAGAGAUAACAGACCUGCUGUUUAAGGCCACCAAGAACUUCCCUUAUUAUCAGCAGCUGCAGAAGAACUGUCUGUUGUCUCUGACCAGCAGCCGCAUCCUGAUGGACGUGCCCUUCGACCGGUUCGAUGCCGCCAAGUUGGCGCUGCGCUGGGUGUGCCGCAGGGAGAGUCCAAAGCUGCGUACCAUGGCCGUGAGCAUCACCAGCAUCCUGGCCCUGAAGCUCAGCCCUGAGGAGAUGGGGCAGCUGCAGGAGGAGCUGAUCAUGGCCAUCAAGGAGCUUCUGACGAUCAUUCGUCAGAAGCUCGCUGAGAACCUUGACGACGUGACCUUCCUGUUCACGCUCAAGGCCCUCUGGAAUCUGACUGAUGAGUGCCCCCUGGCCUGCAAGUACUUCAUGGAGAACGAGGGCCUUGCUACUGUGAUCAGGGUGCUGGAGACCUUCUCCAUCAGCGUGAUCCAGAGCAAGGUCCUCGGGCUCCUGAACAACGUUGCAGAGGUGAGGGAGCUGAGCAGCAAGCUGGUGACGGAGGAUGUGAUCGAGCGGAUCAUUUCACUGCUGCACAGCAGCAACCUGGAGGUGAGCUUCCUGGCCGCAGGGGUGCUGGCCCACCUGACCUGUGAUCGCCAGCACUGGCUGUCGCGGGACCUGCAGCGGACCGAUCUGCUGCGGUACCUGCACUUGGCCAUCCAGAAUUGGCCAAGUAGCAGGUGCGACAUGUCAGUGCUGGUGACUUACAGGUCAUUCAAGGCCUUCAGCCCCCUGCUGGUCAACUUCUCUCAGCCUGAGGUGCAGCGCUGGGCGCUGUGGGCCAUUCACCACGUGUGUUCGAAGAAUCCAAGGCCCAAGGAUGUG
+((((((.(((.((((((((((.(((..((((((((((.(....(((.(((((.(..(((((((.....)))))))..).))))).)))).))))))))))))))))))))).))...)))...))))))((((((((((((((((((.....)))))))))))))).((.((.((((((((((((((((((((.((...(((((((((((..((((.(((((((((...(((((.(((.((((..(((((((((((.((.(((((......))))).)).))))))))))).....))))))))))))...))).)))).))))))..)))))).))))).)).)))..))))))))).)))))))).)).)).(((((((.((((((((.((((((((((((((((((.(..((.((((((((.((...((((((....((((((((((((..((((((.(((((......)))))..(((((.((((((((((((((((((.((((((...((((((.((((((((((((((.(((...(((((((((.((((((((.(((((.((((..(((((((((.....((((((((..(((((((.(((.(((...((((....(((((((((((((((....)))))))))).))))))))).)))))))))))))))))))))((((((((((.((((((....(((((((((((((.(((....))))))))))))))))...)))))).))).))))))).....(((((((((((((..(((.((((((((((((((((((((((((..(.((((((..((((((((..(((((((((.((((.((..((((((((((.(((((.((((((((((((((((((.((((((((.(((((((..((((((((((((.(((((((((.......(((((((((((((((((.....((((.((((((((.(((((...((((((..((((((.((((((((((((((((((((((((((((((((((((((((((((((((((((((..(((((..............)))))....)))))).............)))))))))))))).))))))))))))).....))).))))))))))).)))))))..))))))))))))))))))))))))).)))).))))))))).))))))))))))))))))))))))))))).....)))))))))))).....))).))))))))))).)))))))...)).))))))))))))).)).)))).(((..(((((((((((((....)))))))))))))..)))...))))))))))))))))))))))).)..)))))))))).)))))))))))))).)))))))))))).))))(((((((..((((.((((..(((((((((((((.(((.(((((.(.((.((((((...)))))).)).).)))))))))))))))))))))..))))))))..)).))))))))))))))..)))).)))))..))))))))))))).))))))).))))))).))))))))))))))))))))))).))))).)))))).))).)))))(((((((.(((((((....((((((((((((((((((((((((((((((...(((.((((((((....)))))))))))(((((((((((((((........))))))))).)))))))))))).)))))))))))))).)))))))))).....))))...))))))))))))))))..))).)))))))))...)))))))).))))))))))..)...)))))).)))))))))))).))))))))))))))).))))
+Folding free energy: -1209.3 kcal/mol
+CAI: 0.873
+Total runtime: 1260.28 s
+===================================================================================================================
+Protein ID: A5H447
+Protein length: 663
+Lambda: 2.000
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linear RNA Reconstruction:
+Coding sequence and its secondary structure:
+AUGGAUCCUGCGGCACCAGCGACAAGGAUGACCUCAUCCUUCACCAUCAACAUCAGCACCCCGAGCUUCUACAACCCCCCCAAGAAGUUCGCCCCUGUGGUUCCUCCGAAGCCUAAGAUCAACCCCUUCAAGGCUCCGGAGGAGCCACAGUCGCUGGUGCCGCAGGAGAACAGCGCCGGCCCUGGCCUGCACCAGGCCUUCGUGGGGAAGGUGGGGGAGAUGCCCCCCGGGGUGGAUCACGAUGACUUCGUGCUUCCACCCCCCCCCCCCUCGGAGGAGAGCAUCUCUCCUCCGAGCUCGAGCUUCCCACCCCCUCCCCCCAGCUUUGGGGACGAGGGGCUGGGAAGCCCGAGCGGGGGGUCAUUUCCCCCACCUCCCCCACCCGAGUUCUCCGAGCCGUUCCCUCCUCCAAUCGAGGAGUUCUUCCCUAGCCCUCCUCCAUUGGAGGAGUGCGUCUCGGAUACACAGGACCUGCCCGUGCCAGUGCCGCCCCCGCCUCCUCCGCCUCUGCCCAGCCCACCCGCAGCUCCUCCACCUAAGCCUAGCGCACCAUGUGAGGCUCCCAAGCCCGCACCAGUGUUUCCCAAGUCCAGCCCCCCUCCCGCAUUCCCCAAGCCGGAGCCACCCAGCGUGGCUCCGAAGGCUGCUAGCAGCAUCUUCAUCCCGAAGCCAUCGGCCCCGAUGGCUGUGGCCCCCAAGCCACUGGCCCCCCCGCCAGUGGCUGCCAAGCCAUCGGGGCCGGUGAGCUUCGCUCCUCCAUCUCCUGCCCCUCAUACCUUCAGCCCCGACCCCAGCGCUCCUGCUCACACCUUCAGCCCCAAGACGGUCACCUUCAGCCCCAAGUCUGCCCCCCACACCUUCAUGCCGAAGCCAUCGGCUCCUGUGACCUACCCCCAGAAGACCACAGAGCCUCCGGCAGAGGCUUCACAGUCCUCCCCCAAGGUGACUCCUGCCGCCAAGCACGAGGCUCCUCCCCCGACUGUGCCGUCUGGGGGCCGGGCUCCUGGCUUCUCCUUUGCCCAGCAGCGGGAGCGGCCUCGGGUUCUGGAGAAGCCCCGGGCCAACCUGCAGGGCUCAGAGCCCGAGCACGAGCCCACUGUGGAGGUGCAGGUGGAGAGGACCAGGAGCCUCGGCCCCCAGACGGAGUCGGGGAGGAGCCCUGGCGCGCAGAGCACCGGGGGGAAGGACAUGAAGCCUCUGCCGGAGGGUCUGAGGUCACAGAAGCCGAUGAGCGACGGCAUCCACAGGACUGGGGGGCAGCACUCGGGGCACAAGGUGACCGGGCAGCAGGACCAGACGCUGGGGUCCCAGGGGCUGAAUAUGAAGGAGGUGGAGGAGCUGGAGAUGCUGACUCAGCAGCUGAUGCGGGAGAUGGACAAGCCCCCUACCGCAGAGGCCCACAGCAUGGAGCUGUGCGGCUUCUGCGGUAGGGGGCUGUCCAGGACGGAGACAGUGGUGCGGGCUGGGGAGCACCUGUACCACGUGGCCUGCUUCACCUGCAGCCGCUGUGAUCAGCAGUUGCAGGGGCAGCAGUACUACGAGAGUGCCGGGAAGCCUCUGUGCGAUGAGUGCUACCAGGACACUCUCGAGUGCUGCGCCGUCUGCGACAAGAAGAUCACCGAGCGGCUGCUGAAGGCCAUUGGUAAGAGCUACCACCCUAGCUGUUUCACCUGCGCCGUGUGCAAGUGUUCACUGCAGGGGGAGCCCUUUAUCGUGGACGAUAAUAAGCUCCCCCACUGCGUGAACGACUACCACCGGCGCUACGCGCCCAGGUGCUGCGUGUGUGGGGACCCCAUCGCACCAGAGCCUGGGCGCGAUGAGACAGUUAGGGUGGUGGCUCUGGAGAAGAACUUUCACAUGAUGUGCUAUAAGUGCGAGGACUGCGGGUGCCCGCUGAGCAUCGAGGCGGACGACGCGGGGUGCUUCCCACUGGACGGGCACGUCCUGUGUAAGAAGUGCCACACGGUGCGGGCCAGGGCCGCGCUGGGC
+.....(((((((((((((((((((((((((....)))))))....................(((((((((............)))))))))....(((((((((((((.((((((((........)))..))))).)))))))))))))))))))))))))))))))(..((((((.((((((((((((((((.(((((((((((((.((((((((((((((((((((((((((((.(((((.....)))))..))))))))........(((((((((((...)))))))))))(((((.((((((((.((((((.(((((....)))))..)))))).)))))))).))))))))))).)))))))))))))).))))))........((((((.(((...((((((((((.((((((..((.....))..)))))).)))))))))).))).))))))((((((((((.(((((((.((((((..((((((((.((.(((((((((((.((((.(((((((((.((((((((.((....(((((((.((((((((((((((.(((((((((((.(((((((...((((.......((((((((((........(((((((((.....)))))))))..((((((((((((((((((((....((((((((((((((((((((((.((((.....((((((((((......))))))))))))))))))))))))))))))).)))))(((((((((((((((.....(((((..(((((((((((((((((((((((((((..........((((......(((((((((..(((((.(((((((((((((..(((..((((((..((((((((((.(((((((((...............((((.((((((((((((((((((..((((((((((..((((.(((.((((((((.....(.(((((((.((((((((...(((((((((((((((((((((((((((((((((((((.((((.(((..((..(((((((((((....(((((((((....))))..))))))))))))))))..))..))).))))...)).))))).))))))).))))))))).))))))))))))))))))))))))))))))))))).)))))))))).)))))).)))).)))))))))))))))))).))))))))))))).)))))))).))..))))))....)))..)))))))))).))).)))))..))))))))))))))))))))...).))))))))))...)))))))))))))))))))))))))))))))))))))))).)).))))))))))))))))).((((((.(((((((((((((((((((((((((.....)))))).)))))))))))))))))))))))))))))))))))).))))))))))).)))))).....(((((.(((((((...(((...(((((((((((((((..(.(((((((((((.((((((((.((((((((((.((.((((((........))).))).)).)).))))))))))))))))))).))))))))..)..))))))..))))))))))))))))))))))))((((((((((((((((((((((((...((((((.(((..(((((((((.(((((((((((...((((((....))))))...))))))))..))))))))).)))..)))))))))..(((((((((((.(((.(((((((((...)))).)))))))).))))))))))).))))))))))))))))))))))))...........)))))))).))))))))).))).))))))))))))))...)))).)))..)))))))).)).)))))).))....))))))))))))).)))))))))).)))).)))....))))))))))))))))))))))..)
+--- Score Breakdown ---
+Total Score: 114888.334
+  - MFE Score: 137150.000
+  - CAI Score (weighted): -22261.666
+  - Crosspair Penalty Score: -0.000 (count: 0, penalty: 0.000)
+Folding free energy: -1371.500 kcal/mol
+CAI: 0.845
+Total runtime: 1762.984 s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Circular RNA Reconstruction:
+Coding sequence and its secondary structure :
+AUGGAUCCUGCGGCACCAGCGACAAGGAUGACCUCAUCCUUCACCAUCAACAUCAGCACCCCGAGCUUCUACAACCCCCCCAAGAAGUUCGCCCCUGUGGUUCCUCCGAAGCCUAAGAUCAACCCCUUCAAGGCUCCGGAGGAGCCACAGUCGCUGGUGCCGCAGGAGAACAGCGCCGGCCCUGGCCUGCACCAGGCCUUCGUGGGGAAGGUGGGGGAGAUGCCCCCCGGGGUGGAUCACGAUGACUUCGUGCUUCCACCCCCCCCCCCCUCGGAGGAGAGCAUCUCUCCUCCGAGCUCGAGCUUCCCACCCCCUCCCCCCAGCUUUGGGGACGAGGGGCUGGGAAGCCCGAGCGGGGGGUCAUUUCCCCCACCUCCCCCACCCGAGUUCUCCGAGCCGUUCCCUCCUCCAAUCGAGGAGUUCUUCCCUAGCCCUCCUCCAUUGGAGGAGUGCGUCUCGGAUACACAGGACCUGCCCGUGCCAGUGCCGCCCCCGCCUCCUCCGCCUCUGCCCAGCCCACCCGCAGCUCCUCCACCUAAGCCUAGCGCACCAUGUGAGGCUCCCAAGCCCGCACCAGUGUUUCCCAAGUCCAGCCCCCCUCCCGCAUUCCCCAAGCCGGAGCCACCCAGCGUGGCUCCGAAGGCUGCUAGCAGCAUCUUCAUCCCGAAGCCAUCGGCCCCGAUGGCUGUGGCCCCCAAGCCACUGGCCCCCCCGCCAGUGGCUGCCAAGCCAUCGGGGCCGGUGAGCUUCGCUCCUCCAUCUCCUGCCCCUCAUACCUUCAGCCCCGACCCCAGCGCUCCUGCUCACACCUUCAGCCCCAAGACCGUGACCUUCAGCCCCAAGUCUGCCCCCCACACCUUCAUGCCGAAGCCAUCGGCUCCUGUGACCUACCCCCAGAAGACCACAGAGCCUCCGGCAGAGGCUUCACAGUCCUCCCCCAAGGUGACUCCUGCCGCCAAGCACGAGGCUCCUCCCCCGACUGUGCCGUCUGGGGGCCGGGCUCCUGGCUUCUCCUUUGCCCAGCAGCGGGAGCGGCCUCGGGUUCUGGAGAAGCCCCGGGCCAACCUGCAGGGCUCAGAGCCCGAGCACGAGCCCACUGUGGAGGUGCAGGUGGAGAGGACCAGGAGCCUCGGCCCCCAGACGGAGUCGGGGAGGAGCCCUGGCGCGCAGAGCACCGGGGGGAAGGACAUGAAGCCUCUGCCGGAGGGUCUGAGGUCACAGAAGCCGAUGAGCGACGGCAUCCACAGGACUGGGGGGCAGCACUCGGGGCACAAGGUCACGGGGCAGCAGGACCAGACGCUGGGGUCCCAGGGGCUGAAUAUGAAGGAGGUGGAGGAGCUGGAGAUGCUGACUCAGCAGCUGAUGCGGGAGAUGGACAAGCCCCCUACCGCAGAGGCCCACAGCAUGGAGCUGUGCGGCUUCUGCGGUAGGGGGCUGUCCAGGACGGAGACAGUGGUGCGGGCUGGGGAGCACCUGUACCACGUGGCCUGCUUCACCUGCAGCCGCUGUGAUCAGCAGUUGCAGGGGCAGCAGUACUACGAGAGUGCCGGGAAGCCUCUGUGCGAUGAGUGCUACCAGGACACUCUCGAGUGCUGCGCCGUCUGCGACAAGAAGAUCACCGAGCGGCUGCUGAAGGCCAUUGGUAAGAGCUACCACCCUAGCUGUUUCACCUGCGCCGUGUGCAAGUGUUCACUGCAGGGGGAGCCCUUUAUCGUGGACGAUAAUAAGCUCCCCCACUGCGUGAACGACUACCACCGGCGCUACGCGCCCAGGUGCUGCGUGUGUGGGGACCCCAUCGCACCAGAGCCUGGGCGCGAUGAGACAGUUAGGGUGGUGGCUCUGGAGAAGAACUUUCACAUGAUGUGCUAUAAGUGCGAGGACUGCGGGUGCCCGCUGAGCAUCGAGGCGGACGACGCGGGGUGCUUCCCACUGGACGGGCACGUCCUGUGUAAGAAGUGCCACACGGUGCGGGCCAGGGCCGCGCUGGGC
+.....(((((((((((((((((((((((((....)))))))....................(((((((((............)))))))))....(((((((((((((.((((((((........)))..))))).)))))))))))))))))))))))))))))))(..((((((.((((((((((((((((.(((((((((((((.((((((((((((((((((((((((((((.(((((.....)))))..))))))))........(((((((((((...)))))))))))(((((.((((((((.((((((.(((((....)))))..)))))).)))))))).))))))))))).)))))))))))))).))))))........((((((.(((...((((((((((.((((((..((.....))..)))))).)))))))))).))).))))))((((((((((.(((((((.((((((..((((((((.((.(((((((((((.((((.(((((((((.((((((((.((....(((((((.((((((((((((((.(((((((((((.(((((((...((((.......((((((((((........(((((((((.....)))))))))..((((((((((((((((((((....((((((((((((((((((((((.((((.....((((((((((......))))))))))))))))))))))))))))))).)))))(((((((((((((((.....(((((..(((((((((((((((((((((((((((..........(((((......((((((((..(((((.(((((((((((((..(((..((((((..((((((((((.(((((((((...............((((.((((((((((((((((((..((((((((((..((((.(((.((((((((.....(.(((((((((((.((((...(((((((((((((((((((((((((((((((((((((.((((.(((..((..((((((.((((....(((((((((....))))..))))))))).))))))..))..))).))))...)).))))).))))))).))))))))).))))))))))))))))))))))))))))))))))).)))))))))).)))))).)))).)))))))))))))))))).))))))))))))).)))))))).))..))))))....)))..)))))))))).))).)))))..))))))))))))))))))))...).))))))))))...)))))))))))))))))))))))))))))))))))))))).)).))))))))))))))))).((((((.(((((((((((((((((((((((((.....)))))).)))))))))))))))))))))))))))))))))))).))))))))))).)))))).....(((((.(((((((...(((...(((((((((((((((..(.(((((((((((.((((((((.((((((((((.((.((((((........))).))).)).)).))))))))))))))))))).))))))))..)..))))))..))))))))))))))))))))))))((((((((((((((((((((((((...((((((.(((..(((((((((.(((((((((((...((((((....))))))...))))))))..))))))))).)))..)))))))))..(((((((((((.(((.(((((((((...)))).)))))))).))))))))))).))))))))))))))))))))))))...........)))))))).))))))))).))).))))))))))))))...)))).)))..)))))))).)).)))))).))....))))))))))))).)))))))))).)))).)))....))))))))))))))))))))))..)
+Folding free energy: -1367.5 kcal/mol
+CAI: 0.845
+Total runtime: 937.181 s

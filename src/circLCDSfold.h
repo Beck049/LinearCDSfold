@@ -570,13 +570,27 @@ std::vector<pair<T,T>> circular_compose_v2(AllTables<T> &alltables, string& rna_
 
     if (ires_len == 0) { // 完全遵循 v1 的 MFE 計算方式
         if (is_DN) {
-            mfe_value = -double(double(c_final_score - weighted_cai_score) / (100.0 * lambda));
+            mfe_score_component = double(c_final_score) - double(weighted_cai_score);
+            mfe_value = -mfe_score_component / (100.0 * lambda);
         } else {
             if (lambda) {
-                mfe_value = -double(double(c_final_score - weighted_cai_score) / 100.0);
+                mfe_score_component = double(c_final_score) - double(weighted_cai_score);
+                mfe_value = -mfe_score_component / 100.0;
             } else {
-                mfe_value = -(c_final_score / 100.0);
+                mfe_score_component = double(c_final_score);
+                mfe_value = -mfe_score_component / 100.0;
             }
+        }
+        if (show_score) {
+            std::cerr << "--- Score Breakdown ---" << std::endl;
+            std::cerr << "Total Score: " << c_final_score << std::endl;
+            std::cerr << "  - MFE Score: " << mfe_score_component << std::endl;
+            std::cerr << "  - CAI Score (weighted): " << weighted_cai_score << std::endl;
+
+            outputfile << "--- Score Breakdown ---" << std::endl;
+            outputfile << "Total Score: " << c_final_score << std::endl;
+            outputfile << "  - MFE Score: " << mfe_score_component << std::endl;
+            outputfile << "  - CAI Score (weighted): " << weighted_cai_score << std::endl;
         }
     } else { // 遵循 i1 包含 crosspair 扣除的 MFE 計算方式
         cross_pair_count = getCrossPairNum(c_structure_solution, ires_len);
@@ -785,14 +799,30 @@ std::vector<pair<T,T>> circular_compose_m1(AllTables<T> &alltables,string& rna_s
     cai_value = exp(cai_value / double(ami_seq.size() / 2)); // 此處 ami_seq 原為 2 倍長度，故除以原始長度
 
     double mfe_value;
+    double mfe_score_component;
     if (is_DN) {
-        mfe_value = -double(double(best_score - weighted_cai_score) / (100.0 * lambda));
+        mfe_score_component = double(best_score) - double(weighted_cai_score));
+        mfe_value = -mfe_value / (100.0 * lambda);
     } else {
         if (lambda) {
-            mfe_value = -double(double(best_score - weighted_cai_score) / 100.0);
+            mfe_score_component = double((best_score) - double(weighted_cai_score);
+            mfe_value = -mfe_value / 100.0;
         } else {
-            mfe_value = -(best_score / 100.0);
+            mfe_score_component = best_score;
+            mfe_value = -mfe_value / 100.0;
         }
+    }
+
+    if (show_score) {
+        std::cerr << "--- Score Breakdown ---" << std::endl;
+        std::cerr << "Total Score: " << best_score << std::endl;
+        std::cerr << "  - MFE Score: " << mfe_score_component << std::endl;
+        std::cerr << "  - CAI Score (weighted): " << weighted_cai_score << std::endl;
+
+        outputfile << "--- Score Breakdown ---" << std::endl;
+        outputfile << "Total Score: " << best_score << std::endl;
+        outputfile << "  - MFE Score: " << mfe_score_component << std::endl;
+        outputfile << "  - CAI Score (weighted): " << weighted_cai_score << std::endl;
     }
 
     std::cout << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;
@@ -1347,14 +1377,30 @@ std::vector<pair<T,T>> circular_compose_m1_sparse(AllTables<T> &alltables, strin
     cai_value = exp(cai_value / double(ami_seq.size() / 2));
 
     double mfe_value;
+    double mfe_score_component;
     if (is_DN) {
-        mfe_value = -double(double(best_score - weighted_cai_score) / (100.0 * lambda));
+        mfe_score_component = double(best_score) - double(weighted_cai_score));
+        mfe_value = -mfe_value / (100.0 * lambda);
     } else {
         if (lambda) {
-            mfe_value = -double(double(best_score - weighted_cai_score) / 100.0);
+            mfe_score_component = double((best_score) - double(weighted_cai_score);
+            mfe_value = -mfe_value / 100.0;
         } else {
-            mfe_value = -(best_score / 100.0);
+            mfe_score_component = best_score;
+            mfe_value = -mfe_value / 100.0;
         }
+    }
+
+    if (show_score) {
+        std::cerr << "--- Score Breakdown ---" << std::endl;
+        std::cerr << "Total Score: " << best_score << std::endl;
+        std::cerr << "  - MFE Score: " << mfe_score_component << std::endl;
+        std::cerr << "  - CAI Score (weighted): " << weighted_cai_score << std::endl;
+
+        outputfile << "--- Score Breakdown ---" << std::endl;
+        outputfile << "Total Score: " << best_score << std::endl;
+        outputfile << "  - MFE Score: " << mfe_score_component << std::endl;
+        outputfile << "  - CAI Score (weighted): " << weighted_cai_score << std::endl;
     }
 
     std::cout << "Folding free energy: " << mfe_value << " kcal/mol" << std::endl;

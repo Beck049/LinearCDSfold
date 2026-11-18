@@ -2,8 +2,11 @@ import csv
 import math
 import sys
 
-# 忽略不比對的欄位
-IGNORE_COLUMNS = {"Run time", "cRun time"}
+# 指定要比對的目標欄位（順序會依照此列表輸出）
+TARGET_COLUMNS = ["MFE", "CAI", "crossTalkCnt", "cMFE", "cCAI", "cCrossTalkCnt"]
+
+# 作為主鍵比對的 ID 欄位名稱
+ID_COLUMN = "UniPort ID"
 
 # 浮點數比對容許誤差 (可依需求調整，如 1e-4)
 TOLERANCE = 1e-4
@@ -25,8 +28,8 @@ def is_equal(v1, v2) -> bool:
     return v1 == v2
 
 
-def load_csv_data(filepath: str) -> dict:
-    """讀取 CSV 並以 ID（第一欄）為 key 建立字典。"""
+def load_csv_data(filepath: str):
+    """讀取 CSV 並以 UniPort ID 為 key 建立字典，同時回傳欄位名稱列表。"""
     data = {}
     with open(filepath, mode="r", encoding="utf-8-sig") as f:
         reader = csv.reader(f)
@@ -36,7 +39,10 @@ def load_csv_data(filepath: str) -> dict:
             return {}, []
 
         headers = [h.strip() for h in raw_headers]
-        id_col_name = headers[0]
+
+        if ID_COLUMN not in headers:
+            print(f"[錯誤] 檔案 {filepath} 找不到主鍵欄位 '{ID_COLUMN}'！現有欄位: {headers}")
+            sys.exit(1)
 
         for line_num, row in enumerate(reader, start=2):
             if not row or not any(row):
@@ -44,12 +50,11 @@ def load_csv_data(filepath: str) -> dict:
             row_dict = {
                 h: normalize_value(v)
                 for h, v in zip(headers, row)
-                if h not in IGNORE_COLUMNS
             }
-            row_id = row_dict.get(id_col_name)
+            row_id = row_dict.get(ID_COLUMN)
 
             if row_id in data:
-                print(f"[警告] 檔案 {filepath} 第 {line_num} 行出現重複 ID: {row_id}")
+                print(f"[警告] 檔案 {filepath} 第 {line_num} 行出現重複 {ID_COLUMN}: {row_id}")
             data[row_id] = row_dict
 
     return data, headers
@@ -63,7 +68,7 @@ def main():
     test_file = sys.argv[1]
     ans_file = sys.argv[2]
 
-    test_data, _ = load_csv_data(test_file)
+    test_data, test_headers = load_csv_data(test_file)
     ans_data, ans_headers = load_csv_data(ans_file)
 
     test_ids = set(test_data.keys())
@@ -71,29 +76,33 @@ def main():
 
     has_error = False
 
-    # 1. 檢查缺少或多出的 ID
+    # 1. 檢查缺少或多出的 UniPort ID
     missing_ids = ans_ids - test_ids
     extra_ids = test_ids - ans_ids
 
     if missing_ids:
         has_error = True
-        print(f"[錯誤] 比對序列缺少以下 ID ({len(missing_ids)} 個):")
+        print(f"[錯誤] 比對序列缺少以下 {ID_COLUMN} ({len(missing_ids)} 個):")
         for mid in sorted(missing_ids):
             print(f"  - 缺少: {mid}")
 
     if extra_ids:
         has_error = True
-        print(f"[錯誤] 比對序列多出以下 ID ({len(extra_ids)} 個):")
+        print(f"[錯誤] 比對序列多出以下 {ID_COLUMN} ({len(extra_ids)} 個):")
         for eid in sorted(extra_ids):
             print(f"  - 多出: {eid}")
 
-    # 2. 針對共同存在的 ID 比對各欄位數值
+    # 2. 篩選出 test.csv 與 answer.csv 皆存在的目標欄位（test.csv 無此欄位則跳過）
+    test_header_set = set(test_headers)
+    ans_header_set = set(ans_headers)
+
+    compare_columns = []
+    for col in TARGET_COLUMNS:
+        if col in test_header_set and col in ans_header_set:
+            compare_columns.append(col)
+
+    # 3. 針對共同存在的 UniPort ID 比對指定欄位數值
     common_ids = test_ids & ans_ids
-    compare_columns = [
-        col
-        for col in ans_headers
-        if col not in IGNORE_COLUMNS and col != ans_headers[0]
-    ]
 
     diff_count = 0
     for row_id in sorted(common_ids):
@@ -111,12 +120,12 @@ def main():
         if row_errors:
             has_error = True
             diff_count += 1
-            print(f"[數值不符] ID: {row_id}")
+            print(f"[數值不符] {ID_COLUMN}: {row_id}")
             for err in row_errors:
                 print(err)
 
     if not has_error:
-        print(" 比對完全正確（順序無關）")
+        print(f"比對完全正確")
         sys.exit(0)
     else:
         print(f"\n比對結束：發現錯誤，共有 {diff_count} 筆資料欄位不符。")
